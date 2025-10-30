@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "models/v1/message_text_content.proto";
+
+message MessageContent {
+  oneof content {
+    MessageTextContent text_content = 1;
+  }
+}

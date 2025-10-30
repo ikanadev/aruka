@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package provider.v1;
+
+import "models/v1/model.proto";
+import "models/v1/provider.proto";
+
+message ListProvidersRequest {
+  models.v1.ModelStatus status = 1;
+}
+
+message ListProvidersResponse {
+  repeated models.v1.Provider providers = 1;
+}

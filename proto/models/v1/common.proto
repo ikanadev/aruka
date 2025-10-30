@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message PaginationRequest {
+  uint32 page = 1;
+  uint32 limit = 2;
+}
+
+message PaginationData {
+  uint32 page = 1;
+  uint32 limit = 2;
+  uint32 total_items = 3;
+  uint32 total_pages = 4;
+  bool has_next = 5;
+  bool has_prev = 6;
+}
+
+message TimeData {
+  google.protobuf.Timestamp created_at = 1;
+  google.protobuf.Timestamp updated_at = 2;
+  google.protobuf.Timestamp archived_at = 3;
+  google.protobuf.Timestamp deleted_at = 4;
+}

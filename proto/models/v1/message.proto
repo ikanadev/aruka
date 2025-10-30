@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "google/protobuf/timestamp.proto";
+import "models/v1/message_content.proto";
+
+enum MessageRole {
+  MESSAGE_ROLE_UNSPECIFIED = 0;
+  MESSAGE_ROLE_USER = 1;
+  MESSAGE_ROLE_ASSISTANT = 2;
+}
+
+message Message {
+  string id = 1;
+  MessageRole role = 2;
+  repeated MessageContent content = 3;
+  google.protobuf.Timestamp created_at = 4;
+}

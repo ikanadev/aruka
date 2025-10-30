@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "google/protobuf/timestamp.proto";
+
+enum ModelStatus {
+  MODEL_STATUS_UNSPECIFIED = 0;
+  // Available to work with
+  MODEL_STATUS_ACTIVE = 1;
+  // Not available for UI
+  MODEL_STATUS_INACTIVE = 2;
+  // Deprecated by provider
+  MODEL_STATUS_DEPRECATED = 3;
+}
+
+message Model {
+  string id = 1;
+  string model_identifier = 2;
+  string name = 3;
+  google.protobuf.Timestamp created_at = 4;
+  ModelStatus status = 5;
+}

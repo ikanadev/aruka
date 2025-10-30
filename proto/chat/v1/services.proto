@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package chat.v1;
+
+import "chat/v1/chat_message.proto";
+import "chat/v1/chat_messages.proto";
+import "chat/v1/edit_chat.proto";
+import "chat/v1/list_chats.proto";
+import "chat/v1/new_chat.proto";
+
+service ChatService {
+  rpc ListChats(ListChatsRequest) returns (ListChatsResponse);
+  rpc NewChat(NewChatRequest) returns (NewChatResponse);
+  rpc EditChat(EditChatRequest) returns (EditChatResponse);
+  rpc ChatMessages(ChatMessagesRequest) returns (ChatMessagesResponse);
+  rpc ChatMessage(ChatMessageRequest) returns (stream ChatMessageResponse);
+}

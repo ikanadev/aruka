@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "models/v1/model.proto";
+
+message ProviderBase {
+  string id = 1;
+  string name = 2;
+}
+
+message Provider {
+  string id = 1;
+  string name = 2;
+  repeated Model models = 3;
+}

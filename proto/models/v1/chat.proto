@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "models/v1/common.proto";
+import "models/v1/model.proto";
+import "models/v1/provider.proto";
+
+message Chat {
+  string id = 1;
+  string title = 2;
+  string prompt = 3;
+  bool pinned = 4;
+  Model model = 5;
+  ProviderBase provider = 6;
+  TimeData time_data = 7;
+}

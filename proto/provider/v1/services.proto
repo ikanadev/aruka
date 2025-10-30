@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package provider.v1;
+
+import "provider/v1/list_providers.proto";
+import "provider/v1/update_provider_models.proto";
+
+service ProviderService {
+  rpc ListProviders(ListProvidersRequest) returns (ListProvidersResponse);
+  rpc UpdateProviderModels(UpdateProviderModelsRequest) returns (UpdateProviderModelsResponse);
+}

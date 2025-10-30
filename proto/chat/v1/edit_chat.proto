@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package chat.v1;
+
+import "models/v1/chat.proto";
+
+message EditChatRequest {
+  string title = 1;
+  string prompt = 2;
+  bool pinned = 3;
+}
+
+message EditChatResponse {
+  models.v1.Chat chat = 1;
+}

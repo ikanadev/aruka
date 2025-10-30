@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package chat.v1;
+
+import "models/v1/message.proto";
+
+message ChatMessagesRequest {
+  string chat_id = 1;
+}
+
+message ChatMessagesResponse {
+  repeated models.v1.Message messages = 1;
+}

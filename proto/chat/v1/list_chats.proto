@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package chat.v1;
+
+import "models/v1/chat.proto";
+import "models/v1/common.proto";
+
+message ListChatsRequest {
+  models.v1.PaginationRequest pagination = 1;
+}
+
+message ListChatsResponse {
+  repeated models.v1.Chat chats = 1;
+  models.v1.PaginationData pagination = 2;
+}
