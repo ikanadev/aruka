@@ -36,6 +36,9 @@ func (c *ChatHandler) ListChats(context.Context, *connect.Request[chatv1.ListCha
 }
 
 // NewChat implements chatv1connect.ChatServiceHandler.
-func (c *ChatHandler) NewChat(context.Context, *connect.Request[chatv1.NewChatRequest]) (*connect.Response[chatv1.NewChatResponse], error) {
+func (c *ChatHandler) NewChat(
+  ctx context.Context,
+  req *connect.Request[chatv1.NewChatRequest],
+) (*connect.Response[chatv1.NewChatResponse], error) {
 	panic("unimplemented")
 }

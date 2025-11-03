@@ -12,8 +12,8 @@ type PaginationData struct {
 }
 
 type TimeData struct {
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	ArchivedAt time.Time
-	DeletedAt time.Time
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	ArchivedAt *time.Time
+	DeletedAt  *time.Time
 }

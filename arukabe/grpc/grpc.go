@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"arukabe/core/chat"
 	"arukabe/core/provider"
 	"arukabe/db"
 	"arukabe/gen/sqlc"
@@ -38,6 +39,7 @@ func SetupGRPCServer() {
 	mux := http.NewServeMux()
 	handler := chain(mux, corsMiddleware)
 	provider.RegisterProviderService(ctx, mux, queries, &antClient)
+  chat.RegisterChatService(ctx, mux, queries, &antClient)
 
 
 	p := new(http.Protocols)

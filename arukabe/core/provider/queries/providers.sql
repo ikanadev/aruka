@@ -2,11 +2,7 @@
 SELECT
   p.id as id,
   p.name as name,
-  m.id as model_id,
-  m.model_identifier as model_identifier,
-  m.name as model_name,
-  m.status as model_status,
-  m.created_at as model_created_at
+  sqlc.embed(m)
 FROM provider p
 INNER JOIN model m ON p.id = m.provider_id
 WHERE m.status = sqlc.arg('status')

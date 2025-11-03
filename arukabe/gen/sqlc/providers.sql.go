@@ -78,11 +78,7 @@ const listProviders = `-- name: ListProviders :many
 SELECT
   p.id as id,
   p.name as name,
-  m.id as model_id,
-  m.model_identifier as model_identifier,
-  m.name as model_name,
-  m.status as model_status,
-  m.created_at as model_created_at
+  m.id, m.model_identifier, m.name, m.provider_id, m.status, m.created_at
 FROM provider p
 INNER JOIN model m ON p.id = m.provider_id
 WHERE m.status = $1
@@ -90,13 +86,9 @@ ORDER BY m.created_at DESC
 `
 
 type ListProvidersRow struct {
-	ID              uuid.UUID
-	Name            string
-	ModelID         uuid.UUID
-	ModelIdentifier string
-	ModelName       string
-	ModelStatus     ModelStatus
-	ModelCreatedAt  time.Time
+	ID    uuid.UUID
+	Name  string
+	Model Model
 }
 
 func (q *Queries) ListProviders(ctx context.Context, status ModelStatus) ([]ListProvidersRow, error) {
@@ -111,11 +103,12 @@ func (q *Queries) ListProviders(ctx context.Context, status ModelStatus) ([]List
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
-			&i.ModelID,
-			&i.ModelIdentifier,
-			&i.ModelName,
-			&i.ModelStatus,
-			&i.ModelCreatedAt,
+			&i.Model.ID,
+			&i.Model.ModelIdentifier,
+			&i.Model.Name,
+			&i.Model.ProviderID,
+			&i.Model.Status,
+			&i.Model.CreatedAt,
 		); err != nil {
 			return nil, err
 		}

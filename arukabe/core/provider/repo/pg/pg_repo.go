@@ -42,7 +42,7 @@ func (p PGRepository) ListProviders(status models.ModelStatus) ([]models.Provide
 				}
 			}
 			provider := acc[el.ID]
-			provider.Models = append(provider.Models, fromDBModel(el))
+			provider.Models = append(provider.Models, models.FromDBModel(el.Model))
 			acc[el.ID] = provider
 			return acc
 		},

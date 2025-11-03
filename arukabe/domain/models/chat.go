@@ -9,5 +9,4 @@ type Chat struct {
 	Pinned   bool
 	Model    Model
 	TimeData TimeData
-	Messages []Message
 }

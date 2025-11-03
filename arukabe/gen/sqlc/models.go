@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type MessageRole string
@@ -147,8 +146,8 @@ type Chat struct {
 	ModelID    uuid.UUID
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
-	ArchivedAt pgtype.Timestamptz
-	DeletedAt  pgtype.Timestamptz
+	ArchivedAt *time.Time
+	DeletedAt  *time.Time
 }
 
 type Message struct {
