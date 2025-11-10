@@ -38,8 +38,8 @@ func SetupGRPCServer() {
 	// Handler
 	mux := http.NewServeMux()
 	handler := chain(mux, corsMiddleware)
-	provider.RegisterProviderService(ctx, mux, queries, &antClient)
-  chat.RegisterChatService(ctx, mux, queries, &antClient)
+	provider.RegisterProviderService(mux, queries, &antClient)
+  chat.RegisterChatService(mux, queries, &antClient)
 
 
 	p := new(http.Protocols)

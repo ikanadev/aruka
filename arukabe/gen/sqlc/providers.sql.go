@@ -12,33 +12,37 @@ import (
 	"github.com/google/uuid"
 )
 
-const getProviderModels = `-- name: GetProviderModels :many
-SELECT p.id as id, p.name as name, m.name as model_name, m.model_identifier as model_identifier
+const allProviderModels = `-- name: AllProviderModels :many
+SELECT
+  m.id, m.model_identifier, m.name, m.provider_id, m.status, m.created_at,
+  p.id, p.name
 FROM provider p
 INNER JOIN model m ON p.id = m.provider_id
 `
 
-type GetProviderModelsRow struct {
-	ID              uuid.UUID
-	Name            string
-	ModelName       string
-	ModelIdentifier string
+type AllProviderModelsRow struct {
+	Model    Model
+	Provider Provider
 }
 
-func (q *Queries) GetProviderModels(ctx context.Context) ([]GetProviderModelsRow, error) {
-	rows, err := q.db.Query(ctx, getProviderModels)
+func (q *Queries) AllProviderModels(ctx context.Context) ([]AllProviderModelsRow, error) {
+	rows, err := q.db.Query(ctx, allProviderModels)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetProviderModelsRow
+	var items []AllProviderModelsRow
 	for rows.Next() {
-		var i GetProviderModelsRow
+		var i AllProviderModelsRow
 		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
-			&i.ModelName,
-			&i.ModelIdentifier,
+			&i.Model.ID,
+			&i.Model.ModelIdentifier,
+			&i.Model.Name,
+			&i.Model.ProviderID,
+			&i.Model.Status,
+			&i.Model.CreatedAt,
+			&i.Provider.ID,
+			&i.Provider.Name,
 		); err != nil {
 			return nil, err
 		}
@@ -50,12 +54,12 @@ func (q *Queries) GetProviderModels(ctx context.Context) ([]GetProviderModelsRow
 	return items, nil
 }
 
-const getProviders = `-- name: GetProviders :many
+const allProviders = `-- name: AllProviders :many
 SELECT id, name FROM provider
 `
 
-func (q *Queries) GetProviders(ctx context.Context) ([]Provider, error) {
-	rows, err := q.db.Query(ctx, getProviders)
+func (q *Queries) AllProviders(ctx context.Context) ([]Provider, error) {
+	rows, err := q.db.Query(ctx, allProviders)
 	if err != nil {
 		return nil, err
 	}
@@ -76,8 +80,7 @@ func (q *Queries) GetProviders(ctx context.Context) ([]Provider, error) {
 
 const listProviders = `-- name: ListProviders :many
 SELECT
-  p.id as id,
-  p.name as name,
+  p.id, p.name,
   m.id, m.model_identifier, m.name, m.provider_id, m.status, m.created_at
 FROM provider p
 INNER JOIN model m ON p.id = m.provider_id
@@ -86,9 +89,8 @@ ORDER BY m.created_at DESC
 `
 
 type ListProvidersRow struct {
-	ID    uuid.UUID
-	Name  string
-	Model Model
+	Provider Provider
+	Model    Model
 }
 
 func (q *Queries) ListProviders(ctx context.Context, status ModelStatus) ([]ListProvidersRow, error) {
@@ -101,8 +103,8 @@ func (q *Queries) ListProviders(ctx context.Context, status ModelStatus) ([]List
 	for rows.Next() {
 		var i ListProvidersRow
 		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
+			&i.Provider.ID,
+			&i.Provider.Name,
 			&i.Model.ID,
 			&i.Model.ModelIdentifier,
 			&i.Model.Name,

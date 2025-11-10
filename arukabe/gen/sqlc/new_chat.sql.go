@@ -18,10 +18,12 @@ WITH inserted_chat AS (
   VALUES ($1, $2, $3, $4)
   RETURNING id, title, prompt, pinned, model_id, created_at, updated_at, archived_at, deleted_at
 )
-SELECT ic.id, ic.title, ic.prompt, ic.pinned, ic.model_id, ic.created_at, ic.updated_at, ic.archived_at, ic.deleted_at, m.id, m.model_identifier, m.name, m.provider_id, m.status, m.created_at
+SELECT ic.id, ic.title, ic.prompt, ic.pinned, ic.model_id, ic.created_at, ic.updated_at, ic.archived_at, ic.deleted_at, m.id, m.model_identifier, m.name, m.provider_id, m.status, m.created_at, p.id, p.name
 FROM inserted_chat ic
 JOIN model m
 ON ic.model_id = m.id
+JOIN provider p
+ON m.provider_id = p.id
 `
 
 type CreateChatParams struct {
@@ -42,6 +44,7 @@ type CreateChatRow struct {
 	ArchivedAt *time.Time
 	DeletedAt  *time.Time
 	Model      Model
+	Provider   Provider
 }
 
 func (q *Queries) CreateChat(ctx context.Context, arg CreateChatParams) (CreateChatRow, error) {
@@ -68,6 +71,8 @@ func (q *Queries) CreateChat(ctx context.Context, arg CreateChatParams) (CreateC
 		&i.Model.ProviderID,
 		&i.Model.Status,
 		&i.Model.CreatedAt,
+		&i.Provider.ID,
+		&i.Provider.Name,
 	)
 	return i, err
 }
