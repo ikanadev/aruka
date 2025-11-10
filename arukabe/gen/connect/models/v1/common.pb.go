@@ -162,8 +162,8 @@ type TimeData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	ArchivedAt    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=archived_at,json=archivedAt,proto3" json:"archived_at,omitempty"`
-	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
+	ArchivedAt    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=archived_at,json=archivedAt,proto3,oneof" json:"archived_at,omitempty"`
+	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -242,16 +242,18 @@ const file_models_v1_common_proto_rawDesc = "" +
 	"\vtotal_pages\x18\x04 \x01(\rR\n" +
 	"totalPages\x12\x19\n" +
 	"\bhas_next\x18\x05 \x01(\bR\ahasNext\x12\x19\n" +
-	"\bhas_prev\x18\x06 \x01(\bR\ahasPrev\"\xf8\x01\n" +
+	"\bhas_prev\x18\x06 \x01(\bR\ahasPrev\"\xa1\x02\n" +
 	"\bTimeData\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12;\n" +
-	"\varchived_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"archivedAt\x129\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12@\n" +
+	"\varchived_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\n" +
+	"archivedAt\x88\x01\x01\x12>\n" +
 	"\n" +
-	"deleted_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAtB\x89\x01\n" +
+	"deleted_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\tdeletedAt\x88\x01\x01B\x0e\n" +
+	"\f_archived_atB\r\n" +
+	"\v_deleted_atB\x89\x01\n" +
 	"\rcom.models.v1B\vCommonProtoP\x01Z&arukabe/gen/connect/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
 	"Models::V1b\x06proto3"
 
@@ -291,6 +293,7 @@ func file_models_v1_common_proto_init() {
 	if File_models_v1_common_proto != nil {
 		return
 	}
+	file_models_v1_common_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

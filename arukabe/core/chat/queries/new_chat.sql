@@ -4,7 +4,9 @@ WITH inserted_chat AS (
   VALUES (sqlc.arg('id'), sqlc.arg('title'), sqlc.arg('prompt'), sqlc.arg('model_id'))
   RETURNING *
 )
-SELECT ic.*, sqlc.embed(m)
+SELECT ic.*, sqlc.embed(m), sqlc.embed(p)
 FROM inserted_chat ic
 JOIN model m
-ON ic.model_id = m.id;
+ON ic.model_id = m.id
+JOIN provider p
+ON m.provider_id = p.id;

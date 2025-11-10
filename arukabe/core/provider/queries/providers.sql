@@ -1,18 +1,19 @@
 -- name: ListProviders :many
 SELECT
-  p.id as id,
-  p.name as name,
+  sqlc.embed(p),
   sqlc.embed(m)
 FROM provider p
 INNER JOIN model m ON p.id = m.provider_id
 WHERE m.status = sqlc.arg('status')
 ORDER BY m.created_at DESC;
 
--- name: GetProviders :many
+-- name: AllProviders :many
 SELECT id, name FROM provider;
 
--- name: GetProviderModels :many
-SELECT p.id as id, p.name as name, m.name as model_name, m.model_identifier as model_identifier
+-- name: AllProviderModels :many
+SELECT
+  sqlc.embed(m),
+  sqlc.embed(p)
 FROM provider p
 INNER JOIN model m ON p.id = m.provider_id;
 

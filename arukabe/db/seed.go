@@ -1,7 +1,7 @@
 package db
 
 import (
-	"arukabe/domain/models"
+	"arukabe/core/common/constants"
 	"arukabe/gen/sqlc"
 	"context"
 
@@ -9,37 +9,34 @@ import (
 )
 
 func SeedProviders(ctx context.Context, queries *sqlc.Queries) error {
-	dbProviders, err := queries.GetProviders(ctx)
+	dbProviders, err := queries.AllProviders(ctx)
 	if err != nil {
 		return err
 	}
-	namesToSave := make([]models.ProviderName, 0, len(models.ProviderNames))
+	namesToSave := make([]sqlc.SaveProvidersParams, 0, len(constants.ProviderNames))
 
 	// filter names with existing dbNames
-	for _, name := range models.ProviderNames {
+	for _, name := range constants.ProviderNames {
 		exists := false
 		for _, dbProvider := range dbProviders {
-			if name.String() == dbProvider.Name {
+			if string(name) == dbProvider.Name {
 				exists = true
 				break
 			}
 		}
-		if !exists {
-			namesToSave = append(namesToSave, name)
+		if exists {
+			continue
 		}
-	}
-
-	toSave := make([]sqlc.SaveProvidersParams, len(namesToSave))
-	for i, name := range namesToSave {
 		id, err := uuid.NewV7()
 		if err != nil {
 			return err
 		}
-		toSave[i] = sqlc.SaveProvidersParams{
+		namesToSave = append(namesToSave, sqlc.SaveProvidersParams{
 			ID:   id,
-			Name: name.String(),
-		}
+			Name: string(name),
+		})
 	}
-	_, err = queries.SaveProviders(ctx, toSave)
+
+	_, err = queries.SaveProviders(ctx, namesToSave)
 	return err
 }

@@ -21,6 +21,6 @@ message PaginationData {
 message TimeData {
   google.protobuf.Timestamp created_at = 1;
   google.protobuf.Timestamp updated_at = 2;
-  google.protobuf.Timestamp archived_at = 3;
-  google.protobuf.Timestamp deleted_at = 4;
+  optional google.protobuf.Timestamp archived_at = 3;
+  optional google.protobuf.Timestamp deleted_at = 4;
 }

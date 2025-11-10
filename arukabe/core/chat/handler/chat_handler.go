@@ -1,18 +1,19 @@
 package handler
 
 import (
-	"arukabe/core/chat/repo"
+	"arukabe/core/chat/service"
 	chatv1 "arukabe/gen/connect/chat/v1"
-	"connectrpc.com/connect"
 	"context"
+
+	"connectrpc.com/connect"
 )
 
-func NewChatHandler(repo repo.ChatRepository) *ChatHandler {
-	return &ChatHandler{repo}
+func NewChatHandler(service service.ChatService) *ChatHandler {
+	return &ChatHandler{service}
 }
 
 type ChatHandler struct {
-	repo repo.ChatRepository
+	service service.ChatService
 }
 
 // ChatMessage implements chatv1connect.ChatServiceHandler.
@@ -40,5 +41,9 @@ func (c *ChatHandler) NewChat(
   ctx context.Context,
   req *connect.Request[chatv1.NewChatRequest],
 ) (*connect.Response[chatv1.NewChatResponse], error) {
-	panic("unimplemented")
+	resp, err := c.service.NewChat(ctx, req.Msg)
+	if err != nil {
+		return nil, err
+	}
+	return connect.NewResponse(resp), nil
 }
