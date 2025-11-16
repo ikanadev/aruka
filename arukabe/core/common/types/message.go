@@ -14,16 +14,3 @@ type Message struct {
 	Content   MessageSections
 	CreatedAt time.Time
 }
-
-func (m *Message) FromDBMessage(messages sqlc.Message) error {
-	var content MessageSections
-	if err := content.UnmarshalJSON(messages.Content); err != nil {
-		return err
-	}
-	m.ID = messages.ID
-	m.ChatID = messages.ChatID
-	m.Role = messages.Role
-	m.Content = content
-	m.CreatedAt = messages.CreatedAt
-	return nil
-}

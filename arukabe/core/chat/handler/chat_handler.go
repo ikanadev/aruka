@@ -35,7 +35,7 @@ func (c *ChatHandler) ChatMessage(
 			if result.Err != nil {
 				return connect.NewError(connect.CodeInternal, result.Err)
 			}
-			resp := &chatv1.ChatMessageResponse{ Delta: result.Text }
+			resp := &chatv1.ChatMessageResponse{Delta: result.Text}
 			if err := stream.Send(resp); err != nil {
 				return connect.NewError(connect.CodeInternal, err)
 			}
@@ -46,8 +46,15 @@ func (c *ChatHandler) ChatMessage(
 }
 
 // ChatMessages implements chatv1connect.ChatServiceHandler.
-func (c *ChatHandler) ChatMessages(context.Context, *connect.Request[chatv1.ChatMessagesRequest]) (*connect.Response[chatv1.ChatMessagesResponse], error) {
-	panic("unimplemented")
+func (c *ChatHandler) ChatMessages(
+	ctx context.Context,
+	req *connect.Request[chatv1.ChatMessagesRequest],
+) (*connect.Response[chatv1.ChatMessagesResponse], error) {
+	resp, err := c.service.ChatMessages(ctx, req.Msg)
+	if err != nil {
+		return nil, err
+	}
+	return connect.NewResponse(resp), nil
 }
 
 // EditChat implements chatv1connect.ChatServiceHandler.

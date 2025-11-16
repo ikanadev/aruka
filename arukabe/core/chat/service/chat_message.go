@@ -21,7 +21,10 @@ func (cs *ChatService) ChatMessage(
 		return nil, err
 	}
 
-	messageContent := mappers.PBMessageContentToMessageSections(req.Content)
+	var messageContent types.MessageSections
+	if err := messageContent.FromPBSections(req.Content); err != nil {
+		return nil, err
+	}
 	userMessage := types.Message{
 		Role:    sqlc.MessageRoleUSER,
 		Content: messageContent,

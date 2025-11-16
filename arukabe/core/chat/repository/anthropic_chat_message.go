@@ -136,7 +136,7 @@ func (cr *ChatRepository) saveUserMessageAndAnthropicResponse(ctx context.Contex
 func messagesToAnthropicMessages(messages []types.Message) ([]anthropic.MessageParam, error) {
 	anthropicMessages := make([]anthropic.MessageParam, len(messages))
 	for i, msg := range messages {
-		role, err := mappers.RoleToAnthropic(msg.Role)
+		role, err := mappers.RoleToAnthropicRoleParam(msg.Role)
 		if err != nil {
 			return nil, err
 		}

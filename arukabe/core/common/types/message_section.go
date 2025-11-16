@@ -1,6 +1,7 @@
 package types
 
 import (
+	modelsv1 "arukabe/gen/connect/models/v1"
 	"encoding/json"
 	"fmt"
 
@@ -58,6 +59,43 @@ func (m *MessageSections) FromAnthropicMessageSections(sections []anthropic.Cont
 		}
 	}
 	return nil
+}
+
+func (m *MessageSections) FromPBSections(content []*modelsv1.MessageContent) error {
+	for _, item := range content {
+		textContent := item.GetTextContent()
+		if textContent != nil {
+			*m = append(*m, MessageSection{
+				Type:    MessageSectionTypeText,
+				Payload: MessageTextSection{Text: textContent.Text},
+			})
+			continue
+		}
+		// TODO: handle more content types
+	}
+
+	return nil
+}
+
+func (m *MessageSections) ToPBSections() ([]*modelsv1.MessageContent, error) {
+	var pbSections []*modelsv1.MessageContent
+	for _, section := range *m {
+		switch section.Type {
+		case MessageSectionTypeText:
+			textContent := section.Payload.(MessageTextSection)
+			pbSections = append(pbSections, &modelsv1.MessageContent{
+				Content: &modelsv1.MessageContent_TextContent{
+					TextContent: &modelsv1.MessageTextContent{
+						Text: textContent.Text,
+					},
+				},
+			})
+		// TODO: handle more content types
+		default:
+			return nil, fmt.Errorf("unknown message content type: %s", section.Type)
+		}
+	}
+	return pbSections, nil
 }
 
 func (m *MessageSections) UnmarshalJSON(data []byte) error {
