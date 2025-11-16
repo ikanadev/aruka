@@ -11,6 +11,61 @@ import (
 	"github.com/google/uuid"
 )
 
+const getAllChats = `-- name: GetAllChats :many
+SELECT
+  c.id, c.title, c.prompt, c.pinned, c.model_id, c.created_at, c.updated_at, c.archived_at, c.deleted_at,
+  mdl.id, mdl.model_identifier, mdl.name, mdl.provider_id, mdl.status, mdl.created_at,
+  p.id, p.name
+FROM chat c
+INNER JOIN model mdl ON c.model_id = mdl.id
+INNER JOIN provider p ON mdl.provider_id = p.id
+ORDER BY c.created_at DESC
+`
+
+type GetAllChatsRow struct {
+	Chat     Chat
+	Model    Model
+	Provider Provider
+}
+
+func (q *Queries) GetAllChats(ctx context.Context) ([]GetAllChatsRow, error) {
+	rows, err := q.db.Query(ctx, getAllChats)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetAllChatsRow
+	for rows.Next() {
+		var i GetAllChatsRow
+		if err := rows.Scan(
+			&i.Chat.ID,
+			&i.Chat.Title,
+			&i.Chat.Prompt,
+			&i.Chat.Pinned,
+			&i.Chat.ModelID,
+			&i.Chat.CreatedAt,
+			&i.Chat.UpdatedAt,
+			&i.Chat.ArchivedAt,
+			&i.Chat.DeletedAt,
+			&i.Model.ID,
+			&i.Model.ModelIdentifier,
+			&i.Model.Name,
+			&i.Model.ProviderID,
+			&i.Model.Status,
+			&i.Model.CreatedAt,
+			&i.Provider.ID,
+			&i.Provider.Name,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getChatMessages = `-- name: GetChatMessages :many
 SELECT
   m.id, m.chat_id, m.role, m.content, m.created_at

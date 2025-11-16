@@ -63,8 +63,15 @@ func (c *ChatHandler) EditChat(context.Context, *connect.Request[chatv1.EditChat
 }
 
 // ListChats implements chatv1connect.ChatServiceHandler.
-func (c *ChatHandler) ListChats(context.Context, *connect.Request[chatv1.ListChatsRequest]) (*connect.Response[chatv1.ListChatsResponse], error) {
-	panic("unimplemented")
+func (c *ChatHandler) ListChats(
+	ctx context.Context,
+	req *connect.Request[chatv1.ListChatsRequest],
+) (*connect.Response[chatv1.ListChatsResponse], error) {
+	resp, err := c.service.ListChats(ctx, req.Msg)
+	if err != nil {
+		return nil, err
+	}
+	return connect.NewResponse(resp), nil
 }
 
 // NewChat implements chatv1connect.ChatServiceHandler.
