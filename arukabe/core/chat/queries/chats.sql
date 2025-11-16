@@ -23,4 +23,9 @@ SELECT
 FROM chat c
 INNER JOIN model mdl ON c.model_id = mdl.id
 INNER JOIN provider p ON mdl.provider_id = p.id
-ORDER BY c.created_at DESC;
+ORDER BY c.created_at DESC
+LIMIT sqlc.arg('limit')
+OFFSET sqlc.arg('offset');
+
+-- name: CountChats :one
+SELECT COUNT(*) FROM chat;

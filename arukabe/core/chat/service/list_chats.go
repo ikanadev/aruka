@@ -11,30 +11,53 @@ import (
 )
 
 func (s *ChatService) ListChats(ctx context.Context, req *chatv1.ListChatsRequest) (*chatv1.ListChatsResponse, error) {
-	dbChats, err := s.repo.GetAllChats(ctx)
+	// Set defaults
+	page := uint32(1)
+	limit := uint32(20)
+
+	// Override with request values if provided
+	if req.Pagination != nil {
+		if req.Pagination.GetPage() > 0 {
+			page = req.Pagination.GetPage()
+		}
+		if req.Pagination.GetLimit() > 0 {
+			limit = req.Pagination.GetLimit()
+		}
+	}
+
+	// Calculate offset
+	offset := int32((page - 1) * limit)
+
+	// Fetch chats with pagination
+	dbChats, totalCount, err := s.repo.GetAllChats(ctx, int32(limit), offset)
 	if err != nil {
 		return nil, err
 	}
 
-	// Group rows by chat ID to handle potential duplicates
-	chatMap := make(map[string]*modelsv1.Chat)
+	// Convert to protobuf
+	chats := make([]*modelsv1.Chat, 0, len(dbChats))
 	for _, row := range dbChats {
-		chatID := row.Chat.ID.String()
-		if _, exists := chatMap[chatID]; !exists {
-			chatMap[chatID] = chatToPB(row.Chat, row.Model, row.Provider)
-		}
+		chats = append(chats, chatToPB(row.Chat, row.Model, row.Provider))
 	}
 
-	// Convert map to slice
-	chats := make([]*modelsv1.Chat, 0, len(chatMap))
-	for _, chat := range chatMap {
-		chats = append(chats, chat)
+	// Calculate pagination metadata
+	totalPages := uint32(totalCount) / limit
+	if uint32(totalCount)%limit > 0 {
+		totalPages++
+	}
+
+	paginationData := &modelsv1.PaginationData{
+		Page:       page,
+		Limit:      limit,
+		TotalItems: uint32(totalCount),
+		TotalPages: totalPages,
+		HasNext:    page < totalPages,
+		HasPrev:    page > 1,
 	}
 
 	return &chatv1.ListChatsResponse{
-		Chats: chats,
-		// TODO: Implement pagination if needed
-		Pagination: nil,
+		Chats:      chats,
+		Pagination: paginationData,
 	}, nil
 }
 

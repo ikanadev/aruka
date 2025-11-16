@@ -11,6 +11,17 @@ import (
 	"github.com/google/uuid"
 )
 
+const countChats = `-- name: CountChats :one
+SELECT COUNT(*) FROM chat
+`
+
+func (q *Queries) CountChats(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, countChats)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getAllChats = `-- name: GetAllChats :many
 SELECT
   c.id, c.title, c.prompt, c.pinned, c.model_id, c.created_at, c.updated_at, c.archived_at, c.deleted_at,
@@ -20,7 +31,14 @@ FROM chat c
 INNER JOIN model mdl ON c.model_id = mdl.id
 INNER JOIN provider p ON mdl.provider_id = p.id
 ORDER BY c.created_at DESC
+LIMIT $2
+OFFSET $1
 `
+
+type GetAllChatsParams struct {
+	Offset int32
+	Limit  int32
+}
 
 type GetAllChatsRow struct {
 	Chat     Chat
@@ -28,8 +46,8 @@ type GetAllChatsRow struct {
 	Provider Provider
 }
 
-func (q *Queries) GetAllChats(ctx context.Context) ([]GetAllChatsRow, error) {
-	rows, err := q.db.Query(ctx, getAllChats)
+func (q *Queries) GetAllChats(ctx context.Context, arg GetAllChatsParams) ([]GetAllChatsRow, error) {
+	rows, err := q.db.Query(ctx, getAllChats, arg.Offset, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
