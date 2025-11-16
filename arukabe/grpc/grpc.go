@@ -11,7 +11,7 @@ import (
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func SetupGRPCServer() {
@@ -19,14 +19,12 @@ func SetupGRPCServer() {
 	ctx := context.Background()
 
 	// Database connection
-	dbConn, err := pgx.Connect(ctx, config.DBConn)
+	pool, err := pgxpool.New(ctx, config.DBConn)
 	utils.PanicIfErr(err)
-	defer func() {
-		utils.PanicIfErr(dbConn.Close(ctx))
-	}()
+	defer pool.Close()
 
 	// sqlc
-	queries := sqlc.New(dbConn)
+	queries := sqlc.New(pool)
 
 	// Database setup
 	utils.PanicIfErr(db.MigrateDB(config))
