@@ -4,6 +4,7 @@ import (
 	"arukabe/core/chat/service"
 	chatv1 "arukabe/gen/connect/chat/v1"
 	"context"
+	"fmt"
 
 	"connectrpc.com/connect"
 )
@@ -17,8 +18,38 @@ type ChatHandler struct {
 }
 
 // ChatMessage implements chatv1connect.ChatServiceHandler.
-func (c *ChatHandler) ChatMessage(context.Context, *connect.Request[chatv1.ChatMessageRequest], *connect.ServerStream[chatv1.ChatMessageResponse]) error {
-	panic("unimplemented")
+func (c *ChatHandler) ChatMessage(
+	ctx context.Context,
+	req *connect.Request[chatv1.ChatMessageRequest],
+	stream *connect.ServerStream[chatv1.ChatMessageResponse],
+) error {
+	textChat, errChat, err := c.service.ChatMessage(ctx, req.Msg)
+	if err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+	for {
+		select {
+		case text, ok := <-textChat:
+			if !ok {
+				return nil
+			}
+			resp := &chatv1.ChatMessageResponse{
+				Delta: text,
+			}
+			if err := stream.Send(resp); err != nil {
+				fmt.Println("Send error: ", err)
+				return connect.NewError(connect.CodeInternal, err)
+			}
+		case err := <-errChat:
+			fmt.Println("Service error: ", err)
+			if err != nil {
+				return connect.NewError(connect.CodeInternal, err)
+			}
+			return nil
+		case <-ctx.Done():
+			return connect.NewError(connect.CodeInternal, ctx.Err())
+		}
+	}
 }
 
 // ChatMessages implements chatv1connect.ChatServiceHandler.
@@ -38,8 +69,8 @@ func (c *ChatHandler) ListChats(context.Context, *connect.Request[chatv1.ListCha
 
 // NewChat implements chatv1connect.ChatServiceHandler.
 func (c *ChatHandler) NewChat(
-  ctx context.Context,
-  req *connect.Request[chatv1.NewChatRequest],
+	ctx context.Context,
+	req *connect.Request[chatv1.NewChatRequest],
 ) (*connect.Response[chatv1.NewChatResponse], error) {
 	resp, err := c.service.NewChat(ctx, req.Msg)
 	if err != nil {

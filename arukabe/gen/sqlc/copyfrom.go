@@ -9,6 +9,41 @@ import (
 	"context"
 )
 
+// iteratorForSaveMessages implements pgx.CopyFromSource.
+type iteratorForSaveMessages struct {
+	rows                 []SaveMessagesParams
+	skippedFirstNextCall bool
+}
+
+func (r *iteratorForSaveMessages) Next() bool {
+	if len(r.rows) == 0 {
+		return false
+	}
+	if !r.skippedFirstNextCall {
+		r.skippedFirstNextCall = true
+		return true
+	}
+	r.rows = r.rows[1:]
+	return len(r.rows) > 0
+}
+
+func (r iteratorForSaveMessages) Values() ([]interface{}, error) {
+	return []interface{}{
+		r.rows[0].ID,
+		r.rows[0].ChatID,
+		r.rows[0].Role,
+		r.rows[0].Content,
+	}, nil
+}
+
+func (r iteratorForSaveMessages) Err() error {
+	return nil
+}
+
+func (q *Queries) SaveMessages(ctx context.Context, arg []SaveMessagesParams) (int64, error) {
+	return q.db.CopyFrom(ctx, []string{"message"}, []string{"id", "chat_id", "role", "content"}, &iteratorForSaveMessages{rows: arg})
+}
+
 // iteratorForSaveModels implements pgx.CopyFromSource.
 type iteratorForSaveModels struct {
 	rows                 []SaveModelsParams
