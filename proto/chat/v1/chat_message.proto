@@ -11,5 +11,4 @@ message ChatMessageRequest {
 
 message ChatMessageResponse {
   string delta = 1;
-  bool end = 2;
 }

@@ -77,7 +77,6 @@ func (x *ChatMessageRequest) GetContent() []*v1.MessageContent {
 type ChatMessageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Delta         string                 `protobuf:"bytes,1,opt,name=delta,proto3" json:"delta,omitempty"`
-	End           bool                   `protobuf:"varint,2,opt,name=end,proto3" json:"end,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -119,13 +118,6 @@ func (x *ChatMessageResponse) GetDelta() string {
 	return ""
 }
 
-func (x *ChatMessageResponse) GetEnd() bool {
-	if x != nil {
-		return x.End
-	}
-	return false
-}
-
 var File_chat_v1_chat_message_proto protoreflect.FileDescriptor
 
 const file_chat_v1_chat_message_proto_rawDesc = "" +
@@ -133,10 +125,9 @@ const file_chat_v1_chat_message_proto_rawDesc = "" +
 	"\x1achat/v1/chat_message.proto\x12\achat.v1\x1a\x1fmodels/v1/message_content.proto\"b\n" +
 	"\x12ChatMessageRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x123\n" +
-	"\acontent\x18\x02 \x03(\v2\x19.models.v1.MessageContentR\acontent\"=\n" +
+	"\acontent\x18\x02 \x03(\v2\x19.models.v1.MessageContentR\acontent\"+\n" +
 	"\x13ChatMessageResponse\x12\x14\n" +
-	"\x05delta\x18\x01 \x01(\tR\x05delta\x12\x10\n" +
-	"\x03end\x18\x02 \x01(\bR\x03endB\x80\x01\n" +
+	"\x05delta\x18\x01 \x01(\tR\x05deltaB\x80\x01\n" +
 	"\vcom.chat.v1B\x10ChatMessageProtoP\x01Z\"arukabe/gen/connect/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
 
 var (
