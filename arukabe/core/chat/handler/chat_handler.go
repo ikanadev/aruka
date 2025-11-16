@@ -4,7 +4,6 @@ import (
 	"arukabe/core/chat/service"
 	chatv1 "arukabe/gen/connect/chat/v1"
 	"context"
-	"fmt"
 
 	"connectrpc.com/connect"
 )
@@ -23,31 +22,25 @@ func (c *ChatHandler) ChatMessage(
 	req *connect.Request[chatv1.ChatMessageRequest],
 	stream *connect.ServerStream[chatv1.ChatMessageResponse],
 ) error {
-	textChat, errChat, err := c.service.ChatMessage(ctx, req.Msg)
+	chatResult, err := c.service.ChatMessage(ctx, req.Msg)
 	if err != nil {
 		return connect.NewError(connect.CodeInternal, err)
 	}
 	for {
 		select {
-		case text, ok := <-textChat:
+		case result, ok := <-chatResult:
 			if !ok {
 				return nil
 			}
-			resp := &chatv1.ChatMessageResponse{
-				Delta: text,
+			if result.Err != nil {
+				return connect.NewError(connect.CodeInternal, result.Err)
 			}
+			resp := &chatv1.ChatMessageResponse{ Delta: result.Text }
 			if err := stream.Send(resp); err != nil {
-				fmt.Println("Send error: ", err)
 				return connect.NewError(connect.CodeInternal, err)
 			}
-		case err := <-errChat:
-			fmt.Println("Service error: ", err)
-			if err != nil {
-				return connect.NewError(connect.CodeInternal, err)
-			}
-			return nil
 		case <-ctx.Done():
-			return connect.NewError(connect.CodeInternal, ctx.Err())
+			return connect.NewError(connect.CodeCanceled, ctx.Err())
 		}
 	}
 }

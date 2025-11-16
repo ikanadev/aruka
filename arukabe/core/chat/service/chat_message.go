@@ -1,6 +1,7 @@
 package service
 
 import (
+	"arukabe/core/chat/repository"
 	"arukabe/core/common/constants"
 	"arukabe/core/common/mappers"
 	"arukabe/core/common/types"
@@ -14,39 +15,10 @@ import (
 func (cs *ChatService) ChatMessage(
 	ctx context.Context,
 	req *chatv1.ChatMessageRequest,
-) (<-chan string, <-chan error, error) {
-	var dbChat sqlc.Chat
-	var dbProvider sqlc.Provider
-	var dbModel sqlc.Model
-	var dbMessages []sqlc.Message
-	var getChatProviderModelErr, getChatMessagesErr error
-
-	/*
-		dbChat, dbProvider, dbModel, getChatProviderModelErr = cs.repo.GetChatProviderModel(ctx, req.ChatId)
-		dbMessages, getChatMessagesErr = cs.repo.GetChatMessages(ctx, req.ChatId)
-	*/
-	var wg sync.WaitGroup
-	wg.Add(2)
-
-	go func() {
-		defer wg.Done()
-		dbChat, dbProvider, dbModel, getChatProviderModelErr = cs.
-			repo.
-			GetChatProviderModel(ctx, req.ChatId)
-	}()
-	go func() {
-		defer wg.Done()
-		dbMessages, getChatMessagesErr = cs.repo.GetChatMessages(ctx, req.ChatId)
-	}()
-	wg.Wait()
-
-	if getChatProviderModelErr != nil {
-		fmt.Println("getChatProviderModelErr: ", getChatProviderModelErr)
-		return nil, nil, getChatProviderModelErr
-	}
-	if getChatMessagesErr != nil {
-		fmt.Println("getChatMessagesErr: ", getChatMessagesErr)
-		return nil, nil, getChatMessagesErr
+) (<-chan types.ChatStreamResult, error) {
+	dbChat, dbProvider, dbModel, dbMessages, err := getChatData(ctx, req, cs.repo)
+	if err != nil {
+		return nil, err
 	}
 
 	messageContent := mappers.PBMessageContentToMessageSections(req.Content)
@@ -56,8 +28,7 @@ func (cs *ChatService) ChatMessage(
 	}
 	messages, err := mappers.FromDBMessages(dbMessages)
 	if err != nil {
-		fmt.Println("mappers errors: ", getChatMessagesErr)
-		return nil, nil, err
+		return nil, err
 	}
 	messages = append(messages, userMessage)
 
@@ -66,35 +37,40 @@ func (cs *ChatService) ChatMessage(
 	}
 
 	if dbProvider.Name == string(constants.ProviderOpenAI) {
-		return nil, nil, fmt.Errorf("open AI provider not available: %s", dbProvider.Name)
+		return nil, fmt.Errorf("open AI provider not available: %s", dbProvider.Name)
 	}
-	return nil, nil, fmt.Errorf("unknown provider: %s", dbProvider.Name)
+	return nil, fmt.Errorf("unknown provider: %s", dbProvider.Name)
+}
 
-	// processedTextChan := make(chan string)
-	// processedErrChan := make(chan error, 1)
-	//
-	// go func() {
-	//     defer close(processedTextChan)
-	//     defer close(processedErrChan)
-	//
-	//     for {
-	//         select {
-	//         case text, ok := <-textChan:
-	//             if !ok {
-	//                 return
-	//             }
-	//             // Apply business logic transformation
-	//             processedText := cs.processText(text)
-	//             processedTextChan <- processedText
-	//         case err := <-errChan:
-	//             processedErrChan <- err
-	//             return
-	//         case <-ctx.Done():
-	//             processedErrChan <- ctx.Err()
-	//             return
-	//         }
-	//     }
-	// }()
-	//
-	// return processedTextChan, processedErrChan
+func getChatData(
+	ctx context.Context,
+	req *chatv1.ChatMessageRequest,
+	repo *repository.ChatRepository,
+) (sqlc.Chat, sqlc.Provider, sqlc.Model, []sqlc.Message, error) {
+	var dbChat sqlc.Chat
+	var dbProvider sqlc.Provider
+	var dbModel sqlc.Model
+	var dbMessages []sqlc.Message
+	var getChatProviderModelErr, getChatMessagesErr error
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		dbChat, dbProvider, dbModel, getChatProviderModelErr = repo.
+			GetChatProviderModel(ctx, req.ChatId)
+	}()
+	go func() {
+		defer wg.Done()
+		dbMessages, getChatMessagesErr = repo.GetChatMessages(ctx, req.ChatId)
+	}()
+	wg.Wait()
+	if getChatProviderModelErr != nil {
+		return dbChat, dbProvider, dbModel, dbMessages, fmt.Errorf("getChatProviderModelErr: %w", getChatProviderModelErr)
+	}
+	if getChatMessagesErr != nil {
+		return dbChat, dbProvider, dbModel, dbMessages, fmt.Errorf("getChatMessagesErr: %w", getChatMessagesErr)
+	}
+	return dbChat, dbProvider, dbModel, dbMessages, nil
 }

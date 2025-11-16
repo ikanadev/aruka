@@ -16,15 +16,14 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 	ctx context.Context,
 	chat sqlc.Chat,
 	model sqlc.Model,
-	// Last message is the user message
-	messages []types.Message,
-) (<-chan string, <-chan error, error) {
+	messages []types.Message, // Last message is the user message
+) (<-chan types.ChatStreamResult, error) {
 	if len(messages) == 0 {
-		return nil, nil, errors.New("no messages provided")
+		return nil, errors.New("no messages provided")
 	}
 	anthropicMessages, err := messagesToAnthropicMessages(messages)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	stream := cr.antClient.Messages.NewStreaming(ctx, anthropic.MessageNewParams{
 		// TODO: make this configurable
@@ -35,29 +34,29 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 		System:      []anthropic.TextBlockParam{{Text: chat.Prompt}},
 	})
 
-	textChan := make(chan string)
-	errChan := make(chan error)
+	resultChan := make(chan types.ChatStreamResult)
 
 	anthropicResponse := anthropic.Message{}
 	go func() {
-		defer close(textChan)
-		defer close(errChan)
+		defer close(resultChan)
 
 		for stream.Next() {
 			event := stream.Current()
 			err := anthropicResponse.Accumulate(event)
 			if err != nil {
-				errChan <- err
-				break
+				select {
+				case resultChan <- types.ChatStreamResult{Err: err}:
+				case <-ctx.Done():
+				}
+				return
 			}
 			switch eventVariant := event.AsAny().(type) {
 			case anthropic.ContentBlockDeltaEvent:
 				switch deltaVariant := eventVariant.Delta.AsAny().(type) {
 				case anthropic.TextDelta:
 					select {
-					case textChan <- deltaVariant.Text:
+					case resultChan <- types.ChatStreamResult{Text: deltaVariant.Text}:
 					case <-ctx.Done():
-						errChan <- ctx.Err()
 						return
 					}
 					// TODO: handle other delta types
@@ -67,28 +66,53 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 			}
 		}
 		if err := stream.Err(); err != nil {
-			errChan <- err
+			select {
+			case resultChan <- types.ChatStreamResult{Err: err}:
+			case <-ctx.Done():
+			}
+			return
 		}
-		go saveUserMessageAndAnthropicResponse(cr.db, chat.ID, messages[len(messages)-1], anthropicResponse)
+		err = cr.saveUserMessageAndAnthropicResponse(ctx, chat.ID, messages[len(messages)-1], anthropicResponse)
+		if err != nil {
+			select {
+			case resultChan <- types.ChatStreamResult{Err: err}:
+			case <-ctx.Done():
+			}
+			return
+		}
 	}()
 
-	return textChan, errChan, nil
+	return resultChan, nil
 }
 
-func saveUserMessageAndAnthropicResponse(db *sqlc.Queries, chatID uuid.UUID, userMsg types.Message, response anthropic.Message) {
-	ctx := context.Background()
+func (cr *ChatRepository) saveUserMessageAndAnthropicResponse(ctx context.Context, chatID uuid.UUID, userMsg types.Message, response anthropic.Message) error {
 	var responseSections types.MessageSections
-	_ = responseSections.FromAnthropicMessageSections(response.Content)
+	err := responseSections.FromAnthropicMessageSections(response.Content)
+	if err != nil {
+		return err
+	}
 
 	responseMessage := types.Message{
 		Content: responseSections,
 	}
 
-	userMsgID, _ := uuid.NewV7()
-	responseMsgID, _ := uuid.NewV7()
+	userMsgID, err := uuid.NewV7()
+	if err != nil {
+		return err
+	}
+	responseMsgID, err := uuid.NewV7()
+	if err != nil {
+		return err
+	}
 
-	userMsgJSON, _ := userMsg.Content.MarshalJSON()
-	responseMsgJSON, _ := responseMessage.Content.MarshalJSON()
+	userMsgJSON, err := userMsg.Content.MarshalJSON()
+	if err != nil {
+		return err
+	}
+	responseMsgJSON, err := responseMessage.Content.MarshalJSON()
+	if err != nil {
+		return err
+	}
 
 	toSave := []sqlc.SaveMessagesParams{
 		{
@@ -105,7 +129,8 @@ func saveUserMessageAndAnthropicResponse(db *sqlc.Queries, chatID uuid.UUID, use
 		},
 	}
 
-	db.SaveMessages(ctx, toSave)
+	_, err = cr.db.SaveMessages(ctx, toSave)
+	return err
 }
 
 func messagesToAnthropicMessages(messages []types.Message) ([]anthropic.MessageParam, error) {
