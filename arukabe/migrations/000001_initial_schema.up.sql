@@ -31,13 +31,11 @@ CREATE INDEX idx_chat_title ON chat (title);
 CREATE INDEX idx_chat_created_at ON chat (created_at DESC);
 
 
-CREATE TYPE message_type AS ENUM ('TEXT');
 CREATE TYPE message_role AS ENUM ('USER', 'ASSISTANT');
 
 CREATE TABLE message (
   id UUID PRIMARY KEY,
   chat_id UUID NOT NULL REFERENCES chat(id) ON DELETE CASCADE,
-  type message_type NOT NULL DEFAULT 'TEXT',
   role message_role NOT NULL DEFAULT 'USER',
   content JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
