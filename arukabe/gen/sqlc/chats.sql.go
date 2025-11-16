@@ -9,6 +9,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const countChats = `-- name: CountChats :one
@@ -162,4 +163,31 @@ func (q *Queries) GetChatProviderModel(ctx context.Context, chatID uuid.UUID) (G
 		&i.Provider.Name,
 	)
 	return i, err
+}
+
+const updateChat = `-- name: UpdateChat :exec
+UPDATE chat
+SET
+  title = COALESCE($1, title),
+  prompt = COALESCE($2, prompt),
+  pinned = COALESCE($3, pinned),
+  updated_at = CURRENT_TIMESTAMP
+WHERE id = $4
+`
+
+type UpdateChatParams struct {
+	Title  pgtype.Text
+	Prompt pgtype.Text
+	Pinned pgtype.Bool
+	ChatID uuid.UUID
+}
+
+func (q *Queries) UpdateChat(ctx context.Context, arg UpdateChatParams) error {
+	_, err := q.db.Exec(ctx, updateChat,
+		arg.Title,
+		arg.Prompt,
+		arg.Pinned,
+		arg.ChatID,
+	)
+	return err
 }

@@ -5,9 +5,11 @@ package chat.v1;
 import "models/v1/chat.proto";
 
 message EditChatRequest {
-  string title = 1;
-  string prompt = 2;
-  bool pinned = 3;
+  // Optional for better validation
+  optional string chat_id = 1;
+  optional string title = 2;
+  optional string prompt = 3;
+  optional bool pinned = 4;
 }
 
 message EditChatResponse {

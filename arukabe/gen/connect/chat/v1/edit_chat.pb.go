@@ -23,10 +23,12 @@ const (
 )
 
 type EditChatRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Prompt        string                 `protobuf:"bytes,2,opt,name=prompt,proto3" json:"prompt,omitempty"`
-	Pinned        bool                   `protobuf:"varint,3,opt,name=pinned,proto3" json:"pinned,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Optional for better validation
+	ChatId        *string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3,oneof" json:"chat_id,omitempty"`
+	Title         *string `protobuf:"bytes,2,opt,name=title,proto3,oneof" json:"title,omitempty"`
+	Prompt        *string `protobuf:"bytes,3,opt,name=prompt,proto3,oneof" json:"prompt,omitempty"`
+	Pinned        *bool   `protobuf:"varint,4,opt,name=pinned,proto3,oneof" json:"pinned,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,23 +63,30 @@ func (*EditChatRequest) Descriptor() ([]byte, []int) {
 	return file_chat_v1_edit_chat_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *EditChatRequest) GetChatId() string {
+	if x != nil && x.ChatId != nil {
+		return *x.ChatId
+	}
+	return ""
+}
+
 func (x *EditChatRequest) GetTitle() string {
-	if x != nil {
-		return x.Title
+	if x != nil && x.Title != nil {
+		return *x.Title
 	}
 	return ""
 }
 
 func (x *EditChatRequest) GetPrompt() string {
-	if x != nil {
-		return x.Prompt
+	if x != nil && x.Prompt != nil {
+		return *x.Prompt
 	}
 	return ""
 }
 
 func (x *EditChatRequest) GetPinned() bool {
-	if x != nil {
-		return x.Pinned
+	if x != nil && x.Pinned != nil {
+		return *x.Pinned
 	}
 	return false
 }
@@ -130,11 +139,17 @@ var File_chat_v1_edit_chat_proto protoreflect.FileDescriptor
 
 const file_chat_v1_edit_chat_proto_rawDesc = "" +
 	"\n" +
-	"\x17chat/v1/edit_chat.proto\x12\achat.v1\x1a\x14models/v1/chat.proto\"W\n" +
-	"\x0fEditChatRequest\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\x12\x16\n" +
-	"\x06prompt\x18\x02 \x01(\tR\x06prompt\x12\x16\n" +
-	"\x06pinned\x18\x03 \x01(\bR\x06pinned\"7\n" +
+	"\x17chat/v1/edit_chat.proto\x12\achat.v1\x1a\x14models/v1/chat.proto\"\xb0\x01\n" +
+	"\x0fEditChatRequest\x12\x1c\n" +
+	"\achat_id\x18\x01 \x01(\tH\x00R\x06chatId\x88\x01\x01\x12\x19\n" +
+	"\x05title\x18\x02 \x01(\tH\x01R\x05title\x88\x01\x01\x12\x1b\n" +
+	"\x06prompt\x18\x03 \x01(\tH\x02R\x06prompt\x88\x01\x01\x12\x1b\n" +
+	"\x06pinned\x18\x04 \x01(\bH\x03R\x06pinned\x88\x01\x01B\n" +
+	"\n" +
+	"\b_chat_idB\b\n" +
+	"\x06_titleB\t\n" +
+	"\a_promptB\t\n" +
+	"\a_pinned\"7\n" +
 	"\x10EditChatResponse\x12#\n" +
 	"\x04chat\x18\x01 \x01(\v2\x0f.models.v1.ChatR\x04chatB}\n" +
 	"\vcom.chat.v1B\rEditChatProtoP\x01Z\"arukabe/gen/connect/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
@@ -171,6 +186,7 @@ func file_chat_v1_edit_chat_proto_init() {
 	if File_chat_v1_edit_chat_proto != nil {
 		return
 	}
+	file_chat_v1_edit_chat_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

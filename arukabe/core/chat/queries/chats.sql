@@ -29,3 +29,12 @@ OFFSET sqlc.arg('offset');
 
 -- name: CountChats :one
 SELECT COUNT(*) FROM chat;
+
+-- name: UpdateChat :exec
+UPDATE chat
+SET
+  title = COALESCE(sqlc.narg('title'), title),
+  prompt = COALESCE(sqlc.narg('prompt'), prompt),
+  pinned = COALESCE(sqlc.narg('pinned'), pinned),
+  updated_at = CURRENT_TIMESTAMP
+WHERE id = sqlc.arg('chat_id');
