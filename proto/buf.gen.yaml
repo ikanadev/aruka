@@ -6,6 +6,10 @@ plugins:
   - local: protoc-gen-connect-go
     out: ../arukabe/gen/connect
     opt: paths=source_relative
+  - local: protoc-gen-es
+    out: ../arukaweb/src/connect
+    include_imports: true
+    opt: target=ts
 managed:
   enabled: true
   override:
