@@ -23,9 +23,9 @@ function RouteComponent() {
       <AppShell.Navbar>
         <ChatNavbar />
       </AppShell.Navbar>
-      <AppShell.Main>
+      <AppShell.Main style={{ '--app-shell-padding': '0rem', height: '100dvh' }}>
         <Box pos="relative">
-          <Box bg="var(--mantine-color-body)" pos="absolute" top={0} left={0}>
+          <Box bg="var(--mantine-color-body)" pos="absolute" top={20} left={20} style={{ zIndex: 10 }}>
             <ActionIcon onClick={toggle} variant="light">
               {opened ? (
                 <ChevronDoubleLeft />

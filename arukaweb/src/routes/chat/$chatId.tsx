@@ -1,3 +1,4 @@
+import { Chat } from '@features/chats/screen/Chat/Chat'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/chat/$chatId')({
@@ -6,5 +7,5 @@ export const Route = createFileRoute('/chat/$chatId')({
 
 function RouteComponent() {
   const { chatId } = Route.useParams()
-  return <div>Hello "/chat/$postId"!, viewing: {chatId}</div>
+  return <Chat chatId={chatId} />
 }

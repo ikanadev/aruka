@@ -45,6 +45,12 @@ export function NewChat() {
             maxRows={8}
             size="md"
             autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.ctrlKey) {
+                e.preventDefault();
+                form.onSubmit(handleSubmit)();
+              }
+            }}
             {...form.getInputProps("userText")}
           />
 
