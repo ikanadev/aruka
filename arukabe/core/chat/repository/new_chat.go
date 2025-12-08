@@ -3,6 +3,7 @@ package repository
 import (
 	"arukabe/gen/sqlc"
 	"context"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -19,7 +20,7 @@ func (cr *ChatRepository) NewChat(ctx context.Context, data NewChatData) (sqlc.C
 	dbData, err := cr.db.CreateChat(ctx, sqlc.CreateChatParams{
 		ID:       id,
 		Title:    "",
-		Prompt:   data.Prompt,
+		Prompt:   strings.TrimSpace(data.Prompt),
 		ModelID:  data.ModelID,
 	})
 	if err != nil {

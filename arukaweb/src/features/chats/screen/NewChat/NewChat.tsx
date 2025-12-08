@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { useNavigate } from "@tanstack/react-router";
-import { useNewChatForm, type NewChatFormValues } from "./useNewChatForm";
+import { type NewChatFormValues, useNewChatForm } from "./useNewChatForm";
 import { useNewChatMutation } from "./useNewChatMutation";
 import { DEFAULT_SELECT_MODEL } from "./utils";
 

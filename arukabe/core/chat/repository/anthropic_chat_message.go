@@ -25,14 +25,16 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 	if err != nil {
 		return nil, err
 	}
-	stream := cr.antClient.Messages.NewStreaming(ctx, anthropic.MessageNewParams{
-		// TODO: make this configurable
+	messageParams := anthropic.MessageNewParams{
 		MaxTokens:   8192,
 		Messages:    anthropicMessages,
 		Model:       anthropic.Model(model.ModelIdentifier),
 		Temperature: param.Opt[float64]{Value: 0.3},
-		System:      []anthropic.TextBlockParam{{Text: chat.Prompt}},
-	})
+	}
+	if len(chat.Prompt) > 0 {
+		messageParams.System = []anthropic.TextBlockParam{{Text: chat.Prompt}}
+	}
+	stream := cr.antClient.Messages.NewStreaming(ctx, messageParams)
 
 	resultChan := make(chan types.ChatStreamResult)
 
