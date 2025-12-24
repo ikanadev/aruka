@@ -1,0 +1,1 @@
+export const INPUT_BOTTOM_DISTANCE = 40;

@@ -1,7 +1,13 @@
 import { SendIcon } from "@assets/icons/send";
 import { chatClient } from "@common/utils/clients";
+import type { ChatMessagesResponse } from "@connect/chat/v1/chat_messages_pb";
+import { type Message, MessageRole } from "@connect/models/v1/message_pb";
+import { AIMessage } from "@features/chats/components/AIMessage/AIMessage";
+import { UserMessage } from "@features/chats/components/UserMessage/UserMesage";
+import { chatQueryKeys } from "@features/chats/data/chat-query-keys";
 import { useChatMessages } from "@features/chats/data/use-chat-messages";
 import { useFirstMessageStore } from "@features/chats/store/useFirstMessageStore";
+import { createTextMessage } from "@features/chats/utils/create_text_message";
 import {
   ActionIcon,
   Box,
@@ -10,16 +16,11 @@ import {
   Group,
   Textarea,
 } from "@mantine/core";
-import { Fragment, useCallback, useEffect } from "react";
-import styles from "./styles.module.css";
-import { MessageRole, type Message } from "@connect/models/v1/message_pb";
-import { UserMessage } from "@features/chats/components/UserMessage/UserMesage";
-import { AIMessage } from "@features/chats/components/AIMessage/AIMessage";
 import { useForm } from "@mantine/form";
 import { useQueryClient } from "@tanstack/react-query";
-import { chatQueryKeys } from "@features/chats/data/chat-query-keys";
-import type { ChatMessageResponse } from "@connect/chat/v1/chat_message_pb";
-import type { ChatMessagesResponse } from "@connect/chat/v1/chat_messages_pb";
+import { Fragment, useEffect, useRef, useState } from "react";
+import styles from "./styles.module.css";
+import { INPUT_BOTTOM_DISTANCE } from "./utils";
 
 interface Props {
   chatId: string;
@@ -28,114 +29,130 @@ interface Props {
 export function Chat(props: Props) {
   const { chatId } = props;
   const queryClient = useQueryClient();
-  const { messages } = useChatMessages(chatId);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputContainerRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const streamResponseRef = useRef<HTMLDivElement>(null);
   const { firstMessage, clearFirstMessage } = useFirstMessageStore();
+  // If there is a first message, the chat is new so we don't need to load the messages
+  const [loadMessages] = useState(!firstMessage);
+  const { messages, isFetchedMessages } = useChatMessages({
+    chatId,
+    enabled: loadMessages,
+  });
+  const [generatedResponse, setGeneratedResponse] = useState<Message | null>(
+    null,
+  );
+
   const form = useForm({
-    mode: "uncontrolled",
-    initialValues: { userText: "" },
+    initialValues: { userText: firstMessage || "" },
     validate: {
       userText: (value) => (value ? null : "Please enter a message"),
     },
   });
 
-  const handleNewMessage = useCallback(
-    async (message: string) => {
-      const res = chatClient.chatMessage({
-        chatId,
-        content: [
-          { content: { case: "textContent", value: { text: message } } },
-        ],
-      });
-      let responseText = "";
-      for await (const delta of res) {
-        console.log(delta);
-        responseText += delta.delta;
-      }
-      queryClient.setQueryData(
-        chatQueryKeys.chatMessages(chatId),
-        (prev: ChatMessagesResponse): ChatMessagesResponse => ({
-          ...prev,
-          messages: [
-            ...prev.messages,
-            {
-              id: `${Date.now()}`,
-              role: MessageRole.ASSISTANT,
-              content: [
-                {
-                  $typeName: "models.v1.MessageContent",
-                  content: {
-                    case: "textContent",
-                    value: {
-                      text: responseText,
-                      $typeName: "models.v1.MessageTextContent",
-                    },
-                  },
-                },
-              ],
-              $typeName: "models.v1.Message",
-            },
-          ],
-        }),
+  const handleNewMessage = async (message: string) => {
+    const res = chatClient.chatMessage({
+      chatId,
+      content: [{ content: { case: "textContent", value: { text: message } } }],
+    });
+    let responseText = "";
+    for await (const delta of res) {
+      responseText += delta.delta;
+      setGeneratedResponse(
+        createTextMessage(responseText, MessageRole.ASSISTANT),
       );
-    },
-    [chatId, queryClient],
-  );
-
-  console.log(messages);
+    }
+  };
 
   const handleSubmit = (values: typeof form.values) => {
     queryClient.setQueryData(
       chatQueryKeys.chatMessages(chatId),
-      (prev: ChatMessagesResponse): ChatMessagesResponse => ({
-        ...prev,
-        messages: [
-          ...prev.messages,
-          {
-            id: `${Date.now()}`,
-            role: MessageRole.USER,
-            content: [
-              {
-                $typeName: "models.v1.MessageContent",
-                content: {
-                  case: "textContent",
-                  value: {
-                    text: values.userText,
-                    $typeName: "models.v1.MessageTextContent",
-                  },
-                },
-              },
-            ],
-            $typeName: "models.v1.Message",
-          },
-        ],
-      }),
+      (prev: ChatMessagesResponse | undefined): ChatMessagesResponse => {
+        if (prev === undefined) {
+          return {
+            $typeName: "chat.v1.ChatMessagesResponse",
+            messages: [createTextMessage(values.userText, MessageRole.USER)],
+          };
+        }
+        const newMessages = [...prev.messages];
+        if (generatedResponse) {
+          newMessages.push(generatedResponse);
+          setGeneratedResponse(null);
+        }
+        newMessages.push(createTextMessage(values.userText, MessageRole.USER));
+        return {
+          ...prev,
+          messages: newMessages,
+        };
+      },
     );
     handleNewMessage(values.userText);
-    form.reset();
+    form.setValues({ userText: "" });
   };
 
   useEffect(() => {
-    if (firstMessage === null) return;
-    console.log("firstMessage req:", firstMessage);
-    handleNewMessage(firstMessage).then(() => {
-      clearFirstMessage();
+    if (messagesRef.current === null || containerRef.current === null) return;
+    console.log("scrolling to: ", messagesRef.current.scrollHeight);
+    containerRef.current.scrollTo({
+      top: messagesRef.current.scrollHeight,
+      behavior: "instant",
     });
-  }, [firstMessage, handleNewMessage, clearFirstMessage]);
+  }, [messages.length]);
+
+  useEffect(() => {
+    if (firstMessage === null) return;
+    handleSubmit(form.values);
+    clearFirstMessage();
+  }, [firstMessage, clearFirstMessage, form.values, handleSubmit]);
+
+  useEffect(() => {
+    if (loadMessages && isFetchedMessages) {
+      if (
+        messagesRef.current === null ||
+        containerRef.current === null ||
+        inputContainerRef.current === null
+      )
+        return;
+
+      containerRef.current.scrollTo({
+        top:
+          messagesRef.current.scrollHeight -
+          window.innerHeight +
+          inputContainerRef.current.clientHeight +
+          INPUT_BOTTOM_DISTANCE +
+          12,
+        behavior: "instant",
+      });
+    }
+  }, [loadMessages, isFetchedMessages]);
 
   return (
-    <Box px="md" className={styles.container}>
-      {messages.map((message) => (
-        <Fragment key={message.id}>
-          {message.role === MessageRole.USER && (
-            <UserMessage content={message.content} />
-          )}
-          {message.role === MessageRole.ASSISTANT && (
-            <AIMessage content={message.content} />
-          )}
-        </Fragment>
-      ))}
+    <Box px="md" className={styles.container} ref={containerRef}>
+      <Box ref={messagesRef}>
+        {messages.map((message) => (
+          <Fragment key={message.id}>
+            {message.role === MessageRole.USER && (
+              <UserMessage content={message.content} />
+            )}
+            {message.role === MessageRole.ASSISTANT && (
+              <AIMessage content={message.content} />
+            )}
+          </Fragment>
+        ))}
+      </Box>
+      <Box mih="100dvh" ref={streamResponseRef}>
+        {generatedResponse && (
+          <AIMessage content={generatedResponse?.content} />
+        )}
+        <Box h={120} />
+      </Box>
 
-      <Box className={styles.cardContainer}>
+      <Box
+        className={styles.cardContainer}
+        bottom={INPUT_BOTTOM_DISTANCE}
+        ref={inputContainerRef}
+      >
         <Container>
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Card shadow="sm" className={styles.card}>

@@ -26,7 +26,15 @@ if (!rootElement) {
   throw new Error("No root element found");
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const colorSchemeManager = localStorageColorSchemeManager({
   key: "mantine-color-scheme",
