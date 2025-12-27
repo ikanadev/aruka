@@ -21,6 +21,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 import { INPUT_BOTTOM_DISTANCE } from "./utils";
+import { useRouter } from "@tanstack/react-router";
+import { useChatScroll } from "@features/chats/hooks/use-chat-scroll";
 
 interface Props {
   chatId: string;
@@ -28,21 +30,19 @@ interface Props {
 
 export function Chat(props: Props) {
   const { chatId } = props;
+  const router = useRouter();
   const queryClient = useQueryClient();
-  const containerRef = useRef<HTMLDivElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
-  const streamResponseRef = useRef<HTMLDivElement>(null);
   const { firstMessage, clearFirstMessage } = useFirstMessageStore();
-  // If there is a first message, the chat is new so we don't need to load the messages
-  const [loadMessages] = useState(!firstMessage);
-  const { messages, isFetchedMessages } = useChatMessages({
-    chatId,
-    enabled: loadMessages,
-  });
+  const { ref, onScroll, setChatScroll, chatScroll, hasStoredScroll } =
+    useChatScroll(chatId);
+  const { messages, isFetchedMessages } = useChatMessages(chatId);
   const [generatedResponse, setGeneratedResponse] = useState<Message | null>(
     null,
   );
+
+  console.log({ chatScroll });
 
   const form = useForm({
     initialValues: { userText: firstMessage || "" },
@@ -50,6 +50,11 @@ export function Chat(props: Props) {
       userText: (value) => (value ? null : "Please enter a message"),
     },
   });
+
+  const newMessageScroll = () => {
+    if (messagesRef.current === null) return;
+    setChatScroll(messagesRef.current.scrollHeight);
+  };
 
   const handleNewMessage = async (message: string) => {
     const res = chatClient.chatMessage({
@@ -87,48 +92,60 @@ export function Chat(props: Props) {
         };
       },
     );
+    newMessageScroll();
     handleNewMessage(values.userText);
     form.setValues({ userText: "" });
   };
 
   useEffect(() => {
-    if (messagesRef.current === null || containerRef.current === null) return;
-    console.log("scrolling to: ", messagesRef.current.scrollHeight);
-    containerRef.current.scrollTo({
-      top: messagesRef.current.scrollHeight,
-      behavior: "instant",
-    });
-  }, [messages.length]);
-
-  useEffect(() => {
-    if (firstMessage === null) return;
+    if (firstMessage === null || !isFetchedMessages) return;
     handleSubmit(form.values);
     clearFirstMessage();
-  }, [firstMessage, clearFirstMessage, form.values, handleSubmit]);
+  }, [
+    firstMessage,
+    clearFirstMessage,
+    form.values,
+    handleSubmit,
+    isFetchedMessages,
+  ]);
 
   useEffect(() => {
-    if (loadMessages && isFetchedMessages) {
-      if (
-        messagesRef.current === null ||
-        containerRef.current === null ||
-        inputContainerRef.current === null
-      )
-        return;
+    if (!isFetchedMessages) return;
+    if (messagesRef.current === null || inputContainerRef.current === null)
+      return;
+    if (hasStoredScroll) return;
+    console.log({ isFetchedMessages });
+    setChatScroll(
+      messagesRef.current.scrollHeight -
+      window.innerHeight +
+      inputContainerRef.current.clientHeight +
+      INPUT_BOTTOM_DISTANCE +
+      12,
+    );
+  }, [hasStoredScroll, isFetchedMessages]);
 
-      containerRef.current.scrollTo({
-        top:
-          messagesRef.current.scrollHeight -
-          window.innerHeight +
-          inputContainerRef.current.clientHeight +
-          INPUT_BOTTOM_DISTANCE +
-          12,
-        behavior: "instant",
-      });
-    }
-  }, [loadMessages, isFetchedMessages]);
+  useEffect(() => {
+    const unsubscribe = router.subscribe("onBeforeNavigate", () => {
+      if (generatedResponse === null) return;
+      queryClient.setQueryData(
+        chatQueryKeys.chatMessages(chatId),
+        (
+          prev: ChatMessagesResponse | undefined,
+        ): ChatMessagesResponse | undefined => {
+          if (prev === undefined) return undefined;
+          return {
+            ...prev,
+            messages: [...prev.messages, generatedResponse],
+          };
+        },
+      );
+      setGeneratedResponse(null);
+    });
+    return unsubscribe;
+  }, [chatId, generatedResponse]);
 
   return (
-    <Box px="md" className={styles.container} ref={containerRef}>
+    <Box px="md" className={styles.container} ref={ref} onScroll={onScroll}>
       <Box ref={messagesRef}>
         {messages.map((message) => (
           <Fragment key={message.id}>
@@ -141,7 +158,7 @@ export function Chat(props: Props) {
           </Fragment>
         ))}
       </Box>
-      <Box mih="100dvh" ref={streamResponseRef}>
+      <Box mih="100dvh">
         {generatedResponse && (
           <AIMessage content={generatedResponse?.content} />
         )}
