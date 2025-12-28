@@ -1,7 +1,10 @@
+import { Box, Container, Typography } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Fragment } from "react";
+
 import type { MessageContent } from "@connect/models/v1/message_content_pb";
 import { parser } from "@features/chats/utils/parser";
-import { ActionIcon, Box, Container, Group } from "@mantine/core";
-import { Fragment, useState } from "react";
+import { MessageActions } from "@features/chats/components/MessageActions/MessageActions";
 
 interface Props {
   content: MessageContent[];
@@ -9,35 +12,31 @@ interface Props {
 
 export function AIMessage(props: Props) {
   const { content } = props;
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, { toggle }] = useDisclosure(false);
 
   return (
     <Box>
-      <Container size={expanded ? "xl" : "md"}>
+      <Container size={expanded ? "xl" : "md"} mb="xs">
         <Box>
           {content.map((msg, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: not critical
             <Fragment key={index}>
               {msg.content.case === "textContent" && (
-                <Box
-                  // biome-ignore lint/security/noDangerouslySetInnerHtml: markdown generated
-                  dangerouslySetInnerHTML={{
-                    __html: parser.render(msg.content.value.text),
-                  }}
-                />
+                <Typography>
+                  <div
+                    // biome-ignore lint/security/noDangerouslySetInnerHtml: markdown generated
+                    dangerouslySetInnerHTML={{
+                      __html: parser.render(msg.content.value.text),
+                    }}
+                  />
+                </Typography>
               )}
               {/* Handle more message types */}
             </Fragment>
           ))}
         </Box>
       </Container>
-      <Container size="md">
-        <Group justify="flex-end">
-          <ActionIcon onClick={() => setExpanded((prev) => !prev)}>
-            X
-          </ActionIcon>
-        </Group>
-      </Container>
+      <MessageActions toggleExpand={toggle} />
     </Box>
   );
 }

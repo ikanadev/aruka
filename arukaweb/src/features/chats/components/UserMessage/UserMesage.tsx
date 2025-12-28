@@ -1,6 +1,9 @@
+import { Alert, Box, Container } from "@mantine/core";
+import { Fragment } from "react";
+import { useDisclosure } from "@mantine/hooks";
+
 import type { MessageContent } from "@connect/models/v1/message_content_pb";
-import { ActionIcon, Box, Container, Group } from "@mantine/core";
-import { Fragment, useState } from "react";
+import { MessageActions } from "@features/chats/components/MessageActions/MessageActions";
 
 interface Props {
   content: MessageContent[];
@@ -8,11 +11,12 @@ interface Props {
 
 export function UserMessage(props: Props) {
   const { content } = props;
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, { toggle }] = useDisclosure(false);
+
   return (
     <Box>
-      <Container size={expanded ? "xl" : "md"}>
-        <Box>
+      <Container size={expanded ? "xl" : "md"} mb="xs">
+        <Alert variant="default">
           {content.map((msg, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: not critical
             <Fragment key={index}>
@@ -22,15 +26,9 @@ export function UserMessage(props: Props) {
               {/* Handle more message types */}
             </Fragment>
           ))}
-        </Box>
+        </Alert>
       </Container>
-      <Container size="md">
-        <Group justify="flex-end">
-          <ActionIcon onClick={() => setExpanded((prev) => !prev)}>
-            X
-          </ActionIcon>
-        </Group>
-      </Container>
+      <MessageActions toggleExpand={toggle} />
     </Box>
   );
 }
