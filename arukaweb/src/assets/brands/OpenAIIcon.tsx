@@ -10,4 +10,3 @@ export function OpenAIIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-

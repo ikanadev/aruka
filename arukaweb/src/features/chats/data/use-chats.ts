@@ -23,7 +23,11 @@ export function useChats() {
     queryKey: chatQueryKeys.chats(),
   });
 
-  const chats = query.data?.pages.flat().map((chat) => chat.chats).flat() || [];
+  const chats =
+    query.data?.pages
+      .flat()
+      .map((chat) => chat.chats)
+      .flat() || [];
 
   return {
     chats,
@@ -32,5 +36,5 @@ export function useChats() {
     fetchingNextPageChats: query.isFetchingNextPage,
     fetchNextPageChats: query.fetchNextPage,
     hasNextPageChats: query.hasNextPage,
-  }
+  };
 }

@@ -15,5 +15,5 @@ export function useProviders(status: ModelStatus = ModelStatus.ACTIVE) {
     providers,
     loadingProviders: query.isLoading,
     fetchingProviders: query.isFetching,
-  }
+  };
 }

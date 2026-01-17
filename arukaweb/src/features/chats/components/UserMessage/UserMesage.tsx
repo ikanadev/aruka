@@ -20,9 +20,7 @@ export function UserMessage(props: Props) {
           {content.map((msg, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: not critical
             <Fragment key={index}>
-              {msg.content.case === "textContent" && (
-                <p>{msg.content.value.text}</p>
-              )}
+              {msg.content.case === "textContent" && <p>{msg.content.value.text}</p>}
               {/* Handle more message types */}
             </Fragment>
           ))}

@@ -38,5 +38,5 @@ export function useChatMessages(chatId: string) {
     loadingMessages: query.isLoading,
     fetchingMessages: query.isFetching,
     isFetchedMessages: query.isFetched,
-  }
+  };
 }

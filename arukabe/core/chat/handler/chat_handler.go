@@ -19,10 +19,10 @@ type ChatHandler struct {
 // ChatMessage implements chatv1connect.ChatServiceHandler.
 func (c *ChatHandler) ChatMessage(
 	ctx context.Context,
-	req *connect.Request[chatv1.ChatMessageRequest],
+	req *chatv1.ChatMessageRequest,
 	stream *connect.ServerStream[chatv1.ChatMessageResponse],
 ) error {
-	chatResult, err := c.service.ChatMessage(ctx, req.Msg)
+	chatResult, err := c.service.ChatMessage(ctx, req)
 	if err != nil {
 		return connect.NewError(connect.CodeInternal, err)
 	}
@@ -48,47 +48,47 @@ func (c *ChatHandler) ChatMessage(
 // ChatMessages implements chatv1connect.ChatServiceHandler.
 func (c *ChatHandler) ChatMessages(
 	ctx context.Context,
-	req *connect.Request[chatv1.ChatMessagesRequest],
-) (*connect.Response[chatv1.ChatMessagesResponse], error) {
-	resp, err := c.service.ChatMessages(ctx, req.Msg)
+	req *chatv1.ChatMessagesRequest,
+) (*chatv1.ChatMessagesResponse, error) {
+	resp, err := c.service.ChatMessages(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return connect.NewResponse(resp), nil
+	return resp, nil
 }
 
 // EditChat implements chatv1connect.ChatServiceHandler.
 func (c *ChatHandler) EditChat(
 	ctx context.Context,
-	req *connect.Request[chatv1.EditChatRequest],
-) (*connect.Response[chatv1.EditChatResponse], error) {
-	resp, err := c.service.EditChat(ctx, req.Msg)
+	req *chatv1.EditChatRequest,
+) (*chatv1.EditChatResponse, error) {
+	resp, err := c.service.EditChat(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return connect.NewResponse(resp), nil
+	return resp, nil
 }
 
 // ListChats implements chatv1connect.ChatServiceHandler.
 func (c *ChatHandler) ListChats(
 	ctx context.Context,
-	req *connect.Request[chatv1.ListChatsRequest],
-) (*connect.Response[chatv1.ListChatsResponse], error) {
-	resp, err := c.service.ListChats(ctx, req.Msg)
+	req *chatv1.ListChatsRequest,
+) (*chatv1.ListChatsResponse, error) {
+	resp, err := c.service.ListChats(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return connect.NewResponse(resp), nil
+	return resp, nil
 }
 
 // NewChat implements chatv1connect.ChatServiceHandler.
 func (c *ChatHandler) NewChat(
 	ctx context.Context,
-	req *connect.Request[chatv1.NewChatRequest],
-) (*connect.Response[chatv1.NewChatResponse], error) {
-	resp, err := c.service.NewChat(ctx, req.Msg)
+	req *chatv1.NewChatRequest,
+) (*chatv1.NewChatResponse, error) {
+	resp, err := c.service.NewChat(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return connect.NewResponse(resp), nil
+	return resp, nil
 }

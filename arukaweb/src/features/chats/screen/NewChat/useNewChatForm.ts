@@ -15,8 +15,7 @@ export function useNewChatForm() {
     validate: {
       userText: (value) => (value ? null : "Please enter a message"),
       general: {
-        modelId: (value) =>
-          value === DEFAULT_SELECT_MODEL ? "Please select a provider" : null,
+        modelId: (value) => (value === DEFAULT_SELECT_MODEL ? "Please select a provider" : null),
       },
     },
   });

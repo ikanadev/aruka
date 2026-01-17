@@ -1,9 +1,10 @@
+import { generateId } from "@common/utils/generate_id";
 import type { Message, MessageRole } from "@connect/models/v1/message_pb";
 
 export function createTextMessage(message: string, role: MessageRole): Message {
   return {
     $typeName: "models.v1.Message",
-    id: crypto.randomUUID(),
+    id: generateId(),
     content: [
       {
         $typeName: "models.v1.MessageContent",

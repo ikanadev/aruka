@@ -1,3 +1,3 @@
 export const commontQueryKeys = {
-  providers: () => ['providers-list'],
+  providers: () => ["providers-list"],
 };

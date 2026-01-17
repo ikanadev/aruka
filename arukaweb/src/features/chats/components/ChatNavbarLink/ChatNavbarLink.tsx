@@ -17,12 +17,10 @@ const providerIconMap: Record<string, JSX.Element> = {
   OpenAI: <OpenAIIcon width={16} height={16} />,
 };
 
-
-
 export function ChatNavbarLink(props: Props) {
-  const { chatId, providerName = '', text } = props;
+  const { chatId, providerName = "", text } = props;
   const matchRoute = useMatchRoute();
-  const match = matchRoute({ to: '/chat/$chatId', params: { chatId: chatId } });
+  const match = matchRoute({ to: "/chat/$chatId", params: { chatId: chatId } });
 
   return (
     <Button

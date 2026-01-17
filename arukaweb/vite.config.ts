@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { tanstackRouter } from '@tanstack/router-plugin/vite'
-import path from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,13 +15,16 @@ export default defineConfig({
   },
   plugins: [
     tanstackRouter({
-      target: 'react',
+      target: "react",
       autoCodeSplitting: true,
     }),
+    react(),
+    /* React compiler
     react({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
       },
     }),
+    */
   ],
-})
+});

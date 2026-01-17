@@ -4,7 +4,7 @@ import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 
 const transport = createConnectTransport({
-  baseUrl: 'http://localhost:5000',
+  baseUrl: "http://192.168.0.9:5000",
 });
 
 export const chatClient = createClient(ChatService, transport);

@@ -14,5 +14,3 @@ export function AnthropicIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
-

@@ -1,10 +1,8 @@
 import { SendIcon } from "@assets/icons/send";
 import { chatClient } from "@common/utils/clients";
-import type { ChatMessagesResponse } from "@connect/chat/v1/chat_messages_pb";
 import { type Message, MessageRole } from "@connect/models/v1/message_pb";
 import { AIMessage } from "@features/chats/components/AIMessage/AIMessage";
 import { UserMessage } from "@features/chats/components/UserMessage/UserMesage";
-import { chatQueryKeys } from "@features/chats/data/chat-query-keys";
 import { useChatMessages } from "@features/chats/data/use-chat-messages";
 import { useFirstMessageStore } from "@features/chats/store/useFirstMessageStore";
 import { createTextMessage } from "@features/chats/utils/create_text_message";
@@ -20,7 +18,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 import { INPUT_BOTTOM_DISTANCE } from "./utils";
 import { useRouter } from "@tanstack/react-router";
@@ -45,11 +43,8 @@ export function Chat(props: Props) {
   const messagesRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { firstMessage, clearFirstMessage } = useFirstMessageStore();
-  const { messages, addMessageToCache, isFetchedMessages } =
-    useChatMessages(chatId);
-  const [generatedResponse, setGeneratedResponse] = useState<Message | null>(
-    null,
-  );
+  const { messages, addMessageToCache, isFetchedMessages } = useChatMessages(chatId);
+  const [generatedResponse, setGeneratedResponse] = useState<Message | null>(null);
   const [responseError, setResponseError] = useState<string | null>(null);
   const [scrollType, setScrollType] = useState<ScrollType | null>(null);
 
@@ -72,49 +67,45 @@ export function Chat(props: Props) {
     handleNewMessage(messageStr);
   };
 
-  const handleNewMessage = async (message: string) => {
-    try {
-      const res = chatClient.chatMessage({
-        chatId,
-        content: [
-          { content: { case: "textContent", value: { text: message } } },
-        ],
-      });
-      let responseText = "";
-      for await (const delta of res) {
-        responseText += delta.delta;
-        setGeneratedResponse(
-          createTextMessage(responseText, MessageRole.ASSISTANT),
-        );
+  const handleNewMessage = useCallback(
+    async (message: string) => {
+      try {
+        const res = chatClient.chatMessage({
+          chatId,
+          content: [{ content: { case: "textContent", value: { text: message } } }],
+        });
+        let responseText = "";
+        for await (const delta of res) {
+          responseText += delta.delta;
+          setGeneratedResponse(createTextMessage(responseText, MessageRole.ASSISTANT));
+        }
+      } catch (e) {
+        setResponseError((e as Error)?.message ?? "Something went wrong");
       }
-    } catch (e) {
-      setResponseError((e as Error)?.message ?? "Something went wrong");
-    }
-  };
+    },
+    [chatId],
+  );
 
-  const handleSubmit = (values: typeof form.values) => {
-    addMessageToCache(createTextMessage(values.userText, MessageRole.USER));
-    if (generatedResponse) {
-      addMessageToCache(generatedResponse);
-      setGeneratedResponse(null);
-    }
-    handleNewMessage(values.userText);
-    form.setValues({ userText: "" });
-    setScrollType(ScrollType.NewMessage);
-  };
+  const handleSubmit = useCallback(
+    (values: typeof form.values) => {
+      addMessageToCache(createTextMessage(values.userText, MessageRole.USER));
+      if (generatedResponse) {
+        addMessageToCache(generatedResponse);
+        setGeneratedResponse(null);
+      }
+      handleNewMessage(values.userText);
+      form.setValues({ userText: "" });
+      setScrollType(ScrollType.NewMessage);
+    },
+    [addMessageToCache, form, generatedResponse, handleNewMessage],
+  );
 
   // Auto-send message when we're comming from a /new chat
   useEffect(() => {
     if (firstMessage === null || !isFetchedMessages) return;
     handleSubmit(form.values);
     clearFirstMessage();
-  }, [
-    firstMessage,
-    clearFirstMessage,
-    form.values,
-    handleSubmit,
-    isFetchedMessages,
-  ]);
+  }, [firstMessage, clearFirstMessage, form.values, handleSubmit, isFetchedMessages]);
 
   // Auto-scroll to saved position when changing chats
   useEffect(() => {
@@ -140,7 +131,7 @@ export function Chat(props: Props) {
       setGeneratedResponse(null);
     });
     return unsubscribe;
-  }, [chatId, generatedResponse, addMessageToCache]);
+  }, [chatId, generatedResponse, router, addMessageToCache]);
 
   // Listen to scroll changes and save it to restore position later
   useEffect(() => {
@@ -177,37 +168,26 @@ export function Chat(props: Props) {
       behavior: "instant",
     });
     setScrollType(null);
-  }, [scrollType]);
+  }, [scrollType, chatId]);
 
   return (
     <Box px="md" className={styles.container} ref={containerRef} id="ccc">
-    <Flex ref={messagesRef} direction="column" gap="lg" pt="xl">
+      <Flex ref={messagesRef} direction="column" gap="lg" pt="xl">
         {messages.map((message) => (
           <Fragment key={message.id}>
-            {message.role === MessageRole.USER && (
-              <UserMessage content={message.content} />
-            )}
-            {message.role === MessageRole.ASSISTANT && (
-              <AIMessage content={message.content} />
-            )}
+            {message.role === MessageRole.USER && <UserMessage content={message.content} />}
+            {message.role === MessageRole.ASSISTANT && <AIMessage content={message.content} />}
           </Fragment>
         ))}
       </Flex>
       <Box mih="110dvh" mt="xl">
-        {generatedResponse && (
-          <AIMessage content={generatedResponse?.content} />
-        )}
+        {generatedResponse && <AIMessage content={generatedResponse?.content} />}
         {responseError && (
           <Container size="md">
             <Alert color="red" title="Response error">
               {responseError}
               <Flex justify="flex-end" pb="xs">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  color="gray"
-                  onClick={retry}
-                >
+                <Button variant="outline" size="sm" color="gray" onClick={retry}>
                   Retry
                 </Button>
               </Flex>
@@ -217,11 +197,7 @@ export function Chat(props: Props) {
         <Box h={120} />
       </Box>
 
-      <Box
-        className={styles.cardContainer}
-        bottom={INPUT_BOTTOM_DISTANCE}
-        ref={inputContainerRef}
-      >
+      <Box className={styles.cardContainer} bottom={INPUT_BOTTOM_DISTANCE} ref={inputContainerRef}>
         <Container>
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Card shadow="sm" className={styles.card}>

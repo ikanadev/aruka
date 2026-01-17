@@ -21,7 +21,12 @@ export function ChatNavbar() {
       </Button>
       <Stack gap={0}>
         {chats.map((chat) => (
-          <ChatNavbarLink key={chat.id} chatId={chat.id} providerName={chat.provider?.name} text={chat.title} />
+          <ChatNavbarLink
+            key={chat.id}
+            chatId={chat.id}
+            providerName={chat.provider?.name}
+            text={chat.title}
+          />
         ))}
       </Stack>
     </Stack>
