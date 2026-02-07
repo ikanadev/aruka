@@ -1,5 +1,5 @@
-import { ChatService } from "@connect/chat/v1/services_pb";
-import { ProviderService } from "@connect/provider/v1/services_pb";
+import { ChatService } from "@connect/arukabe/chat/v1/services_pb";
+import { ProviderService } from "@connect/arukabe/provider/v1/services_pb";
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 

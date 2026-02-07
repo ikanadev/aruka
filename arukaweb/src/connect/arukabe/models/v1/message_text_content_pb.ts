@@ -9,9 +9,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file models/v1/message_text_content.proto.
  */
-export const file_models_v1_message_text_content: GenFile /*@__PURE__*/ = fileDesc(
-  "CiRtb2RlbHMvdjEvbWVzc2FnZV90ZXh0X2NvbnRlbnQucHJvdG8SCW1vZGVscy52MSIiChJNZXNzYWdlVGV4dENvbnRlbnQSDAoEdGV4dBgBIAEoCUKVAQoNY29tLm1vZGVscy52MUIXTWVzc2FnZVRleHRDb250ZW50UHJvdG9QAVomYXJ1a2FiZS9nZW4vY29ubmVjdC9tb2RlbHMvdjE7bW9kZWxzdjGiAgNNWFiqAglNb2RlbHMuVjHKAglNb2RlbHNcVjHiAhVNb2RlbHNcVjFcR1BCTWV0YWRhdGHqAgpNb2RlbHM6OlYxYgZwcm90bzM",
-);
+export const file_models_v1_message_text_content: GenFile = /*@__PURE__*/
+  fileDesc("CiRtb2RlbHMvdjEvbWVzc2FnZV90ZXh0X2NvbnRlbnQucHJvdG8SCW1vZGVscy52MSIiChJNZXNzYWdlVGV4dENvbnRlbnQSDAoEdGV4dBgBIAEoCUKVAQoNY29tLm1vZGVscy52MUIXTWVzc2FnZVRleHRDb250ZW50UHJvdG9QAVomYXJ1a2FiZS9nZW4vY29ubmVjdC9tb2RlbHMvdjE7bW9kZWxzdjGiAgNNWFiqAglNb2RlbHMuVjHKAglNb2RlbHNcVjHiAhVNb2RlbHNcVjFcR1BCTWV0YWRhdGHqAgpNb2RlbHM6OlYxYgZwcm90bzM");
 
 /**
  * @generated from message models.v1.MessageTextContent
@@ -27,7 +26,6 @@ export type MessageTextContent = Message<"models.v1.MessageTextContent"> & {
  * Describes the message models.v1.MessageTextContent.
  * Use `create(MessageTextContentSchema)` to create a new message.
  */
-export const MessageTextContentSchema: GenMessage<MessageTextContent> /*@__PURE__*/ = messageDesc(
-  file_models_v1_message_text_content,
-  0,
-);
+export const MessageTextContentSchema: GenMessage<MessageTextContent> = /*@__PURE__*/
+  messageDesc(file_models_v1_message_text_content, 0);
+

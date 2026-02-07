@@ -18,16 +18,8 @@ import { file_chat_v1_new_chat } from "./new_chat_pb";
 /**
  * Describes the file chat/v1/services.proto.
  */
-export const file_chat_v1_services: GenFile /*@__PURE__*/ = fileDesc(
-  "ChZjaGF0L3YxL3NlcnZpY2VzLnByb3RvEgdjaGF0LnYxMukCCgtDaGF0U2VydmljZRJCCglMaXN0Q2hhdHMSGS5jaGF0LnYxLkxpc3RDaGF0c1JlcXVlc3QaGi5jaGF0LnYxLkxpc3RDaGF0c1Jlc3BvbnNlEjwKB05ld0NoYXQSFy5jaGF0LnYxLk5ld0NoYXRSZXF1ZXN0GhguY2hhdC52MS5OZXdDaGF0UmVzcG9uc2USPwoIRWRpdENoYXQSGC5jaGF0LnYxLkVkaXRDaGF0UmVxdWVzdBoZLmNoYXQudjEuRWRpdENoYXRSZXNwb25zZRJLCgxDaGF0TWVzc2FnZXMSHC5jaGF0LnYxLkNoYXRNZXNzYWdlc1JlcXVlc3QaHS5jaGF0LnYxLkNoYXRNZXNzYWdlc1Jlc3BvbnNlEkoKC0NoYXRNZXNzYWdlEhsuY2hhdC52MS5DaGF0TWVzc2FnZVJlcXVlc3QaHC5jaGF0LnYxLkNoYXRNZXNzYWdlUmVzcG9uc2UwAUJ9Cgtjb20uY2hhdC52MUINU2VydmljZXNQcm90b1ABWiJhcnVrYWJlL2dlbi9jb25uZWN0L2NoYXQvdjE7Y2hhdHYxogIDQ1hYqgIHQ2hhdC5WMcoCB0NoYXRcVjHiAhNDaGF0XFYxXEdQQk1ldGFkYXRh6gIIQ2hhdDo6VjFiBnByb3RvMw",
-  [
-    file_chat_v1_chat_message,
-    file_chat_v1_chat_messages,
-    file_chat_v1_edit_chat,
-    file_chat_v1_list_chats,
-    file_chat_v1_new_chat,
-  ],
-);
+export const file_chat_v1_services: GenFile = /*@__PURE__*/
+  fileDesc("ChZjaGF0L3YxL3NlcnZpY2VzLnByb3RvEgdjaGF0LnYxMukCCgtDaGF0U2VydmljZRJCCglMaXN0Q2hhdHMSGS5jaGF0LnYxLkxpc3RDaGF0c1JlcXVlc3QaGi5jaGF0LnYxLkxpc3RDaGF0c1Jlc3BvbnNlEjwKB05ld0NoYXQSFy5jaGF0LnYxLk5ld0NoYXRSZXF1ZXN0GhguY2hhdC52MS5OZXdDaGF0UmVzcG9uc2USPwoIRWRpdENoYXQSGC5jaGF0LnYxLkVkaXRDaGF0UmVxdWVzdBoZLmNoYXQudjEuRWRpdENoYXRSZXNwb25zZRJLCgxDaGF0TWVzc2FnZXMSHC5jaGF0LnYxLkNoYXRNZXNzYWdlc1JlcXVlc3QaHS5jaGF0LnYxLkNoYXRNZXNzYWdlc1Jlc3BvbnNlEkoKC0NoYXRNZXNzYWdlEhsuY2hhdC52MS5DaGF0TWVzc2FnZVJlcXVlc3QaHC5jaGF0LnYxLkNoYXRNZXNzYWdlUmVzcG9uc2UwAUJ9Cgtjb20uY2hhdC52MUINU2VydmljZXNQcm90b1ABWiJhcnVrYWJlL2dlbi9jb25uZWN0L2NoYXQvdjE7Y2hhdHYxogIDQ1hYqgIHQ2hhdC5WMcoCB0NoYXRcVjHiAhNDaGF0XFYxXEdQQk1ldGFkYXRh6gIIQ2hhdDo6VjFiBnByb3RvMw", [file_chat_v1_chat_message, file_chat_v1_chat_messages, file_chat_v1_edit_chat, file_chat_v1_list_chats, file_chat_v1_new_chat]);
 
 /**
  * @generated from service chat.v1.ChatService
@@ -40,7 +32,7 @@ export const ChatService: GenService<{
     methodKind: "unary";
     input: typeof ListChatsRequestSchema;
     output: typeof ListChatsResponseSchema;
-  };
+  },
   /**
    * @generated from rpc chat.v1.ChatService.NewChat
    */
@@ -48,7 +40,7 @@ export const ChatService: GenService<{
     methodKind: "unary";
     input: typeof NewChatRequestSchema;
     output: typeof NewChatResponseSchema;
-  };
+  },
   /**
    * @generated from rpc chat.v1.ChatService.EditChat
    */
@@ -56,7 +48,7 @@ export const ChatService: GenService<{
     methodKind: "unary";
     input: typeof EditChatRequestSchema;
     output: typeof EditChatResponseSchema;
-  };
+  },
   /**
    * @generated from rpc chat.v1.ChatService.ChatMessages
    */
@@ -64,7 +56,7 @@ export const ChatService: GenService<{
     methodKind: "unary";
     input: typeof ChatMessagesRequestSchema;
     output: typeof ChatMessagesResponseSchema;
-  };
+  },
   /**
    * @generated from rpc chat.v1.ChatService.ChatMessage
    */
@@ -72,5 +64,7 @@ export const ChatService: GenService<{
     methodKind: "server_streaming";
     input: typeof ChatMessageRequestSchema;
     output: typeof ChatMessageResponseSchema;
-  };
-}> /*@__PURE__*/ = serviceDesc(file_chat_v1_services, 0);
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_chat_v1_services, 0);
+

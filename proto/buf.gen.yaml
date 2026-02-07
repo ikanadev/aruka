@@ -9,7 +9,7 @@ plugins:
       - paths=source_relative
       - simple
   - local: protoc-gen-es
-    out: ../arukaweb/src/connect
+    out: ../arukaweb/src/connect/arukabe
     include_imports: true
     opt: target=ts
 managed:

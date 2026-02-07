@@ -2,7 +2,7 @@ import { Alert, Box, Container } from "@mantine/core";
 import { Fragment } from "react";
 import { useDisclosure } from "@mantine/hooks";
 
-import type { MessageContent } from "@connect/models/v1/message_content_pb";
+import type { MessageContent } from "@connect/arukabe/models/v1/message_content_pb";
 import { MessageActions } from "@features/chats/components/MessageActions/MessageActions";
 
 interface Props {

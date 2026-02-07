@@ -1,6 +1,6 @@
 import { SendIcon } from "@assets/icons/send";
 import { chatClient } from "@common/utils/clients";
-import { type Message, MessageRole } from "@connect/models/v1/message_pb";
+import { type Message, MessageRole } from "@connect/arukabe/models/v1/message_pb";
 import { AIMessage } from "@features/chats/components/AIMessage/AIMessage";
 import { UserMessage } from "@features/chats/components/UserMessage/UserMesage";
 import { useChatMessages } from "@features/chats/data/use-chat-messages";

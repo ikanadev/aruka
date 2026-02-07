@@ -1,7 +1,7 @@
 import { providerClient } from "@common/utils/clients";
 import { useQuery } from "@tanstack/react-query";
 import { commontQueryKeys } from "./common-query-keys";
-import { ModelStatus } from "@connect/models/v1/model_pb";
+import { ModelStatus } from "@connect/arukabe/models/v1/model_pb";
 
 export function useProviders(status: ModelStatus = ModelStatus.ACTIVE) {
   const query = useQuery({

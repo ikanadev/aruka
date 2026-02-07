@@ -11,10 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file chat/v1/new_chat.proto.
  */
-export const file_chat_v1_new_chat: GenFile /*@__PURE__*/ = fileDesc(
-  "ChZjaGF0L3YxL25ld19jaGF0LnByb3RvEgdjaGF0LnYxIjIKDk5ld0NoYXRSZXF1ZXN0EhAKCG1vZGVsX2lkGAEgASgJEg4KBnByb21wdBgCIAEoCSIwCg9OZXdDaGF0UmVzcG9uc2USHQoEY2hhdBgBIAEoCzIPLm1vZGVscy52MS5DaGF0QnwKC2NvbS5jaGF0LnYxQgxOZXdDaGF0UHJvdG9QAVoiYXJ1a2FiZS9nZW4vY29ubmVjdC9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM",
-  [file_models_v1_chat],
-);
+export const file_chat_v1_new_chat: GenFile = /*@__PURE__*/
+  fileDesc("ChZjaGF0L3YxL25ld19jaGF0LnByb3RvEgdjaGF0LnYxIjIKDk5ld0NoYXRSZXF1ZXN0EhAKCG1vZGVsX2lkGAEgASgJEg4KBnByb21wdBgCIAEoCSIwCg9OZXdDaGF0UmVzcG9uc2USHQoEY2hhdBgBIAEoCzIPLm1vZGVscy52MS5DaGF0QnwKC2NvbS5jaGF0LnYxQgxOZXdDaGF0UHJvdG9QAVoiYXJ1a2FiZS9nZW4vY29ubmVjdC9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM", [file_models_v1_chat]);
 
 /**
  * @generated from message chat.v1.NewChatRequest
@@ -35,10 +33,8 @@ export type NewChatRequest = Message<"chat.v1.NewChatRequest"> & {
  * Describes the message chat.v1.NewChatRequest.
  * Use `create(NewChatRequestSchema)` to create a new message.
  */
-export const NewChatRequestSchema: GenMessage<NewChatRequest> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_new_chat,
-  0,
-);
+export const NewChatRequestSchema: GenMessage<NewChatRequest> = /*@__PURE__*/
+  messageDesc(file_chat_v1_new_chat, 0);
 
 /**
  * @generated from message chat.v1.NewChatResponse
@@ -54,7 +50,6 @@ export type NewChatResponse = Message<"chat.v1.NewChatResponse"> & {
  * Describes the message chat.v1.NewChatResponse.
  * Use `create(NewChatResponseSchema)` to create a new message.
  */
-export const NewChatResponseSchema: GenMessage<NewChatResponse> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_new_chat,
-  1,
-);
+export const NewChatResponseSchema: GenMessage<NewChatResponse> = /*@__PURE__*/
+  messageDesc(file_chat_v1_new_chat, 1);
+

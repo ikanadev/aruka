@@ -13,10 +13,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file provider/v1/list_providers.proto.
  */
-export const file_provider_v1_list_providers: GenFile /*@__PURE__*/ = fileDesc(
-  "CiBwcm92aWRlci92MS9saXN0X3Byb3ZpZGVycy5wcm90bxILcHJvdmlkZXIudjEiPgoUTGlzdFByb3ZpZGVyc1JlcXVlc3QSJgoGc3RhdHVzGAEgASgOMhYubW9kZWxzLnYxLk1vZGVsU3RhdHVzIj8KFUxpc3RQcm92aWRlcnNSZXNwb25zZRImCglwcm92aWRlcnMYASADKAsyEy5tb2RlbHMudjEuUHJvdmlkZXJCngEKD2NvbS5wcm92aWRlci52MUISTGlzdFByb3ZpZGVyc1Byb3RvUAFaKmFydWthYmUvZ2VuL2Nvbm5lY3QvcHJvdmlkZXIvdjE7cHJvdmlkZXJ2MaICA1BYWKoCC1Byb3ZpZGVyLlYxygILUHJvdmlkZXJcVjHiAhdQcm92aWRlclxWMVxHUEJNZXRhZGF0YeoCDFByb3ZpZGVyOjpWMWIGcHJvdG8z",
-  [file_models_v1_model, file_models_v1_provider],
-);
+export const file_provider_v1_list_providers: GenFile = /*@__PURE__*/
+  fileDesc("CiBwcm92aWRlci92MS9saXN0X3Byb3ZpZGVycy5wcm90bxILcHJvdmlkZXIudjEiPgoUTGlzdFByb3ZpZGVyc1JlcXVlc3QSJgoGc3RhdHVzGAEgASgOMhYubW9kZWxzLnYxLk1vZGVsU3RhdHVzIj8KFUxpc3RQcm92aWRlcnNSZXNwb25zZRImCglwcm92aWRlcnMYASADKAsyEy5tb2RlbHMudjEuUHJvdmlkZXJCngEKD2NvbS5wcm92aWRlci52MUISTGlzdFByb3ZpZGVyc1Byb3RvUAFaKmFydWthYmUvZ2VuL2Nvbm5lY3QvcHJvdmlkZXIvdjE7cHJvdmlkZXJ2MaICA1BYWKoCC1Byb3ZpZGVyLlYxygILUHJvdmlkZXJcVjHiAhdQcm92aWRlclxWMVxHUEJNZXRhZGF0YeoCDFByb3ZpZGVyOjpWMWIGcHJvdG8z", [file_models_v1_model, file_models_v1_provider]);
 
 /**
  * @generated from message provider.v1.ListProvidersRequest
@@ -32,7 +30,7 @@ export type ListProvidersRequest = Message<"provider.v1.ListProvidersRequest"> &
  * Describes the message provider.v1.ListProvidersRequest.
  * Use `create(ListProvidersRequestSchema)` to create a new message.
  */
-export const ListProvidersRequestSchema: GenMessage<ListProvidersRequest> /*@__PURE__*/ =
+export const ListProvidersRequestSchema: GenMessage<ListProvidersRequest> = /*@__PURE__*/
   messageDesc(file_provider_v1_list_providers, 0);
 
 /**
@@ -49,5 +47,6 @@ export type ListProvidersResponse = Message<"provider.v1.ListProvidersResponse">
  * Describes the message provider.v1.ListProvidersResponse.
  * Use `create(ListProvidersResponseSchema)` to create a new message.
  */
-export const ListProvidersResponseSchema: GenMessage<ListProvidersResponse> /*@__PURE__*/ =
+export const ListProvidersResponseSchema: GenMessage<ListProvidersResponse> = /*@__PURE__*/
   messageDesc(file_provider_v1_list_providers, 1);
+

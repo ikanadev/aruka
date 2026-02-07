@@ -13,10 +13,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file chat/v1/list_chats.proto.
  */
-export const file_chat_v1_list_chats: GenFile /*@__PURE__*/ = fileDesc(
-  "ChhjaGF0L3YxL2xpc3RfY2hhdHMucHJvdG8SB2NoYXQudjEiRAoQTGlzdENoYXRzUmVxdWVzdBIwCgpwYWdpbmF0aW9uGAEgASgLMhwubW9kZWxzLnYxLlBhZ2luYXRpb25SZXF1ZXN0ImIKEUxpc3RDaGF0c1Jlc3BvbnNlEh4KBWNoYXRzGAEgAygLMg8ubW9kZWxzLnYxLkNoYXQSLQoKcGFnaW5hdGlvbhgCIAEoCzIZLm1vZGVscy52MS5QYWdpbmF0aW9uRGF0YUJ+Cgtjb20uY2hhdC52MUIOTGlzdENoYXRzUHJvdG9QAVoiYXJ1a2FiZS9nZW4vY29ubmVjdC9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM",
-  [file_models_v1_chat, file_models_v1_common],
-);
+export const file_chat_v1_list_chats: GenFile = /*@__PURE__*/
+  fileDesc("ChhjaGF0L3YxL2xpc3RfY2hhdHMucHJvdG8SB2NoYXQudjEiRAoQTGlzdENoYXRzUmVxdWVzdBIwCgpwYWdpbmF0aW9uGAEgASgLMhwubW9kZWxzLnYxLlBhZ2luYXRpb25SZXF1ZXN0ImIKEUxpc3RDaGF0c1Jlc3BvbnNlEh4KBWNoYXRzGAEgAygLMg8ubW9kZWxzLnYxLkNoYXQSLQoKcGFnaW5hdGlvbhgCIAEoCzIZLm1vZGVscy52MS5QYWdpbmF0aW9uRGF0YUJ+Cgtjb20uY2hhdC52MUIOTGlzdENoYXRzUHJvdG9QAVoiYXJ1a2FiZS9nZW4vY29ubmVjdC9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM", [file_models_v1_chat, file_models_v1_common]);
 
 /**
  * @generated from message chat.v1.ListChatsRequest
@@ -32,10 +30,8 @@ export type ListChatsRequest = Message<"chat.v1.ListChatsRequest"> & {
  * Describes the message chat.v1.ListChatsRequest.
  * Use `create(ListChatsRequestSchema)` to create a new message.
  */
-export const ListChatsRequestSchema: GenMessage<ListChatsRequest> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_list_chats,
-  0,
-);
+export const ListChatsRequestSchema: GenMessage<ListChatsRequest> = /*@__PURE__*/
+  messageDesc(file_chat_v1_list_chats, 0);
 
 /**
  * @generated from message chat.v1.ListChatsResponse
@@ -56,7 +52,6 @@ export type ListChatsResponse = Message<"chat.v1.ListChatsResponse"> & {
  * Describes the message chat.v1.ListChatsResponse.
  * Use `create(ListChatsResponseSchema)` to create a new message.
  */
-export const ListChatsResponseSchema: GenMessage<ListChatsResponse> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_list_chats,
-  1,
-);
+export const ListChatsResponseSchema: GenMessage<ListChatsResponse> = /*@__PURE__*/
+  messageDesc(file_chat_v1_list_chats, 1);
+

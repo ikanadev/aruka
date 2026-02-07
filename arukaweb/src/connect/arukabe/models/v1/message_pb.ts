@@ -13,10 +13,8 @@ import type { Message as Message$1 } from "@bufbuild/protobuf";
 /**
  * Describes the file models/v1/message.proto.
  */
-export const file_models_v1_message: GenFile /*@__PURE__*/ = fileDesc(
-  "Chdtb2RlbHMvdjEvbWVzc2FnZS5wcm90bxIJbW9kZWxzLnYxIpcBCgdNZXNzYWdlEgoKAmlkGAEgASgJEiQKBHJvbGUYAiABKA4yFi5tb2RlbHMudjEuTWVzc2FnZVJvbGUSKgoHY29udGVudBgDIAMoCzIZLm1vZGVscy52MS5NZXNzYWdlQ29udGVudBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCpeCgtNZXNzYWdlUm9sZRIcChhNRVNTQUdFX1JPTEVfVU5TUEVDSUZJRUQQABIVChFNRVNTQUdFX1JPTEVfVVNFUhABEhoKFk1FU1NBR0VfUk9MRV9BU1NJU1RBTlQQAkKKAQoNY29tLm1vZGVscy52MUIMTWVzc2FnZVByb3RvUAFaJmFydWthYmUvZ2VuL2Nvbm5lY3QvbW9kZWxzL3YxO21vZGVsc3YxogIDTVhYqgIJTW9kZWxzLlYxygIJTW9kZWxzXFYx4gIVTW9kZWxzXFYxXEdQQk1ldGFkYXRh6gIKTW9kZWxzOjpWMWIGcHJvdG8z",
-  [file_google_protobuf_timestamp, file_models_v1_message_content],
-);
+export const file_models_v1_message: GenFile = /*@__PURE__*/
+  fileDesc("Chdtb2RlbHMvdjEvbWVzc2FnZS5wcm90bxIJbW9kZWxzLnYxIpcBCgdNZXNzYWdlEgoKAmlkGAEgASgJEiQKBHJvbGUYAiABKA4yFi5tb2RlbHMudjEuTWVzc2FnZVJvbGUSKgoHY29udGVudBgDIAMoCzIZLm1vZGVscy52MS5NZXNzYWdlQ29udGVudBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCpeCgtNZXNzYWdlUm9sZRIcChhNRVNTQUdFX1JPTEVfVU5TUEVDSUZJRUQQABIVChFNRVNTQUdFX1JPTEVfVVNFUhABEhoKFk1FU1NBR0VfUk9MRV9BU1NJU1RBTlQQAkKKAQoNY29tLm1vZGVscy52MUIMTWVzc2FnZVByb3RvUAFaJmFydWthYmUvZ2VuL2Nvbm5lY3QvbW9kZWxzL3YxO21vZGVsc3YxogIDTVhYqgIJTW9kZWxzLlYxygIJTW9kZWxzXFYx4gIVTW9kZWxzXFYxXEdQQk1ldGFkYXRh6gIKTW9kZWxzOjpWMWIGcHJvdG8z", [file_google_protobuf_timestamp, file_models_v1_message_content]);
 
 /**
  * @generated from message models.v1.Message
@@ -47,10 +45,8 @@ export type Message = Message$1<"models.v1.Message"> & {
  * Describes the message models.v1.Message.
  * Use `create(MessageSchema)` to create a new message.
  */
-export const MessageSchema: GenMessage<Message> /*@__PURE__*/ = messageDesc(
-  file_models_v1_message,
-  0,
-);
+export const MessageSchema: GenMessage<Message> = /*@__PURE__*/
+  messageDesc(file_models_v1_message, 0);
 
 /**
  * @generated from enum models.v1.MessageRole
@@ -75,7 +71,6 @@ export enum MessageRole {
 /**
  * Describes the enum models.v1.MessageRole.
  */
-export const MessageRoleSchema: GenEnum<MessageRole> /*@__PURE__*/ = enumDesc(
-  file_models_v1_message,
-  0,
-);
+export const MessageRoleSchema: GenEnum<MessageRole> = /*@__PURE__*/
+  enumDesc(file_models_v1_message, 0);
+

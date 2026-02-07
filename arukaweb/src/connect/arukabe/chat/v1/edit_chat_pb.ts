@@ -11,10 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file chat/v1/edit_chat.proto.
  */
-export const file_chat_v1_edit_chat: GenFile /*@__PURE__*/ = fileDesc(
-  "ChdjaGF0L3YxL2VkaXRfY2hhdC5wcm90bxIHY2hhdC52MSKRAQoPRWRpdENoYXRSZXF1ZXN0EhQKB2NoYXRfaWQYASABKAlIAIgBARISCgV0aXRsZRgCIAEoCUgBiAEBEhMKBnByb21wdBgDIAEoCUgCiAEBEhMKBnBpbm5lZBgEIAEoCEgDiAEBQgoKCF9jaGF0X2lkQggKBl90aXRsZUIJCgdfcHJvbXB0QgkKB19waW5uZWQiMQoQRWRpdENoYXRSZXNwb25zZRIdCgRjaGF0GAEgASgLMg8ubW9kZWxzLnYxLkNoYXRCfQoLY29tLmNoYXQudjFCDUVkaXRDaGF0UHJvdG9QAVoiYXJ1a2FiZS9nZW4vY29ubmVjdC9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM",
-  [file_models_v1_chat],
-);
+export const file_chat_v1_edit_chat: GenFile = /*@__PURE__*/
+  fileDesc("ChdjaGF0L3YxL2VkaXRfY2hhdC5wcm90bxIHY2hhdC52MSKRAQoPRWRpdENoYXRSZXF1ZXN0EhQKB2NoYXRfaWQYASABKAlIAIgBARISCgV0aXRsZRgCIAEoCUgBiAEBEhMKBnByb21wdBgDIAEoCUgCiAEBEhMKBnBpbm5lZBgEIAEoCEgDiAEBQgoKCF9jaGF0X2lkQggKBl90aXRsZUIJCgdfcHJvbXB0QgkKB19waW5uZWQiMQoQRWRpdENoYXRSZXNwb25zZRIdCgRjaGF0GAEgASgLMg8ubW9kZWxzLnYxLkNoYXRCfQoLY29tLmNoYXQudjFCDUVkaXRDaGF0UHJvdG9QAVoiYXJ1a2FiZS9nZW4vY29ubmVjdC9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM", [file_models_v1_chat]);
 
 /**
  * @generated from message chat.v1.EditChatRequest
@@ -47,10 +45,8 @@ export type EditChatRequest = Message<"chat.v1.EditChatRequest"> & {
  * Describes the message chat.v1.EditChatRequest.
  * Use `create(EditChatRequestSchema)` to create a new message.
  */
-export const EditChatRequestSchema: GenMessage<EditChatRequest> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_edit_chat,
-  0,
-);
+export const EditChatRequestSchema: GenMessage<EditChatRequest> = /*@__PURE__*/
+  messageDesc(file_chat_v1_edit_chat, 0);
 
 /**
  * @generated from message chat.v1.EditChatResponse
@@ -66,7 +62,6 @@ export type EditChatResponse = Message<"chat.v1.EditChatResponse"> & {
  * Describes the message chat.v1.EditChatResponse.
  * Use `create(EditChatResponseSchema)` to create a new message.
  */
-export const EditChatResponseSchema: GenMessage<EditChatResponse> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_edit_chat,
-  1,
-);
+export const EditChatResponseSchema: GenMessage<EditChatResponse> = /*@__PURE__*/
+  messageDesc(file_chat_v1_edit_chat, 1);
+

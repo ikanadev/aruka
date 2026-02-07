@@ -11,10 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file models/v1/model.proto.
  */
-export const file_models_v1_model: GenFile /*@__PURE__*/ = fileDesc(
-  "ChVtb2RlbHMvdjEvbW9kZWwucHJvdG8SCW1vZGVscy52MSKTAQoFTW9kZWwSCgoCaWQYASABKAkSGAoQbW9kZWxfaWRlbnRpZmllchgCIAEoCRIMCgRuYW1lGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKBnN0YXR1cxgFIAEoDjIWLm1vZGVscy52MS5Nb2RlbFN0YXR1cyp8CgtNb2RlbFN0YXR1cxIcChhNT0RFTF9TVEFUVVNfVU5TUEVDSUZJRUQQABIXChNNT0RFTF9TVEFUVVNfQUNUSVZFEAESGQoVTU9ERUxfU1RBVFVTX0lOQUNUSVZFEAISGwoXTU9ERUxfU1RBVFVTX0RFUFJFQ0FURUQQA0KIAQoNY29tLm1vZGVscy52MUIKTW9kZWxQcm90b1ABWiZhcnVrYWJlL2dlbi9jb25uZWN0L21vZGVscy92MTttb2RlbHN2MaICA01YWKoCCU1vZGVscy5WMcoCCU1vZGVsc1xWMeICFU1vZGVsc1xWMVxHUEJNZXRhZGF0YeoCCk1vZGVsczo6VjFiBnByb3RvMw",
-  [file_google_protobuf_timestamp],
-);
+export const file_models_v1_model: GenFile = /*@__PURE__*/
+  fileDesc("ChVtb2RlbHMvdjEvbW9kZWwucHJvdG8SCW1vZGVscy52MSKTAQoFTW9kZWwSCgoCaWQYASABKAkSGAoQbW9kZWxfaWRlbnRpZmllchgCIAEoCRIMCgRuYW1lGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKBnN0YXR1cxgFIAEoDjIWLm1vZGVscy52MS5Nb2RlbFN0YXR1cyp8CgtNb2RlbFN0YXR1cxIcChhNT0RFTF9TVEFUVVNfVU5TUEVDSUZJRUQQABIXChNNT0RFTF9TVEFUVVNfQUNUSVZFEAESGQoVTU9ERUxfU1RBVFVTX0lOQUNUSVZFEAISGwoXTU9ERUxfU1RBVFVTX0RFUFJFQ0FURUQQA0KIAQoNY29tLm1vZGVscy52MUIKTW9kZWxQcm90b1ABWiZhcnVrYWJlL2dlbi9jb25uZWN0L21vZGVscy92MTttb2RlbHN2MaICA01YWKoCCU1vZGVscy5WMcoCCU1vZGVsc1xWMeICFU1vZGVsc1xWMVxHUEJNZXRhZGF0YeoCCk1vZGVsczo6VjFiBnByb3RvMw", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message models.v1.Model
@@ -50,7 +48,8 @@ export type Model = Message<"models.v1.Model"> & {
  * Describes the message models.v1.Model.
  * Use `create(ModelSchema)` to create a new message.
  */
-export const ModelSchema: GenMessage<Model> /*@__PURE__*/ = messageDesc(file_models_v1_model, 0);
+export const ModelSchema: GenMessage<Model> = /*@__PURE__*/
+  messageDesc(file_models_v1_model, 0);
 
 /**
  * @generated from enum models.v1.ModelStatus
@@ -86,7 +85,6 @@ export enum ModelStatus {
 /**
  * Describes the enum models.v1.ModelStatus.
  */
-export const ModelStatusSchema: GenEnum<ModelStatus> /*@__PURE__*/ = enumDesc(
-  file_models_v1_model,
-  0,
-);
+export const ModelStatusSchema: GenEnum<ModelStatus> = /*@__PURE__*/
+  enumDesc(file_models_v1_model, 0);
+

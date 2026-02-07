@@ -1,8 +1,8 @@
 import { chatClient } from "@common/utils/clients";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { chatQueryKeys } from "./chat-query-keys";
-import type { ChatMessagesResponse } from "@connect/chat/v1/chat_messages_pb";
-import type { Message } from "@connect/models/v1/message_pb";
+import type { ChatMessagesResponse } from "@connect/arukabe/chat/v1/chat_messages_pb";
+import type { Message } from "@connect/arukabe/models/v1/message_pb";
 
 export function useChatMessages(chatId: string) {
   const queryClient = useQueryClient();

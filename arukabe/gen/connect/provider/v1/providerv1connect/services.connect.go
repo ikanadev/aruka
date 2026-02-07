@@ -43,8 +43,8 @@ const (
 
 // ProviderServiceClient is a client for the provider.v1.ProviderService service.
 type ProviderServiceClient interface {
-	ListProviders(context.Context, *connect.Request[v1.ListProvidersRequest]) (*connect.Response[v1.ListProvidersResponse], error)
-	UpdateProviderModels(context.Context, *connect.Request[v1.UpdateProviderModelsRequest]) (*connect.Response[v1.UpdateProviderModelsResponse], error)
+	ListProviders(context.Context, *v1.ListProvidersRequest) (*v1.ListProvidersResponse, error)
+	UpdateProviderModels(context.Context, *v1.UpdateProviderModelsRequest) (*v1.UpdateProviderModelsResponse, error)
 }
 
 // NewProviderServiceClient constructs a client for the provider.v1.ProviderService service. By
@@ -80,19 +80,27 @@ type providerServiceClient struct {
 }
 
 // ListProviders calls provider.v1.ProviderService.ListProviders.
-func (c *providerServiceClient) ListProviders(ctx context.Context, req *connect.Request[v1.ListProvidersRequest]) (*connect.Response[v1.ListProvidersResponse], error) {
-	return c.listProviders.CallUnary(ctx, req)
+func (c *providerServiceClient) ListProviders(ctx context.Context, req *v1.ListProvidersRequest) (*v1.ListProvidersResponse, error) {
+	response, err := c.listProviders.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
 }
 
 // UpdateProviderModels calls provider.v1.ProviderService.UpdateProviderModels.
-func (c *providerServiceClient) UpdateProviderModels(ctx context.Context, req *connect.Request[v1.UpdateProviderModelsRequest]) (*connect.Response[v1.UpdateProviderModelsResponse], error) {
-	return c.updateProviderModels.CallUnary(ctx, req)
+func (c *providerServiceClient) UpdateProviderModels(ctx context.Context, req *v1.UpdateProviderModelsRequest) (*v1.UpdateProviderModelsResponse, error) {
+	response, err := c.updateProviderModels.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
 }
 
 // ProviderServiceHandler is an implementation of the provider.v1.ProviderService service.
 type ProviderServiceHandler interface {
-	ListProviders(context.Context, *connect.Request[v1.ListProvidersRequest]) (*connect.Response[v1.ListProvidersResponse], error)
-	UpdateProviderModels(context.Context, *connect.Request[v1.UpdateProviderModelsRequest]) (*connect.Response[v1.UpdateProviderModelsResponse], error)
+	ListProviders(context.Context, *v1.ListProvidersRequest) (*v1.ListProvidersResponse, error)
+	UpdateProviderModels(context.Context, *v1.UpdateProviderModelsRequest) (*v1.UpdateProviderModelsResponse, error)
 }
 
 // NewProviderServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -102,13 +110,13 @@ type ProviderServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	providerServiceMethods := v1.File_provider_v1_services_proto.Services().ByName("ProviderService").Methods()
-	providerServiceListProvidersHandler := connect.NewUnaryHandler(
+	providerServiceListProvidersHandler := connect.NewUnaryHandlerSimple(
 		ProviderServiceListProvidersProcedure,
 		svc.ListProviders,
 		connect.WithSchema(providerServiceMethods.ByName("ListProviders")),
 		connect.WithHandlerOptions(opts...),
 	)
-	providerServiceUpdateProviderModelsHandler := connect.NewUnaryHandler(
+	providerServiceUpdateProviderModelsHandler := connect.NewUnaryHandlerSimple(
 		ProviderServiceUpdateProviderModelsProcedure,
 		svc.UpdateProviderModels,
 		connect.WithSchema(providerServiceMethods.ByName("UpdateProviderModels")),
@@ -129,10 +137,10 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 // UnimplementedProviderServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedProviderServiceHandler struct{}
 
-func (UnimplementedProviderServiceHandler) ListProviders(context.Context, *connect.Request[v1.ListProvidersRequest]) (*connect.Response[v1.ListProvidersResponse], error) {
+func (UnimplementedProviderServiceHandler) ListProviders(context.Context, *v1.ListProvidersRequest) (*v1.ListProvidersResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("provider.v1.ProviderService.ListProviders is not implemented"))
 }
 
-func (UnimplementedProviderServiceHandler) UpdateProviderModels(context.Context, *connect.Request[v1.UpdateProviderModelsRequest]) (*connect.Response[v1.UpdateProviderModelsResponse], error) {
+func (UnimplementedProviderServiceHandler) UpdateProviderModels(context.Context, *v1.UpdateProviderModelsRequest) (*v1.UpdateProviderModelsResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("provider.v1.ProviderService.UpdateProviderModels is not implemented"))
 }

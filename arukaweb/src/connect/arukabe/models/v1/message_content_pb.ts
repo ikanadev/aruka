@@ -11,10 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file models/v1/message_content.proto.
  */
-export const file_models_v1_message_content: GenFile /*@__PURE__*/ = fileDesc(
-  "Ch9tb2RlbHMvdjEvbWVzc2FnZV9jb250ZW50LnByb3RvEgltb2RlbHMudjEiUgoOTWVzc2FnZUNvbnRlbnQSNQoMdGV4dF9jb250ZW50GAEgASgLMh0ubW9kZWxzLnYxLk1lc3NhZ2VUZXh0Q29udGVudEgAQgkKB2NvbnRlbnRCkQEKDWNvbS5tb2RlbHMudjFCE01lc3NhZ2VDb250ZW50UHJvdG9QAVomYXJ1a2FiZS9nZW4vY29ubmVjdC9tb2RlbHMvdjE7bW9kZWxzdjGiAgNNWFiqAglNb2RlbHMuVjHKAglNb2RlbHNcVjHiAhVNb2RlbHNcVjFcR1BCTWV0YWRhdGHqAgpNb2RlbHM6OlYxYgZwcm90bzM",
-  [file_models_v1_message_text_content],
-);
+export const file_models_v1_message_content: GenFile = /*@__PURE__*/
+  fileDesc("Ch9tb2RlbHMvdjEvbWVzc2FnZV9jb250ZW50LnByb3RvEgltb2RlbHMudjEiUgoOTWVzc2FnZUNvbnRlbnQSNQoMdGV4dF9jb250ZW50GAEgASgLMh0ubW9kZWxzLnYxLk1lc3NhZ2VUZXh0Q29udGVudEgAQgkKB2NvbnRlbnRCkQEKDWNvbS5tb2RlbHMudjFCE01lc3NhZ2VDb250ZW50UHJvdG9QAVomYXJ1a2FiZS9nZW4vY29ubmVjdC9tb2RlbHMvdjE7bW9kZWxzdjGiAgNNWFiqAglNb2RlbHMuVjHKAglNb2RlbHNcVjHiAhVNb2RlbHNcVjFcR1BCTWV0YWRhdGHqAgpNb2RlbHM6OlYxYgZwcm90bzM", [file_models_v1_message_text_content]);
 
 /**
  * @generated from message models.v1.MessageContent
@@ -23,22 +21,19 @@ export type MessageContent = Message<"models.v1.MessageContent"> & {
   /**
    * @generated from oneof models.v1.MessageContent.content
    */
-  content:
-    | {
-        /**
-         * @generated from field: models.v1.MessageTextContent text_content = 1;
-         */
-        value: MessageTextContent;
-        case: "textContent";
-      }
-    | { case: undefined; value?: undefined };
+  content: {
+    /**
+     * @generated from field: models.v1.MessageTextContent text_content = 1;
+     */
+    value: MessageTextContent;
+    case: "textContent";
+  } | { case: undefined; value?: undefined };
 };
 
 /**
  * Describes the message models.v1.MessageContent.
  * Use `create(MessageContentSchema)` to create a new message.
  */
-export const MessageContentSchema: GenMessage<MessageContent> /*@__PURE__*/ = messageDesc(
-  file_models_v1_message_content,
-  0,
-);
+export const MessageContentSchema: GenMessage<MessageContent> = /*@__PURE__*/
+  messageDesc(file_models_v1_message_content, 0);
+

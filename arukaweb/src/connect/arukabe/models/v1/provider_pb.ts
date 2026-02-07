@@ -11,10 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file models/v1/provider.proto.
  */
-export const file_models_v1_provider: GenFile /*@__PURE__*/ = fileDesc(
-  "Chhtb2RlbHMvdjEvcHJvdmlkZXIucHJvdG8SCW1vZGVscy52MSIoCgxQcm92aWRlckJhc2USCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCSJGCghQcm92aWRlchIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEiAKBm1vZGVscxgDIAMoCzIQLm1vZGVscy52MS5Nb2RlbEKLAQoNY29tLm1vZGVscy52MUINUHJvdmlkZXJQcm90b1ABWiZhcnVrYWJlL2dlbi9jb25uZWN0L21vZGVscy92MTttb2RlbHN2MaICA01YWKoCCU1vZGVscy5WMcoCCU1vZGVsc1xWMeICFU1vZGVsc1xWMVxHUEJNZXRhZGF0YeoCCk1vZGVsczo6VjFiBnByb3RvMw",
-  [file_models_v1_model],
-);
+export const file_models_v1_provider: GenFile = /*@__PURE__*/
+  fileDesc("Chhtb2RlbHMvdjEvcHJvdmlkZXIucHJvdG8SCW1vZGVscy52MSIoCgxQcm92aWRlckJhc2USCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCSJGCghQcm92aWRlchIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEiAKBm1vZGVscxgDIAMoCzIQLm1vZGVscy52MS5Nb2RlbEKLAQoNY29tLm1vZGVscy52MUINUHJvdmlkZXJQcm90b1ABWiZhcnVrYWJlL2dlbi9jb25uZWN0L21vZGVscy92MTttb2RlbHN2MaICA01YWKoCCU1vZGVscy5WMcoCCU1vZGVsc1xWMeICFU1vZGVsc1xWMVxHUEJNZXRhZGF0YeoCCk1vZGVsczo6VjFiBnByb3RvMw", [file_models_v1_model]);
 
 /**
  * @generated from message models.v1.ProviderBase
@@ -35,10 +33,8 @@ export type ProviderBase = Message<"models.v1.ProviderBase"> & {
  * Describes the message models.v1.ProviderBase.
  * Use `create(ProviderBaseSchema)` to create a new message.
  */
-export const ProviderBaseSchema: GenMessage<ProviderBase> /*@__PURE__*/ = messageDesc(
-  file_models_v1_provider,
-  0,
-);
+export const ProviderBaseSchema: GenMessage<ProviderBase> = /*@__PURE__*/
+  messageDesc(file_models_v1_provider, 0);
 
 /**
  * @generated from message models.v1.Provider
@@ -64,7 +60,6 @@ export type Provider = Message<"models.v1.Provider"> & {
  * Describes the message models.v1.Provider.
  * Use `create(ProviderSchema)` to create a new message.
  */
-export const ProviderSchema: GenMessage<Provider> /*@__PURE__*/ = messageDesc(
-  file_models_v1_provider,
-  1,
-);
+export const ProviderSchema: GenMessage<Provider> = /*@__PURE__*/
+  messageDesc(file_models_v1_provider, 1);
+

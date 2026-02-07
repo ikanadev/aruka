@@ -11,10 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file chat/v1/chat_message.proto.
  */
-export const file_chat_v1_chat_message: GenFile /*@__PURE__*/ = fileDesc(
-  "ChpjaGF0L3YxL2NoYXRfbWVzc2FnZS5wcm90bxIHY2hhdC52MSJRChJDaGF0TWVzc2FnZVJlcXVlc3QSDwoHY2hhdF9pZBgBIAEoCRIqCgdjb250ZW50GAIgAygLMhkubW9kZWxzLnYxLk1lc3NhZ2VDb250ZW50IiQKE0NoYXRNZXNzYWdlUmVzcG9uc2USDQoFZGVsdGEYASABKAlCgAEKC2NvbS5jaGF0LnYxQhBDaGF0TWVzc2FnZVByb3RvUAFaImFydWthYmUvZ2VuL2Nvbm5lY3QvY2hhdC92MTtjaGF0djGiAgNDWFiqAgdDaGF0LlYxygIHQ2hhdFxWMeICE0NoYXRcVjFcR1BCTWV0YWRhdGHqAghDaGF0OjpWMWIGcHJvdG8z",
-  [file_models_v1_message_content],
-);
+export const file_chat_v1_chat_message: GenFile = /*@__PURE__*/
+  fileDesc("ChpjaGF0L3YxL2NoYXRfbWVzc2FnZS5wcm90bxIHY2hhdC52MSJRChJDaGF0TWVzc2FnZVJlcXVlc3QSDwoHY2hhdF9pZBgBIAEoCRIqCgdjb250ZW50GAIgAygLMhkubW9kZWxzLnYxLk1lc3NhZ2VDb250ZW50IiQKE0NoYXRNZXNzYWdlUmVzcG9uc2USDQoFZGVsdGEYASABKAlCgAEKC2NvbS5jaGF0LnYxQhBDaGF0TWVzc2FnZVByb3RvUAFaImFydWthYmUvZ2VuL2Nvbm5lY3QvY2hhdC92MTtjaGF0djGiAgNDWFiqAgdDaGF0LlYxygIHQ2hhdFxWMeICE0NoYXRcVjFcR1BCTWV0YWRhdGHqAghDaGF0OjpWMWIGcHJvdG8z", [file_models_v1_message_content]);
 
 /**
  * @generated from message chat.v1.ChatMessageRequest
@@ -35,10 +33,8 @@ export type ChatMessageRequest = Message<"chat.v1.ChatMessageRequest"> & {
  * Describes the message chat.v1.ChatMessageRequest.
  * Use `create(ChatMessageRequestSchema)` to create a new message.
  */
-export const ChatMessageRequestSchema: GenMessage<ChatMessageRequest> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_chat_message,
-  0,
-);
+export const ChatMessageRequestSchema: GenMessage<ChatMessageRequest> = /*@__PURE__*/
+  messageDesc(file_chat_v1_chat_message, 0);
 
 /**
  * @generated from message chat.v1.ChatMessageResponse
@@ -54,7 +50,6 @@ export type ChatMessageResponse = Message<"chat.v1.ChatMessageResponse"> & {
  * Describes the message chat.v1.ChatMessageResponse.
  * Use `create(ChatMessageResponseSchema)` to create a new message.
  */
-export const ChatMessageResponseSchema: GenMessage<ChatMessageResponse> /*@__PURE__*/ = messageDesc(
-  file_chat_v1_chat_message,
-  1,
-);
+export const ChatMessageResponseSchema: GenMessage<ChatMessageResponse> = /*@__PURE__*/
+  messageDesc(file_chat_v1_chat_message, 1);
+

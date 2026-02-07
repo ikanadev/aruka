@@ -48,11 +48,11 @@ const (
 
 // ChatServiceClient is a client for the chat.v1.ChatService service.
 type ChatServiceClient interface {
-	ListChats(context.Context, *connect.Request[v1.ListChatsRequest]) (*connect.Response[v1.ListChatsResponse], error)
-	NewChat(context.Context, *connect.Request[v1.NewChatRequest]) (*connect.Response[v1.NewChatResponse], error)
-	EditChat(context.Context, *connect.Request[v1.EditChatRequest]) (*connect.Response[v1.EditChatResponse], error)
-	ChatMessages(context.Context, *connect.Request[v1.ChatMessagesRequest]) (*connect.Response[v1.ChatMessagesResponse], error)
-	ChatMessage(context.Context, *connect.Request[v1.ChatMessageRequest]) (*connect.ServerStreamForClient[v1.ChatMessageResponse], error)
+	ListChats(context.Context, *v1.ListChatsRequest) (*v1.ListChatsResponse, error)
+	NewChat(context.Context, *v1.NewChatRequest) (*v1.NewChatResponse, error)
+	EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error)
+	ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error)
+	ChatMessage(context.Context, *v1.ChatMessageRequest) (*connect.ServerStreamForClient[v1.ChatMessageResponse], error)
 }
 
 // NewChatServiceClient constructs a client for the chat.v1.ChatService service. By default, it uses
@@ -109,37 +109,53 @@ type chatServiceClient struct {
 }
 
 // ListChats calls chat.v1.ChatService.ListChats.
-func (c *chatServiceClient) ListChats(ctx context.Context, req *connect.Request[v1.ListChatsRequest]) (*connect.Response[v1.ListChatsResponse], error) {
-	return c.listChats.CallUnary(ctx, req)
+func (c *chatServiceClient) ListChats(ctx context.Context, req *v1.ListChatsRequest) (*v1.ListChatsResponse, error) {
+	response, err := c.listChats.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
 }
 
 // NewChat calls chat.v1.ChatService.NewChat.
-func (c *chatServiceClient) NewChat(ctx context.Context, req *connect.Request[v1.NewChatRequest]) (*connect.Response[v1.NewChatResponse], error) {
-	return c.newChat.CallUnary(ctx, req)
+func (c *chatServiceClient) NewChat(ctx context.Context, req *v1.NewChatRequest) (*v1.NewChatResponse, error) {
+	response, err := c.newChat.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
 }
 
 // EditChat calls chat.v1.ChatService.EditChat.
-func (c *chatServiceClient) EditChat(ctx context.Context, req *connect.Request[v1.EditChatRequest]) (*connect.Response[v1.EditChatResponse], error) {
-	return c.editChat.CallUnary(ctx, req)
+func (c *chatServiceClient) EditChat(ctx context.Context, req *v1.EditChatRequest) (*v1.EditChatResponse, error) {
+	response, err := c.editChat.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
 }
 
 // ChatMessages calls chat.v1.ChatService.ChatMessages.
-func (c *chatServiceClient) ChatMessages(ctx context.Context, req *connect.Request[v1.ChatMessagesRequest]) (*connect.Response[v1.ChatMessagesResponse], error) {
-	return c.chatMessages.CallUnary(ctx, req)
+func (c *chatServiceClient) ChatMessages(ctx context.Context, req *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error) {
+	response, err := c.chatMessages.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
 }
 
 // ChatMessage calls chat.v1.ChatService.ChatMessage.
-func (c *chatServiceClient) ChatMessage(ctx context.Context, req *connect.Request[v1.ChatMessageRequest]) (*connect.ServerStreamForClient[v1.ChatMessageResponse], error) {
-	return c.chatMessage.CallServerStream(ctx, req)
+func (c *chatServiceClient) ChatMessage(ctx context.Context, req *v1.ChatMessageRequest) (*connect.ServerStreamForClient[v1.ChatMessageResponse], error) {
+	return c.chatMessage.CallServerStream(ctx, connect.NewRequest(req))
 }
 
 // ChatServiceHandler is an implementation of the chat.v1.ChatService service.
 type ChatServiceHandler interface {
-	ListChats(context.Context, *connect.Request[v1.ListChatsRequest]) (*connect.Response[v1.ListChatsResponse], error)
-	NewChat(context.Context, *connect.Request[v1.NewChatRequest]) (*connect.Response[v1.NewChatResponse], error)
-	EditChat(context.Context, *connect.Request[v1.EditChatRequest]) (*connect.Response[v1.EditChatResponse], error)
-	ChatMessages(context.Context, *connect.Request[v1.ChatMessagesRequest]) (*connect.Response[v1.ChatMessagesResponse], error)
-	ChatMessage(context.Context, *connect.Request[v1.ChatMessageRequest], *connect.ServerStream[v1.ChatMessageResponse]) error
+	ListChats(context.Context, *v1.ListChatsRequest) (*v1.ListChatsResponse, error)
+	NewChat(context.Context, *v1.NewChatRequest) (*v1.NewChatResponse, error)
+	EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error)
+	ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error)
+	ChatMessage(context.Context, *v1.ChatMessageRequest, *connect.ServerStream[v1.ChatMessageResponse]) error
 }
 
 // NewChatServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -149,31 +165,31 @@ type ChatServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	chatServiceMethods := v1.File_chat_v1_services_proto.Services().ByName("ChatService").Methods()
-	chatServiceListChatsHandler := connect.NewUnaryHandler(
+	chatServiceListChatsHandler := connect.NewUnaryHandlerSimple(
 		ChatServiceListChatsProcedure,
 		svc.ListChats,
 		connect.WithSchema(chatServiceMethods.ByName("ListChats")),
 		connect.WithHandlerOptions(opts...),
 	)
-	chatServiceNewChatHandler := connect.NewUnaryHandler(
+	chatServiceNewChatHandler := connect.NewUnaryHandlerSimple(
 		ChatServiceNewChatProcedure,
 		svc.NewChat,
 		connect.WithSchema(chatServiceMethods.ByName("NewChat")),
 		connect.WithHandlerOptions(opts...),
 	)
-	chatServiceEditChatHandler := connect.NewUnaryHandler(
+	chatServiceEditChatHandler := connect.NewUnaryHandlerSimple(
 		ChatServiceEditChatProcedure,
 		svc.EditChat,
 		connect.WithSchema(chatServiceMethods.ByName("EditChat")),
 		connect.WithHandlerOptions(opts...),
 	)
-	chatServiceChatMessagesHandler := connect.NewUnaryHandler(
+	chatServiceChatMessagesHandler := connect.NewUnaryHandlerSimple(
 		ChatServiceChatMessagesProcedure,
 		svc.ChatMessages,
 		connect.WithSchema(chatServiceMethods.ByName("ChatMessages")),
 		connect.WithHandlerOptions(opts...),
 	)
-	chatServiceChatMessageHandler := connect.NewServerStreamHandler(
+	chatServiceChatMessageHandler := connect.NewServerStreamHandlerSimple(
 		ChatServiceChatMessageProcedure,
 		svc.ChatMessage,
 		connect.WithSchema(chatServiceMethods.ByName("ChatMessage")),
@@ -200,22 +216,22 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 // UnimplementedChatServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedChatServiceHandler struct{}
 
-func (UnimplementedChatServiceHandler) ListChats(context.Context, *connect.Request[v1.ListChatsRequest]) (*connect.Response[v1.ListChatsResponse], error) {
+func (UnimplementedChatServiceHandler) ListChats(context.Context, *v1.ListChatsRequest) (*v1.ListChatsResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.ListChats is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) NewChat(context.Context, *connect.Request[v1.NewChatRequest]) (*connect.Response[v1.NewChatResponse], error) {
+func (UnimplementedChatServiceHandler) NewChat(context.Context, *v1.NewChatRequest) (*v1.NewChatResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.NewChat is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) EditChat(context.Context, *connect.Request[v1.EditChatRequest]) (*connect.Response[v1.EditChatResponse], error) {
+func (UnimplementedChatServiceHandler) EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.EditChat is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) ChatMessages(context.Context, *connect.Request[v1.ChatMessagesRequest]) (*connect.Response[v1.ChatMessagesResponse], error) {
+func (UnimplementedChatServiceHandler) ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.ChatMessages is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) ChatMessage(context.Context, *connect.Request[v1.ChatMessageRequest], *connect.ServerStream[v1.ChatMessageResponse]) error {
+func (UnimplementedChatServiceHandler) ChatMessage(context.Context, *v1.ChatMessageRequest, *connect.ServerStream[v1.ChatMessageResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.ChatMessage is not implemented"))
 }

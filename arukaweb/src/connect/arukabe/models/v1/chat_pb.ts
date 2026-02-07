@@ -15,10 +15,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file models/v1/chat.proto.
  */
-export const file_models_v1_chat: GenFile /*@__PURE__*/ = fileDesc(
-  "ChRtb2RlbHMvdjEvY2hhdC5wcm90bxIJbW9kZWxzLnYxIrUBCgRDaGF0EgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEg4KBnByb21wdBgDIAEoCRIOCgZwaW5uZWQYBCABKAgSHwoFbW9kZWwYBSABKAsyEC5tb2RlbHMudjEuTW9kZWwSKQoIcHJvdmlkZXIYBiABKAsyFy5tb2RlbHMudjEuUHJvdmlkZXJCYXNlEiYKCXRpbWVfZGF0YRgHIAEoCzITLm1vZGVscy52MS5UaW1lRGF0YUKHAQoNY29tLm1vZGVscy52MUIJQ2hhdFByb3RvUAFaJmFydWthYmUvZ2VuL2Nvbm5lY3QvbW9kZWxzL3YxO21vZGVsc3YxogIDTVhYqgIJTW9kZWxzLlYxygIJTW9kZWxzXFYx4gIVTW9kZWxzXFYxXEdQQk1ldGFkYXRh6gIKTW9kZWxzOjpWMWIGcHJvdG8z",
-  [file_models_v1_common, file_models_v1_model, file_models_v1_provider],
-);
+export const file_models_v1_chat: GenFile = /*@__PURE__*/
+  fileDesc("ChRtb2RlbHMvdjEvY2hhdC5wcm90bxIJbW9kZWxzLnYxIrUBCgRDaGF0EgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEg4KBnByb21wdBgDIAEoCRIOCgZwaW5uZWQYBCABKAgSHwoFbW9kZWwYBSABKAsyEC5tb2RlbHMudjEuTW9kZWwSKQoIcHJvdmlkZXIYBiABKAsyFy5tb2RlbHMudjEuUHJvdmlkZXJCYXNlEiYKCXRpbWVfZGF0YRgHIAEoCzITLm1vZGVscy52MS5UaW1lRGF0YUKHAQoNY29tLm1vZGVscy52MUIJQ2hhdFByb3RvUAFaJmFydWthYmUvZ2VuL2Nvbm5lY3QvbW9kZWxzL3YxO21vZGVsc3YxogIDTVhYqgIJTW9kZWxzLlYxygIJTW9kZWxzXFYx4gIVTW9kZWxzXFYxXEdQQk1ldGFkYXRh6gIKTW9kZWxzOjpWMWIGcHJvdG8z", [file_models_v1_common, file_models_v1_model, file_models_v1_provider]);
 
 /**
  * @generated from message models.v1.Chat
@@ -64,4 +62,6 @@ export type Chat = Message<"models.v1.Chat"> & {
  * Describes the message models.v1.Chat.
  * Use `create(ChatSchema)` to create a new message.
  */
-export const ChatSchema: GenMessage<Chat> /*@__PURE__*/ = messageDesc(file_models_v1_chat, 0);
+export const ChatSchema: GenMessage<Chat> = /*@__PURE__*/
+  messageDesc(file_models_v1_chat, 0);
+
