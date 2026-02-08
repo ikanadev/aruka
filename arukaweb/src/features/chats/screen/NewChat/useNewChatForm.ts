@@ -1,15 +1,19 @@
+import { useChatSettingsStore } from "@features/chats/store/use-chat-settings-store";
 import { useForm } from "@mantine/form";
 import { DEFAULT_SELECT_MODEL } from "./utils";
 
 export type NewChatFormValues = ReturnType<typeof useNewChatForm>["values"];
 export function useNewChatForm() {
+  const modelId = useChatSettingsStore((state) => state.modelId);
+  const customPrompt = useChatSettingsStore((state) => state.customPrompt);
+
   return useForm({
     mode: "uncontrolled",
     initialValues: {
       userText: "",
       general: {
-        modelId: DEFAULT_SELECT_MODEL,
-        customPrompt: "",
+        modelId: modelId ?? DEFAULT_SELECT_MODEL,
+        customPrompt: customPrompt,
       },
     },
     validate: {
