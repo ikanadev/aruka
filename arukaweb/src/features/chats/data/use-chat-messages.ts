@@ -1,42 +1,30 @@
 import { chatClient } from "@common/utils/clients";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { selectChatMessages, useChatMessagesStore } from "@features/chats/store/chat-messages-store";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { chatQueryKeys } from "./chat-query-keys";
-import type { ChatMessagesResponse } from "@connect/arukabe/chat/v1/chat_messages_pb";
-import type { Message } from "@connect/arukabe/models/v1/message_pb";
 
 export function useChatMessages(chatId: string) {
-  const queryClient = useQueryClient();
+  const setMessages = useChatMessagesStore((s) => s.setMessages);
+  const messages = useChatMessagesStore(selectChatMessages(chatId));
 
   const query = useQuery({
-    queryFn: () => chatClient.chatMessages({ chatId }),
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      return chatClient.chatMessages({ chatId });
+    },
     queryKey: chatQueryKeys.chatMessages(chatId),
   });
 
-  const messages = query.data?.messages || [];
-
-  const addMessageToCache = (message: Message) => {
-    queryClient.setQueryData(
-      chatQueryKeys.chatMessages(chatId),
-      (prev: ChatMessagesResponse | undefined): ChatMessagesResponse => {
-        if (prev === undefined) {
-          return {
-            $typeName: "chat.v1.ChatMessagesResponse",
-            messages: [message],
-          };
-        }
-        return {
-          ...prev,
-          messages: [...prev.messages, message],
-        };
-      },
-    );
-  };
+  useEffect(() => {
+    if (query.data) {
+      setMessages(chatId, query.data.messages);
+    }
+  }, [chatId, query.data, setMessages]);
 
   return {
     messages,
-    addMessageToCache,
     loadingMessages: query.isLoading,
-    fetchingMessages: query.isFetching,
     isFetchedMessages: query.isFetched,
   };
 }

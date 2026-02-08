@@ -4,6 +4,7 @@ import { type Message, MessageRole } from "@connect/arukabe/models/v1/message_pb
 import { AIMessage } from "@features/chats/components/AIMessage/AIMessage";
 import { UserMessage } from "@features/chats/components/UserMessage/UserMesage";
 import { useChatMessages } from "@features/chats/data/use-chat-messages";
+import { useChatMessagesStore } from "@features/chats/store/chat-messages-store";
 import { useFirstMessageStore } from "@features/chats/store/useFirstMessageStore";
 import { createTextMessage } from "@features/chats/utils/create_text_message";
 import {
@@ -43,7 +44,8 @@ export function Chat(props: Props) {
   const messagesRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { firstMessage, clearFirstMessage } = useFirstMessageStore();
-  const { messages, addMessageToCache, isFetchedMessages } = useChatMessages(chatId);
+  const { messages, isFetchedMessages } = useChatMessages(chatId);
+  const addMessage = useChatMessagesStore((s) => s.addMessage);
   const [generatedResponse, setGeneratedResponse] = useState<Message | null>(null);
   const [responseError, setResponseError] = useState<string | null>(null);
   const [scrollType, setScrollType] = useState<ScrollType | null>(null);
@@ -88,16 +90,16 @@ export function Chat(props: Props) {
 
   const handleSubmit = useCallback(
     (values: typeof form.values) => {
-      addMessageToCache(createTextMessage(values.userText, MessageRole.USER));
+      addMessage(chatId, createTextMessage(values.userText, MessageRole.USER));
       if (generatedResponse) {
-        addMessageToCache(generatedResponse);
+        addMessage(chatId, generatedResponse);
         setGeneratedResponse(null);
       }
       handleNewMessage(values.userText);
       form.setValues({ userText: "" });
       setScrollType(ScrollType.NewMessage);
     },
-    [addMessageToCache, form, generatedResponse, handleNewMessage],
+    [addMessage, chatId, form, generatedResponse, handleNewMessage],
   );
 
   // Auto-send message when we're comming from a /new chat
@@ -123,15 +125,15 @@ export function Chat(props: Props) {
     setScrollType(ScrollType.LastMessage);
   }, [chatId, isFetchedMessages, messages]);
 
-  // Save last chat to query cache
+  // Save generated response to store before navigating away
   useEffect(() => {
     const unsubscribe = router.subscribe("onBeforeNavigate", () => {
       if (generatedResponse === null) return;
-      addMessageToCache(generatedResponse);
+      addMessage(chatId, generatedResponse);
       setGeneratedResponse(null);
     });
     return unsubscribe;
-  }, [chatId, generatedResponse, router, addMessageToCache]);
+  }, [chatId, generatedResponse, router, addMessage]);
 
   // Listen to scroll changes and save it to restore position later
   useEffect(() => {

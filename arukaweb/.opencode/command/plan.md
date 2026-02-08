@@ -1,6 +1,7 @@
 ---
 description: Starts a new feature from the roadmap
 agent: planner
+subtask: false
 ---
 
 User has selected the $ARGUMENTS feature from the plan
@@ -16,4 +17,4 @@ Inside the [feature-file] create two main sections:
 `### Tasks` where you should detail all the tasks needed to implement the [feature], the tasks should be as detailed as possible, assume the developer is an expert one so you don't need to explain many things.
 
 IMPORTANT: If some aspect of the [feature] is not clear to you, ask the user for clarifications, do this as many times as needed.
-
+When the [feature-file] is ready, let the user know that and we finish.

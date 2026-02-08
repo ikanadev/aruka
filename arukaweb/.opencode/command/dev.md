@@ -1,6 +1,7 @@
 ---
 description: Implements a feature
 agent: front
+subtask: false
 ---
 
 User has selected the $ARGUMENTS feature from the implementation remember it as [feature-id]
