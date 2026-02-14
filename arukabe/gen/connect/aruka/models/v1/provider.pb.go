@@ -144,8 +144,8 @@ const file_models_v1_provider_proto_rawDesc = "" +
 	"\bProvider\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12(\n" +
-	"\x06models\x18\x03 \x03(\v2\x10.models.v1.ModelR\x06modelsB\x8b\x01\n" +
-	"\rcom.models.v1B\rProviderProtoP\x01Z&arukabe/gen/connect/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
+	"\x06models\x18\x03 \x03(\v2\x10.models.v1.ModelR\x06modelsB\x91\x01\n" +
+	"\rcom.models.v1B\rProviderProtoP\x01Z,arukabe/gen/connect/aruka/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
 	"Models::V1b\x06proto3"
 
 var (

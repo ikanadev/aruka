@@ -27,8 +27,8 @@ const file_provider_v1_services_proto_rawDesc = "" +
 	"\x1aprovider/v1/services.proto\x12\vprovider.v1\x1a provider/v1/list_providers.proto\x1a(provider/v1/update_provider_models.proto2\xd6\x01\n" +
 	"\x0fProviderService\x12V\n" +
 	"\rListProviders\x12!.provider.v1.ListProvidersRequest\x1a\".provider.v1.ListProvidersResponse\x12k\n" +
-	"\x14UpdateProviderModels\x12(.provider.v1.UpdateProviderModelsRequest\x1a).provider.v1.UpdateProviderModelsResponseB\x99\x01\n" +
-	"\x0fcom.provider.v1B\rServicesProtoP\x01Z*arukabe/gen/connect/provider/v1;providerv1\xa2\x02\x03PXX\xaa\x02\vProvider.V1\xca\x02\vProvider\\V1\xe2\x02\x17Provider\\V1\\GPBMetadata\xea\x02\fProvider::V1b\x06proto3"
+	"\x14UpdateProviderModels\x12(.provider.v1.UpdateProviderModelsRequest\x1a).provider.v1.UpdateProviderModelsResponseB\x9f\x01\n" +
+	"\x0fcom.provider.v1B\rServicesProtoP\x01Z0arukabe/gen/connect/aruka/provider/v1;providerv1\xa2\x02\x03PXX\xaa\x02\vProvider.V1\xca\x02\vProvider\\V1\xe2\x02\x17Provider\\V1\\GPBMetadata\xea\x02\fProvider::V1b\x06proto3"
 
 var file_provider_v1_services_proto_goTypes = []any{
 	(*ListProvidersRequest)(nil),         // 0: provider.v1.ListProvidersRequest

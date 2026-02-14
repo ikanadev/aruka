@@ -30,8 +30,8 @@ const file_chat_v1_services_proto_rawDesc = "" +
 	"\aNewChat\x12\x17.chat.v1.NewChatRequest\x1a\x18.chat.v1.NewChatResponse\x12?\n" +
 	"\bEditChat\x12\x18.chat.v1.EditChatRequest\x1a\x19.chat.v1.EditChatResponse\x12K\n" +
 	"\fChatMessages\x12\x1c.chat.v1.ChatMessagesRequest\x1a\x1d.chat.v1.ChatMessagesResponse\x12J\n" +
-	"\vChatMessage\x12\x1b.chat.v1.ChatMessageRequest\x1a\x1c.chat.v1.ChatMessageResponse0\x01B}\n" +
-	"\vcom.chat.v1B\rServicesProtoP\x01Z\"arukabe/gen/connect/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
+	"\vChatMessage\x12\x1b.chat.v1.ChatMessageRequest\x1a\x1c.chat.v1.ChatMessageResponse0\x01B\x83\x01\n" +
+	"\vcom.chat.v1B\rServicesProtoP\x01Z(arukabe/gen/connect/aruka/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
 
 var file_chat_v1_services_proto_goTypes = []any{
 	(*ListChatsRequest)(nil),     // 0: chat.v1.ListChatsRequest

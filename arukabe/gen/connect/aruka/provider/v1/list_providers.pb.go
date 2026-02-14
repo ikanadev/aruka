@@ -7,7 +7,7 @@
 package providerv1
 
 import (
-	v1 "arukabe/gen/connect/models/v1"
+	v1 "arukabe/gen/connect/aruka/models/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -118,8 +118,8 @@ const file_provider_v1_list_providers_proto_rawDesc = "" +
 	"\x14ListProvidersRequest\x12.\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x16.models.v1.ModelStatusR\x06status\"J\n" +
 	"\x15ListProvidersResponse\x121\n" +
-	"\tproviders\x18\x01 \x03(\v2\x13.models.v1.ProviderR\tprovidersB\x9e\x01\n" +
-	"\x0fcom.provider.v1B\x12ListProvidersProtoP\x01Z*arukabe/gen/connect/provider/v1;providerv1\xa2\x02\x03PXX\xaa\x02\vProvider.V1\xca\x02\vProvider\\V1\xe2\x02\x17Provider\\V1\\GPBMetadata\xea\x02\fProvider::V1b\x06proto3"
+	"\tproviders\x18\x01 \x03(\v2\x13.models.v1.ProviderR\tprovidersB\xa4\x01\n" +
+	"\x0fcom.provider.v1B\x12ListProvidersProtoP\x01Z0arukabe/gen/connect/aruka/provider/v1;providerv1\xa2\x02\x03PXX\xaa\x02\vProvider.V1\xca\x02\vProvider\\V1\xe2\x02\x17Provider\\V1\\GPBMetadata\xea\x02\fProvider::V1b\x06proto3"
 
 var (
 	file_provider_v1_list_providers_proto_rawDescOnce sync.Once

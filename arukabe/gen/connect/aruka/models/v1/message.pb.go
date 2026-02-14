@@ -153,8 +153,8 @@ const file_models_v1_message_proto_rawDesc = "" +
 	"\vMessageRole\x12\x1c\n" +
 	"\x18MESSAGE_ROLE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11MESSAGE_ROLE_USER\x10\x01\x12\x1a\n" +
-	"\x16MESSAGE_ROLE_ASSISTANT\x10\x02B\x8a\x01\n" +
-	"\rcom.models.v1B\fMessageProtoP\x01Z&arukabe/gen/connect/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
+	"\x16MESSAGE_ROLE_ASSISTANT\x10\x02B\x90\x01\n" +
+	"\rcom.models.v1B\fMessageProtoP\x01Z,arukabe/gen/connect/aruka/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
 	"Models::V1b\x06proto3"
 
 var (

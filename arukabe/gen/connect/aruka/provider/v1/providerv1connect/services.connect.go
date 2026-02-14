@@ -5,7 +5,7 @@
 package providerv1connect
 
 import (
-	v1 "arukabe/gen/connect/provider/v1"
+	v1 "arukabe/gen/connect/aruka/provider/v1"
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"

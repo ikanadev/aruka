@@ -7,7 +7,7 @@
 package chatv1
 
 import (
-	v1 "arukabe/gen/connect/models/v1"
+	v1 "arukabe/gen/connect/aruka/models/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -127,8 +127,8 @@ const file_chat_v1_chat_message_proto_rawDesc = "" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x123\n" +
 	"\acontent\x18\x02 \x03(\v2\x19.models.v1.MessageContentR\acontent\"+\n" +
 	"\x13ChatMessageResponse\x12\x14\n" +
-	"\x05delta\x18\x01 \x01(\tR\x05deltaB\x80\x01\n" +
-	"\vcom.chat.v1B\x10ChatMessageProtoP\x01Z\"arukabe/gen/connect/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
+	"\x05delta\x18\x01 \x01(\tR\x05deltaB\x86\x01\n" +
+	"\vcom.chat.v1B\x10ChatMessageProtoP\x01Z(arukabe/gen/connect/aruka/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
 
 var (
 	file_chat_v1_chat_message_proto_rawDescOnce sync.Once

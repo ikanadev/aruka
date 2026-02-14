@@ -253,8 +253,8 @@ const file_models_v1_common_proto_rawDesc = "" +
 	"\n" +
 	"deleted_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\tdeletedAt\x88\x01\x01B\x0e\n" +
 	"\f_archived_atB\r\n" +
-	"\v_deleted_atB\x89\x01\n" +
-	"\rcom.models.v1B\vCommonProtoP\x01Z&arukabe/gen/connect/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
+	"\v_deleted_atB\x8f\x01\n" +
+	"\rcom.models.v1B\vCommonProtoP\x01Z,arukabe/gen/connect/aruka/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
 	"Models::V1b\x06proto3"
 
 var (

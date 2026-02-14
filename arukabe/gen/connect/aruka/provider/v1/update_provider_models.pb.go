@@ -108,8 +108,8 @@ const file_provider_v1_update_provider_models_proto_rawDesc = "" +
 	"(provider/v1/update_provider_models.proto\x12\vprovider.v1\"B\n" +
 	"\x1bUpdateProviderModelsRequest\x12#\n" +
 	"\rprovider_name\x18\x01 \x01(\tR\fproviderName\"\x1e\n" +
-	"\x1cUpdateProviderModelsResponseB\xa5\x01\n" +
-	"\x0fcom.provider.v1B\x19UpdateProviderModelsProtoP\x01Z*arukabe/gen/connect/provider/v1;providerv1\xa2\x02\x03PXX\xaa\x02\vProvider.V1\xca\x02\vProvider\\V1\xe2\x02\x17Provider\\V1\\GPBMetadata\xea\x02\fProvider::V1b\x06proto3"
+	"\x1cUpdateProviderModelsResponseB\xab\x01\n" +
+	"\x0fcom.provider.v1B\x19UpdateProviderModelsProtoP\x01Z0arukabe/gen/connect/aruka/provider/v1;providerv1\xa2\x02\x03PXX\xaa\x02\vProvider.V1\xca\x02\vProvider\\V1\xe2\x02\x17Provider\\V1\\GPBMetadata\xea\x02\fProvider::V1b\x06proto3"
 
 var (
 	file_provider_v1_update_provider_models_proto_rawDescOnce sync.Once

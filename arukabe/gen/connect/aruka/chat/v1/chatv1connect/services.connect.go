@@ -5,7 +5,7 @@
 package chatv1connect
 
 import (
-	v1 "arukabe/gen/connect/chat/v1"
+	v1 "arukabe/gen/connect/aruka/chat/v1"
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"

@@ -125,8 +125,8 @@ const file_models_v1_chat_proto_rawDesc = "" +
 	"\x06pinned\x18\x04 \x01(\bR\x06pinned\x12&\n" +
 	"\x05model\x18\x05 \x01(\v2\x10.models.v1.ModelR\x05model\x123\n" +
 	"\bprovider\x18\x06 \x01(\v2\x17.models.v1.ProviderBaseR\bprovider\x120\n" +
-	"\ttime_data\x18\a \x01(\v2\x13.models.v1.TimeDataR\btimeDataB\x87\x01\n" +
-	"\rcom.models.v1B\tChatProtoP\x01Z&arukabe/gen/connect/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
+	"\ttime_data\x18\a \x01(\v2\x13.models.v1.TimeDataR\btimeDataB\x8d\x01\n" +
+	"\rcom.models.v1B\tChatProtoP\x01Z,arukabe/gen/connect/aruka/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
 	"Models::V1b\x06proto3"
 
 var (

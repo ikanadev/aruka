@@ -71,8 +71,8 @@ const file_models_v1_message_text_content_proto_rawDesc = "" +
 	"\n" +
 	"$models/v1/message_text_content.proto\x12\tmodels.v1\"(\n" +
 	"\x12MessageTextContent\x12\x12\n" +
-	"\x04text\x18\x01 \x01(\tR\x04textB\x95\x01\n" +
-	"\rcom.models.v1B\x17MessageTextContentProtoP\x01Z&arukabe/gen/connect/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
+	"\x04text\x18\x01 \x01(\tR\x04textB\x9b\x01\n" +
+	"\rcom.models.v1B\x17MessageTextContentProtoP\x01Z,arukabe/gen/connect/aruka/models/v1;modelsv1\xa2\x02\x03MXX\xaa\x02\tModels.V1\xca\x02\tModels\\V1\xe2\x02\x15Models\\V1\\GPBMetadata\xea\x02\n" +
 	"Models::V1b\x06proto3"
 
 var (
