@@ -1,11 +1,16 @@
 package service
 
-import "arukabe/core/provider/repository"
+import (
+	"arukabe/gen/sqlc"
+
+	"github.com/anthropics/anthropic-sdk-go"
+)
 
 type ProviderService struct {
-	repo *repository.ProviderRepository
+	db *sqlc.Queries
+	antClient *anthropic.Client
 }
 
-func NewProviderService(repo *repository.ProviderRepository) *ProviderService {
-	return &ProviderService{repo}
+func NewProviderService(db *sqlc.Queries, antClient *anthropic.Client) *ProviderService {
+	return &ProviderService{db, antClient}
 }

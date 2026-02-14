@@ -2,9 +2,8 @@ package provider
 
 import (
 	"arukabe/core/provider/handler"
-	"arukabe/core/provider/repository"
 	"arukabe/core/provider/service"
-	"arukabe/gen/connect/provider/v1/providerv1connect"
+	"arukabe/gen/connect/aruka/provider/v1/providerv1connect"
 	"arukabe/gen/sqlc"
 	"net/http"
 
@@ -16,8 +15,7 @@ func RegisterProviderService(
 	db *sqlc.Queries,
 	antClient *anthropic.Client,
 ) {
-	repo := repository.NewProviderRepository(db, antClient)
-	service := service.NewProviderService(repo)
+	service := service.NewProviderService(db, antClient)
 	providerHandler := handler.NewProviderHandler(service)
 	path, handler := providerv1connect.NewProviderServiceHandler(providerHandler)
 	mux.Handle(path, handler)

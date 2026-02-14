@@ -1,25 +1,27 @@
-package repository
+package anthropicmsg
 
 import (
 	"arukabe/core/common/mappers"
 	"arukabe/core/common/types"
 	"arukabe/gen/sqlc"
 	"context"
-	"errors"
+	"fmt"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/packages/param"
 	"github.com/google/uuid"
 )
 
-func (cr *ChatRepository) HandleAnthropicChatMessage(
+func HandleAnthropicChatMessage(
 	ctx context.Context,
 	chat sqlc.Chat,
 	model sqlc.Model,
 	messages []types.Message, // Last message is the user message
+	antClient *anthropic.Client,
+	db *sqlc.Queries,
 ) (<-chan types.ChatStreamResult, error) {
 	if len(messages) == 0 {
-		return nil, errors.New("no messages provided")
+		return nil, fmt.Errorf("no messages provided")
 	}
 	anthropicMessages, err := messagesToAnthropicMessages(messages)
 	if err != nil {
@@ -34,7 +36,7 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 	if len(chat.Prompt) > 0 {
 		messageParams.System = []anthropic.TextBlockParam{{Text: chat.Prompt}}
 	}
-	stream := cr.antClient.Messages.NewStreaming(ctx, messageParams)
+	stream := antClient.Messages.NewStreaming(ctx, messageParams)
 
 	resultChan := make(chan types.ChatStreamResult)
 
@@ -74,7 +76,7 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 			}
 			return
 		}
-		err = cr.saveUserMessageAndAnthropicResponse(ctx, chat.ID, messages[len(messages)-1], anthropicResponse)
+		err = saveUserMessageAndAnthropicResponse(ctx, chat.ID, messages[len(messages)-1], anthropicResponse, db)
 		if err != nil {
 			select {
 			case resultChan <- types.ChatStreamResult{Err: err}:
@@ -87,7 +89,13 @@ func (cr *ChatRepository) HandleAnthropicChatMessage(
 	return resultChan, nil
 }
 
-func (cr *ChatRepository) saveUserMessageAndAnthropicResponse(ctx context.Context, chatID uuid.UUID, userMsg types.Message, response anthropic.Message) error {
+func saveUserMessageAndAnthropicResponse(
+	ctx context.Context,
+	chatID uuid.UUID,
+	userMsg types.Message,
+	response anthropic.Message,
+	db *sqlc.Queries,
+) error {
 	var responseSections types.MessageSections
 	err := responseSections.FromAnthropicMessageSections(response.Content)
 	if err != nil {
@@ -131,7 +139,7 @@ func (cr *ChatRepository) saveUserMessageAndAnthropicResponse(ctx context.Contex
 		},
 	}
 
-	_, err = cr.db.SaveMessages(ctx, toSave)
+	_, err = db.SaveMessages(ctx, toSave)
 	return err
 }
 

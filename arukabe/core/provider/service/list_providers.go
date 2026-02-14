@@ -3,21 +3,47 @@ package service
 import (
 	"arukabe/core/common/mappers"
 	"arukabe/core/common/types"
-	modelsv1 "arukabe/gen/connect/models/v1"
-	providerv1 "arukabe/gen/connect/provider/v1"
+	modelsv1 "arukabe/gen/connect/aruka/models/v1"
+	providerv1 "arukabe/gen/connect/aruka/provider/v1"
+	"arukabe/gen/sqlc"
 	"context"
+
+	"connectrpc.com/connect"
+	"github.com/google/uuid"
 )
 
 func (ps *ProviderService) ListProviders(
 	ctx context.Context,
 	req *providerv1.ListProvidersRequest,
 ) (*providerv1.ListProvidersResponse, error) {
-	dbProviders, err := ps.repo.ListProviders(ctx, mappers.ModelStatusToDB(req.Status))
+	status := mappers.ModelStatusToDB(req.Status)
+	dbRows, err := ps.db.ListProviders(ctx, status)
 	if err != nil {
-		return nil, err
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
+	providerMap := make(map[uuid.UUID]types.ProviderWithModels)
+	for _, row := range dbRows {
+		if _, ok := providerMap[row.Provider.ID]; !ok {
+			providerMap[row.Provider.ID] = types.ProviderWithModels{
+				Provider: sqlc.Provider{
+					ID:   row.Provider.ID,
+					Name: row.Provider.Name,
+				},
+				Models: []sqlc.Model{},
+			}
+		}
+
+		provider := providerMap[row.Provider.ID]
+		provider.Models = append(provider.Models, row.Model)
+		providerMap[row.Provider.ID] = provider
+	}
+	providers := make([]types.ProviderWithModels, 0, len(providerMap))
+	for _, v := range providerMap {
+		providers = append(providers, v)
+	}
+
 	resp := providerv1.ListProvidersResponse{
-		Providers: mapProvidersToProto(dbProviders),
+		Providers: mapProvidersToProto(providers),
 	}
 	return &resp, nil
 }

@@ -1,12 +1,16 @@
 package service
 
-import "arukabe/core/chat/repository"
+import (
+	"arukabe/gen/sqlc"
 
+	"github.com/anthropics/anthropic-sdk-go"
+)
 
 type ChatService struct {
-	repo *repository.ChatRepository
+	db *sqlc.Queries
+	antClient *anthropic.Client
 }
 
-func NewChatService(repo *repository.ChatRepository) *ChatService {
-	return &ChatService{repo}
+func NewChatService(db *sqlc.Queries, antClient *anthropic.Client) *ChatService {
+	return &ChatService{db, antClient}
 }

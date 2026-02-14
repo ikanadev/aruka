@@ -2,7 +2,7 @@ package mappers
 
 import (
 	"arukabe/core/common/types"
-	modelsv1 "arukabe/gen/connect/models/v1"
+	modelsv1 "arukabe/gen/connect/aruka/models/v1"
 	"arukabe/gen/sqlc"
 
 	"google.golang.org/protobuf/types/known/timestamppb"

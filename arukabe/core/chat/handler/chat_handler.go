@@ -2,7 +2,7 @@ package handler
 
 import (
 	"arukabe/core/chat/service"
-	chatv1 "arukabe/gen/connect/chat/v1"
+	chatv1 "arukabe/gen/connect/aruka/chat/v1"
 	"context"
 
 	"connectrpc.com/connect"

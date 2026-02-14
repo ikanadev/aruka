@@ -2,7 +2,7 @@ package handler
 
 import (
 	"arukabe/core/provider/service"
-	providerv1 "arukabe/gen/connect/provider/v1"
+	providerv1 "arukabe/gen/connect/aruka/provider/v1"
 	"context"
 )
 

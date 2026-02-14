@@ -2,15 +2,16 @@ package service
 
 import (
 	"arukabe/core/common/mappers"
-	chatv1 "arukabe/gen/connect/chat/v1"
-	modelsv1 "arukabe/gen/connect/models/v1"
+	chatv1 "arukabe/gen/connect/aruka/chat/v1"
+	modelsv1 "arukabe/gen/connect/aruka/models/v1"
 	"arukabe/gen/sqlc"
 	"context"
 
+	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *ChatService) ListChats(ctx context.Context, req *chatv1.ListChatsRequest) (*chatv1.ListChatsResponse, error) {
+func (cs *ChatService) ListChats(ctx context.Context, req *chatv1.ListChatsRequest) (*chatv1.ListChatsResponse, error) {
 	// Set defaults
 	page := uint32(1)
 	limit := uint32(20)
@@ -28,15 +29,24 @@ func (s *ChatService) ListChats(ctx context.Context, req *chatv1.ListChatsReques
 	// Calculate offset
 	offset := int32((page - 1) * limit)
 
-	// Fetch chats with pagination
-	dbChats, totalCount, err := s.repo.GetAllChats(ctx, int32(limit), offset)
+	// Get total count
+	totalCount, err := cs.db.CountChats(ctx)
 	if err != nil {
-		return nil, err
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Get paginated chats
+	dbRows, err := cs.db.GetAllChats(ctx, sqlc.GetAllChatsParams{
+		Limit: int32(limit),
+		Offset: offset,
+	})
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	// Convert to protobuf
-	chats := make([]*modelsv1.Chat, 0, len(dbChats))
-	for _, row := range dbChats {
+	chats := make([]*modelsv1.Chat, 0, len(dbRows))
+	for _, row := range dbRows {
 		chats = append(chats, chatToPB(row.Chat, row.Model, row.Provider))
 	}
 

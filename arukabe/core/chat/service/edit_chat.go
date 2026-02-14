@@ -1,13 +1,14 @@
 package service
 
 import (
-	"arukabe/core/chat/repository"
-	chatv1 "arukabe/gen/connect/chat/v1"
+	chatv1 "arukabe/gen/connect/aruka/chat/v1"
+	"arukabe/gen/sqlc"
 	"context"
 	"fmt"
 
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func (cs *ChatService) EditChat(
@@ -27,21 +28,34 @@ func (cs *ChatService) EditChat(
 	}
 
 	// Prepare data for repository - directly use pointers from request
-	data := repository.EditChatData{
+	data := sqlc.UpdateChatParams{
 		ChatID: chatID,
-		Title:  req.Title,
-		Prompt: req.Prompt,
-		Pinned: req.Pinned,
+	}
+	if req.Title != nil {
+		data.Title = pgtype.Text{String: *req.Title, Valid: true}
+	}
+	if req.Prompt != nil {
+		data.Prompt = pgtype.Text{String: *req.Prompt, Valid: true}
+	}
+
+	if req.Pinned != nil {
+		data.Pinned = pgtype.Bool{Bool: *req.Pinned, Valid: true}
 	}
 
 	// Update the chat
-	dbChat, dbModel, dbProvider, err := cs.repo.EditChat(ctx, data)
+	err = cs.db.UpdateChat(ctx, data)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Get the updated chat with model and provider info
+	dbRow, err := cs.db.GetChatProviderModel(ctx, data.ChatID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	// Build response using helper function
 	return &chatv1.EditChatResponse{
-		Chat: chatToPB(dbChat, dbModel, dbProvider),
+		Chat: chatToPB(dbRow.Chat, dbRow.Model, dbRow.Provider),
 	}, nil
 }

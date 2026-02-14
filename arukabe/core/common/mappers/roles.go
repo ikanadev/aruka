@@ -1,7 +1,7 @@
 package mappers
 
 import (
-	modelsv1 "arukabe/gen/connect/models/v1"
+	modelsv1 "arukabe/gen/connect/aruka/models/v1"
 	"arukabe/gen/sqlc"
 	"fmt"
 
