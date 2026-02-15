@@ -50,11 +50,7 @@ func (c *ChatHandler) ChatMessages(
 	ctx context.Context,
 	req *chatv1.ChatMessagesRequest,
 ) (*chatv1.ChatMessagesResponse, error) {
-	resp, err := c.service.ChatMessages(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
+	return c.service.ChatMessages(ctx, req)
 }
 
 // EditChat implements chatv1connect.ChatServiceHandler.
@@ -62,11 +58,7 @@ func (c *ChatHandler) EditChat(
 	ctx context.Context,
 	req *chatv1.EditChatRequest,
 ) (*chatv1.EditChatResponse, error) {
-	resp, err := c.service.EditChat(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
+	return c.service.EditChat(ctx, req)
 }
 
 // ListChats implements chatv1connect.ChatServiceHandler.
@@ -74,11 +66,7 @@ func (c *ChatHandler) ListChats(
 	ctx context.Context,
 	req *chatv1.ListChatsRequest,
 ) (*chatv1.ListChatsResponse, error) {
-	resp, err := c.service.ListChats(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
+	return c.service.ListChats(ctx, req)
 }
 
 // NewChat implements chatv1connect.ChatServiceHandler.
@@ -86,9 +74,13 @@ func (c *ChatHandler) NewChat(
 	ctx context.Context,
 	req *chatv1.NewChatRequest,
 ) (*chatv1.NewChatResponse, error) {
-	resp, err := c.service.NewChat(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
+	return c.service.NewChat(ctx, req)
+}
+
+// AutoChatTitleUpdate implements chatv1connect.ChatServiceHandler.
+func (c *ChatHandler) AutoChatTitleUpdate(
+	ctx context.Context,
+	req *chatv1.AutoChatTitleUpdateRequest,
+) (*chatv1.AutoChatTitleUpdateResponse, error) {
+	return c.service.AutoChatTitleUpdate(ctx, req)
 }

@@ -4,6 +4,8 @@
 
 import type { GenFile, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { AutoChatTitleUpdateRequestSchema, AutoChatTitleUpdateResponseSchema } from "./auto_chat_title_update_pb";
+import { file_chat_v1_auto_chat_title_update } from "./auto_chat_title_update_pb";
 import type { ChatMessageRequestSchema, ChatMessageResponseSchema } from "./chat_message_pb";
 import { file_chat_v1_chat_message } from "./chat_message_pb";
 import type { ChatMessagesRequestSchema, ChatMessagesResponseSchema } from "./chat_messages_pb";
@@ -19,7 +21,7 @@ import { file_chat_v1_new_chat } from "./new_chat_pb";
  * Describes the file chat/v1/services.proto.
  */
 export const file_chat_v1_services: GenFile = /*@__PURE__*/
-  fileDesc("ChZjaGF0L3YxL3NlcnZpY2VzLnByb3RvEgdjaGF0LnYxMukCCgtDaGF0U2VydmljZRJCCglMaXN0Q2hhdHMSGS5jaGF0LnYxLkxpc3RDaGF0c1JlcXVlc3QaGi5jaGF0LnYxLkxpc3RDaGF0c1Jlc3BvbnNlEjwKB05ld0NoYXQSFy5jaGF0LnYxLk5ld0NoYXRSZXF1ZXN0GhguY2hhdC52MS5OZXdDaGF0UmVzcG9uc2USPwoIRWRpdENoYXQSGC5jaGF0LnYxLkVkaXRDaGF0UmVxdWVzdBoZLmNoYXQudjEuRWRpdENoYXRSZXNwb25zZRJLCgxDaGF0TWVzc2FnZXMSHC5jaGF0LnYxLkNoYXRNZXNzYWdlc1JlcXVlc3QaHS5jaGF0LnYxLkNoYXRNZXNzYWdlc1Jlc3BvbnNlEkoKC0NoYXRNZXNzYWdlEhsuY2hhdC52MS5DaGF0TWVzc2FnZVJlcXVlc3QaHC5jaGF0LnYxLkNoYXRNZXNzYWdlUmVzcG9uc2UwAUKDAQoLY29tLmNoYXQudjFCDVNlcnZpY2VzUHJvdG9QAVooYXJ1a2FiZS9nZW4vY29ubmVjdC9hcnVrYS9jaGF0L3YxO2NoYXR2MaICA0NYWKoCB0NoYXQuVjHKAgdDaGF0XFYx4gITQ2hhdFxWMVxHUEJNZXRhZGF0YeoCCENoYXQ6OlYxYgZwcm90bzM", [file_chat_v1_chat_message, file_chat_v1_chat_messages, file_chat_v1_edit_chat, file_chat_v1_list_chats, file_chat_v1_new_chat]);
+  fileDesc("ChZjaGF0L3YxL3NlcnZpY2VzLnByb3RvEgdjaGF0LnYxMssDCgtDaGF0U2VydmljZRJCCglMaXN0Q2hhdHMSGS5jaGF0LnYxLkxpc3RDaGF0c1JlcXVlc3QaGi5jaGF0LnYxLkxpc3RDaGF0c1Jlc3BvbnNlEjwKB05ld0NoYXQSFy5jaGF0LnYxLk5ld0NoYXRSZXF1ZXN0GhguY2hhdC52MS5OZXdDaGF0UmVzcG9uc2USPwoIRWRpdENoYXQSGC5jaGF0LnYxLkVkaXRDaGF0UmVxdWVzdBoZLmNoYXQudjEuRWRpdENoYXRSZXNwb25zZRJLCgxDaGF0TWVzc2FnZXMSHC5jaGF0LnYxLkNoYXRNZXNzYWdlc1JlcXVlc3QaHS5jaGF0LnYxLkNoYXRNZXNzYWdlc1Jlc3BvbnNlEkoKC0NoYXRNZXNzYWdlEhsuY2hhdC52MS5DaGF0TWVzc2FnZVJlcXVlc3QaHC5jaGF0LnYxLkNoYXRNZXNzYWdlUmVzcG9uc2UwARJgChNBdXRvQ2hhdFRpdGxlVXBkYXRlEiMuY2hhdC52MS5BdXRvQ2hhdFRpdGxlVXBkYXRlUmVxdWVzdBokLmNoYXQudjEuQXV0b0NoYXRUaXRsZVVwZGF0ZVJlc3BvbnNlQoMBCgtjb20uY2hhdC52MUINU2VydmljZXNQcm90b1ABWihhcnVrYWJlL2dlbi9jb25uZWN0L2FydWthL2NoYXQvdjE7Y2hhdHYxogIDQ1hYqgIHQ2hhdC5WMcoCB0NoYXRcVjHiAhNDaGF0XFYxXEdQQk1ldGFkYXRh6gIIQ2hhdDo6VjFiBnByb3RvMw", [file_chat_v1_auto_chat_title_update, file_chat_v1_chat_message, file_chat_v1_chat_messages, file_chat_v1_edit_chat, file_chat_v1_list_chats, file_chat_v1_new_chat]);
 
 /**
  * @generated from service chat.v1.ChatService
@@ -64,6 +66,14 @@ export const ChatService: GenService<{
     methodKind: "server_streaming";
     input: typeof ChatMessageRequestSchema;
     output: typeof ChatMessageResponseSchema;
+  },
+  /**
+   * @generated from rpc chat.v1.ChatService.AutoChatTitleUpdate
+   */
+  autoChatTitleUpdate: {
+    methodKind: "unary";
+    input: typeof AutoChatTitleUpdateRequestSchema;
+    output: typeof AutoChatTitleUpdateResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_chat_v1_services, 0);

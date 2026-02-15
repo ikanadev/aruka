@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package chat.v1;
+
+message AutoChatTitleUpdateRequest {
+  string chat_id = 1;
+}
+
+message AutoChatTitleUpdateResponse {
+  string title = 1;
+}

@@ -11,6 +11,8 @@ const (
 	ProviderMeta      ProviderName = "Meta"
 )
 
+const TitleGenerationModel = "claude-3-5-haiku-20241022"
+
 func ToProviderName(name string) (ProviderName, error) {
 	switch name {
 	case string(ProviderOpenAI):

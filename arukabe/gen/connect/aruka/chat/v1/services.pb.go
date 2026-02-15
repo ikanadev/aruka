@@ -24,43 +24,48 @@ var File_chat_v1_services_proto protoreflect.FileDescriptor
 
 const file_chat_v1_services_proto_rawDesc = "" +
 	"\n" +
-	"\x16chat/v1/services.proto\x12\achat.v1\x1a\x1achat/v1/chat_message.proto\x1a\x1bchat/v1/chat_messages.proto\x1a\x17chat/v1/edit_chat.proto\x1a\x18chat/v1/list_chats.proto\x1a\x16chat/v1/new_chat.proto2\xe9\x02\n" +
+	"\x16chat/v1/services.proto\x12\achat.v1\x1a$chat/v1/auto_chat_title_update.proto\x1a\x1achat/v1/chat_message.proto\x1a\x1bchat/v1/chat_messages.proto\x1a\x17chat/v1/edit_chat.proto\x1a\x18chat/v1/list_chats.proto\x1a\x16chat/v1/new_chat.proto2\xcb\x03\n" +
 	"\vChatService\x12B\n" +
 	"\tListChats\x12\x19.chat.v1.ListChatsRequest\x1a\x1a.chat.v1.ListChatsResponse\x12<\n" +
 	"\aNewChat\x12\x17.chat.v1.NewChatRequest\x1a\x18.chat.v1.NewChatResponse\x12?\n" +
 	"\bEditChat\x12\x18.chat.v1.EditChatRequest\x1a\x19.chat.v1.EditChatResponse\x12K\n" +
 	"\fChatMessages\x12\x1c.chat.v1.ChatMessagesRequest\x1a\x1d.chat.v1.ChatMessagesResponse\x12J\n" +
-	"\vChatMessage\x12\x1b.chat.v1.ChatMessageRequest\x1a\x1c.chat.v1.ChatMessageResponse0\x01B\x83\x01\n" +
+	"\vChatMessage\x12\x1b.chat.v1.ChatMessageRequest\x1a\x1c.chat.v1.ChatMessageResponse0\x01\x12`\n" +
+	"\x13AutoChatTitleUpdate\x12#.chat.v1.AutoChatTitleUpdateRequest\x1a$.chat.v1.AutoChatTitleUpdateResponseB\x83\x01\n" +
 	"\vcom.chat.v1B\rServicesProtoP\x01Z(arukabe/gen/connect/aruka/chat/v1;chatv1\xa2\x02\x03CXX\xaa\x02\aChat.V1\xca\x02\aChat\\V1\xe2\x02\x13Chat\\V1\\GPBMetadata\xea\x02\bChat::V1b\x06proto3"
 
 var file_chat_v1_services_proto_goTypes = []any{
-	(*ListChatsRequest)(nil),     // 0: chat.v1.ListChatsRequest
-	(*NewChatRequest)(nil),       // 1: chat.v1.NewChatRequest
-	(*EditChatRequest)(nil),      // 2: chat.v1.EditChatRequest
-	(*ChatMessagesRequest)(nil),  // 3: chat.v1.ChatMessagesRequest
-	(*ChatMessageRequest)(nil),   // 4: chat.v1.ChatMessageRequest
-	(*ListChatsResponse)(nil),    // 5: chat.v1.ListChatsResponse
-	(*NewChatResponse)(nil),      // 6: chat.v1.NewChatResponse
-	(*EditChatResponse)(nil),     // 7: chat.v1.EditChatResponse
-	(*ChatMessagesResponse)(nil), // 8: chat.v1.ChatMessagesResponse
-	(*ChatMessageResponse)(nil),  // 9: chat.v1.ChatMessageResponse
+	(*ListChatsRequest)(nil),            // 0: chat.v1.ListChatsRequest
+	(*NewChatRequest)(nil),              // 1: chat.v1.NewChatRequest
+	(*EditChatRequest)(nil),             // 2: chat.v1.EditChatRequest
+	(*ChatMessagesRequest)(nil),         // 3: chat.v1.ChatMessagesRequest
+	(*ChatMessageRequest)(nil),          // 4: chat.v1.ChatMessageRequest
+	(*AutoChatTitleUpdateRequest)(nil),  // 5: chat.v1.AutoChatTitleUpdateRequest
+	(*ListChatsResponse)(nil),           // 6: chat.v1.ListChatsResponse
+	(*NewChatResponse)(nil),             // 7: chat.v1.NewChatResponse
+	(*EditChatResponse)(nil),            // 8: chat.v1.EditChatResponse
+	(*ChatMessagesResponse)(nil),        // 9: chat.v1.ChatMessagesResponse
+	(*ChatMessageResponse)(nil),         // 10: chat.v1.ChatMessageResponse
+	(*AutoChatTitleUpdateResponse)(nil), // 11: chat.v1.AutoChatTitleUpdateResponse
 }
 var file_chat_v1_services_proto_depIdxs = []int32{
-	0, // 0: chat.v1.ChatService.ListChats:input_type -> chat.v1.ListChatsRequest
-	1, // 1: chat.v1.ChatService.NewChat:input_type -> chat.v1.NewChatRequest
-	2, // 2: chat.v1.ChatService.EditChat:input_type -> chat.v1.EditChatRequest
-	3, // 3: chat.v1.ChatService.ChatMessages:input_type -> chat.v1.ChatMessagesRequest
-	4, // 4: chat.v1.ChatService.ChatMessage:input_type -> chat.v1.ChatMessageRequest
-	5, // 5: chat.v1.ChatService.ListChats:output_type -> chat.v1.ListChatsResponse
-	6, // 6: chat.v1.ChatService.NewChat:output_type -> chat.v1.NewChatResponse
-	7, // 7: chat.v1.ChatService.EditChat:output_type -> chat.v1.EditChatResponse
-	8, // 8: chat.v1.ChatService.ChatMessages:output_type -> chat.v1.ChatMessagesResponse
-	9, // 9: chat.v1.ChatService.ChatMessage:output_type -> chat.v1.ChatMessageResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: chat.v1.ChatService.ListChats:input_type -> chat.v1.ListChatsRequest
+	1,  // 1: chat.v1.ChatService.NewChat:input_type -> chat.v1.NewChatRequest
+	2,  // 2: chat.v1.ChatService.EditChat:input_type -> chat.v1.EditChatRequest
+	3,  // 3: chat.v1.ChatService.ChatMessages:input_type -> chat.v1.ChatMessagesRequest
+	4,  // 4: chat.v1.ChatService.ChatMessage:input_type -> chat.v1.ChatMessageRequest
+	5,  // 5: chat.v1.ChatService.AutoChatTitleUpdate:input_type -> chat.v1.AutoChatTitleUpdateRequest
+	6,  // 6: chat.v1.ChatService.ListChats:output_type -> chat.v1.ListChatsResponse
+	7,  // 7: chat.v1.ChatService.NewChat:output_type -> chat.v1.NewChatResponse
+	8,  // 8: chat.v1.ChatService.EditChat:output_type -> chat.v1.EditChatResponse
+	9,  // 9: chat.v1.ChatService.ChatMessages:output_type -> chat.v1.ChatMessagesResponse
+	10, // 10: chat.v1.ChatService.ChatMessage:output_type -> chat.v1.ChatMessageResponse
+	11, // 11: chat.v1.ChatService.AutoChatTitleUpdate:output_type -> chat.v1.AutoChatTitleUpdateResponse
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_chat_v1_services_proto_init() }
@@ -68,6 +73,7 @@ func file_chat_v1_services_proto_init() {
 	if File_chat_v1_services_proto != nil {
 		return
 	}
+	file_chat_v1_auto_chat_title_update_proto_init()
 	file_chat_v1_chat_message_proto_init()
 	file_chat_v1_chat_messages_proto_init()
 	file_chat_v1_edit_chat_proto_init()

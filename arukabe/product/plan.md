@@ -1,0 +1,2 @@
+### 001: Chat title on creation
+Right now, when we create a chat, we are saving it without a title. We want to use a small model to do that `claude-3-5-haiku-20241022`. We have a auto title update service that needs to be implemented, do that. The chat name needs to be short and it has to help what was the chat about, it receives the chat id, you need to get all the messages of that chat, grab the text content and ask the model for a good and nice name for the chat. If the chat has zero messages don't ask the llm but return a success empty title for the chat.

@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package chat.v1;
 
+import "chat/v1/auto_chat_title_update.proto";
 import "chat/v1/chat_message.proto";
 import "chat/v1/chat_messages.proto";
 import "chat/v1/edit_chat.proto";
@@ -14,4 +15,5 @@ service ChatService {
   rpc EditChat(EditChatRequest) returns (EditChatResponse);
   rpc ChatMessages(ChatMessagesRequest) returns (ChatMessagesResponse);
   rpc ChatMessage(ChatMessageRequest) returns (stream ChatMessageResponse);
+  rpc AutoChatTitleUpdate(AutoChatTitleUpdateRequest) returns (AutoChatTitleUpdateResponse);
 }

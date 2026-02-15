@@ -44,6 +44,9 @@ const (
 	ChatServiceChatMessagesProcedure = "/chat.v1.ChatService/ChatMessages"
 	// ChatServiceChatMessageProcedure is the fully-qualified name of the ChatService's ChatMessage RPC.
 	ChatServiceChatMessageProcedure = "/chat.v1.ChatService/ChatMessage"
+	// ChatServiceAutoChatTitleUpdateProcedure is the fully-qualified name of the ChatService's
+	// AutoChatTitleUpdate RPC.
+	ChatServiceAutoChatTitleUpdateProcedure = "/chat.v1.ChatService/AutoChatTitleUpdate"
 )
 
 // ChatServiceClient is a client for the chat.v1.ChatService service.
@@ -53,6 +56,7 @@ type ChatServiceClient interface {
 	EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error)
 	ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error)
 	ChatMessage(context.Context, *v1.ChatMessageRequest) (*connect.ServerStreamForClient[v1.ChatMessageResponse], error)
+	AutoChatTitleUpdate(context.Context, *v1.AutoChatTitleUpdateRequest) (*v1.AutoChatTitleUpdateResponse, error)
 }
 
 // NewChatServiceClient constructs a client for the chat.v1.ChatService service. By default, it uses
@@ -96,16 +100,23 @@ func NewChatServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(chatServiceMethods.ByName("ChatMessage")),
 			connect.WithClientOptions(opts...),
 		),
+		autoChatTitleUpdate: connect.NewClient[v1.AutoChatTitleUpdateRequest, v1.AutoChatTitleUpdateResponse](
+			httpClient,
+			baseURL+ChatServiceAutoChatTitleUpdateProcedure,
+			connect.WithSchema(chatServiceMethods.ByName("AutoChatTitleUpdate")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // chatServiceClient implements ChatServiceClient.
 type chatServiceClient struct {
-	listChats    *connect.Client[v1.ListChatsRequest, v1.ListChatsResponse]
-	newChat      *connect.Client[v1.NewChatRequest, v1.NewChatResponse]
-	editChat     *connect.Client[v1.EditChatRequest, v1.EditChatResponse]
-	chatMessages *connect.Client[v1.ChatMessagesRequest, v1.ChatMessagesResponse]
-	chatMessage  *connect.Client[v1.ChatMessageRequest, v1.ChatMessageResponse]
+	listChats           *connect.Client[v1.ListChatsRequest, v1.ListChatsResponse]
+	newChat             *connect.Client[v1.NewChatRequest, v1.NewChatResponse]
+	editChat            *connect.Client[v1.EditChatRequest, v1.EditChatResponse]
+	chatMessages        *connect.Client[v1.ChatMessagesRequest, v1.ChatMessagesResponse]
+	chatMessage         *connect.Client[v1.ChatMessageRequest, v1.ChatMessageResponse]
+	autoChatTitleUpdate *connect.Client[v1.AutoChatTitleUpdateRequest, v1.AutoChatTitleUpdateResponse]
 }
 
 // ListChats calls chat.v1.ChatService.ListChats.
@@ -149,6 +160,15 @@ func (c *chatServiceClient) ChatMessage(ctx context.Context, req *v1.ChatMessage
 	return c.chatMessage.CallServerStream(ctx, connect.NewRequest(req))
 }
 
+// AutoChatTitleUpdate calls chat.v1.ChatService.AutoChatTitleUpdate.
+func (c *chatServiceClient) AutoChatTitleUpdate(ctx context.Context, req *v1.AutoChatTitleUpdateRequest) (*v1.AutoChatTitleUpdateResponse, error) {
+	response, err := c.autoChatTitleUpdate.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
+}
+
 // ChatServiceHandler is an implementation of the chat.v1.ChatService service.
 type ChatServiceHandler interface {
 	ListChats(context.Context, *v1.ListChatsRequest) (*v1.ListChatsResponse, error)
@@ -156,6 +176,7 @@ type ChatServiceHandler interface {
 	EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error)
 	ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error)
 	ChatMessage(context.Context, *v1.ChatMessageRequest, *connect.ServerStream[v1.ChatMessageResponse]) error
+	AutoChatTitleUpdate(context.Context, *v1.AutoChatTitleUpdateRequest) (*v1.AutoChatTitleUpdateResponse, error)
 }
 
 // NewChatServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -195,6 +216,12 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(chatServiceMethods.ByName("ChatMessage")),
 		connect.WithHandlerOptions(opts...),
 	)
+	chatServiceAutoChatTitleUpdateHandler := connect.NewUnaryHandlerSimple(
+		ChatServiceAutoChatTitleUpdateProcedure,
+		svc.AutoChatTitleUpdate,
+		connect.WithSchema(chatServiceMethods.ByName("AutoChatTitleUpdate")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/chat.v1.ChatService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ChatServiceListChatsProcedure:
@@ -207,6 +234,8 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 			chatServiceChatMessagesHandler.ServeHTTP(w, r)
 		case ChatServiceChatMessageProcedure:
 			chatServiceChatMessageHandler.ServeHTTP(w, r)
+		case ChatServiceAutoChatTitleUpdateProcedure:
+			chatServiceAutoChatTitleUpdateHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -234,4 +263,8 @@ func (UnimplementedChatServiceHandler) ChatMessages(context.Context, *v1.ChatMes
 
 func (UnimplementedChatServiceHandler) ChatMessage(context.Context, *v1.ChatMessageRequest, *connect.ServerStream[v1.ChatMessageResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.ChatMessage is not implemented"))
+}
+
+func (UnimplementedChatServiceHandler) AutoChatTitleUpdate(context.Context, *v1.AutoChatTitleUpdateRequest) (*v1.AutoChatTitleUpdateResponse, error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.AutoChatTitleUpdate is not implemented"))
 }
