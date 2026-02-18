@@ -1,11 +1,13 @@
+import { AddIcon } from "@assets/icons/add";
 import { useChats } from "@features/chats/data/use-chats";
+import { useUpdateChatTitle } from "@features/chats/data/use-update-chat-title";
 import { Box, Button, Stack, Title } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import { ChatNavbarLink } from "../ChatNavbarLink/ChatNavbarLink";
-import { AddIcon } from "@assets/icons/add";
 
 export function ChatNavbar() {
   const { chats } = useChats();
+  const { updateChatTitle, updatingChatTitle, updatingChatId } = useUpdateChatTitle();
 
   return (
     <Stack p="sm">
@@ -26,6 +28,8 @@ export function ChatNavbar() {
             chatId={chat.id}
             providerName={chat.provider?.name}
             text={chat.title}
+            onUpdateTitle={() => updateChatTitle(chat.id)}
+            updatingTitle={updatingChatTitle && updatingChatId === chat.id}
           />
         ))}
       </Stack>

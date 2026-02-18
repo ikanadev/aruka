@@ -1,14 +1,17 @@
 import { AnthropicIcon } from "@assets/brands/AnthropicIcon";
 import { GeminiIcon } from "@assets/brands/GeminiIcon";
 import { OpenAIIcon } from "@assets/brands/OpenAIIcon";
-import { Button } from "@mantine/core";
+import { DotsVerticalIcon } from "@assets/icons/dots-vertical";
+import { ActionIcon, Button, Group, Loader, Menu } from "@mantine/core";
 import { Link, useMatchRoute } from "@tanstack/react-router";
-import { type JSX } from "react";
+import { type JSX, type MouseEvent } from "react";
 
 interface Props {
   chatId: string;
   providerName?: string;
   text: string;
+  onUpdateTitle: () => void;
+  updatingTitle: boolean;
 }
 
 const providerIconMap: Record<string, JSX.Element> = {
@@ -18,27 +21,56 @@ const providerIconMap: Record<string, JSX.Element> = {
 };
 
 export function ChatNavbarLink(props: Props) {
-  const { chatId, providerName = "", text } = props;
+  const { chatId, providerName = "", text, onUpdateTitle, updatingTitle } = props;
   const matchRoute = useMatchRoute();
   const match = matchRoute({ to: "/chat/$chatId", params: { chatId: chatId } });
 
+  const handleMenuClick = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
-    <Button
-      key={chatId}
-      component={Link}
-      variant={match ? "light" : "subtle"}
-      justify="start"
-      color="gray"
-      size="xs"
-      to="/chat/$chatId"
-      // @ts-expect-error error due using Button as container
-      params={{ chatId: chatId }}
-      leftSection={providerIconMap[providerName]}
-      styles={{
-        label: { fontWeight: 400 },
-      }}
-    >
-      {text}
-    </Button>
+    <Group align="center" gap={0}>
+      <Button
+        key={chatId}
+        component={Link}
+        variant={match ? "light" : "subtle"}
+        justify="start"
+        color="gray"
+        size="xs"
+        to="/chat/$chatId"
+        // @ts-expect-error error due using Button as container
+        params={{ chatId: chatId }}
+        leftSection={providerIconMap[providerName]}
+        styles={{
+          label: { fontWeight: 400 },
+          root: { flex: 1, overflow: "hidden" },
+        }}
+      >
+        {text}
+      </Button>
+      <Menu position="bottom-end" withArrow>
+        <Menu.Target>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            size="xs"
+            onClick={handleMenuClick}
+          >
+            {updatingTitle ? (
+              <Loader size={12} />
+            ) : (
+              <DotsVerticalIcon width={14} height={14} />
+            )}
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item onClick={onUpdateTitle} disabled={updatingTitle}>
+            Update chat title
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    </Group>
   );
 }
