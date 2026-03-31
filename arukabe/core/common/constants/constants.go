@@ -11,7 +11,7 @@ const (
 	ProviderMeta      ProviderName = "Meta"
 )
 
-const TitleGenerationModel = "claude-3-5-haiku-20241022"
+const TitleGenerationModel = "claude-haiku-4-5-20251001"
 
 func ToProviderName(name string) (ProviderName, error) {
 	switch name {
