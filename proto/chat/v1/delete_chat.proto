@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package chat.v1;
+
+message DeleteChatRequest {
+  string chat_id = 1;
+}
+
+message DeleteChatResponse {}
