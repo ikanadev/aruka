@@ -13,7 +13,7 @@ import (
 )
 
 const countChats = `-- name: CountChats :one
-SELECT COUNT(*) FROM chat
+SELECT COUNT(*) FROM chat WHERE deleted_at IS NULL
 `
 
 func (q *Queries) CountChats(ctx context.Context) (int64, error) {
@@ -21,6 +21,15 @@ func (q *Queries) CountChats(ctx context.Context) (int64, error) {
 	var count int64
 	err := row.Scan(&count)
 	return count, err
+}
+
+const deleteChat = `-- name: DeleteChat :exec
+UPDATE chat SET deleted_at = NOW() WHERE id = $1
+`
+
+func (q *Queries) DeleteChat(ctx context.Context, id uuid.UUID) error {
+	_, err := q.db.Exec(ctx, deleteChat, id)
+	return err
 }
 
 const getAllChats = `-- name: GetAllChats :many
@@ -31,6 +40,7 @@ SELECT
 FROM chat c
 INNER JOIN model mdl ON c.model_id = mdl.id
 INNER JOIN provider p ON mdl.provider_id = p.id
+WHERE c.deleted_at IS NULL
 ORDER BY c.created_at DESC
 LIMIT $2
 OFFSET $1

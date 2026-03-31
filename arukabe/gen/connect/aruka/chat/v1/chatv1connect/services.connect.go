@@ -39,6 +39,8 @@ const (
 	ChatServiceNewChatProcedure = "/chat.v1.ChatService/NewChat"
 	// ChatServiceEditChatProcedure is the fully-qualified name of the ChatService's EditChat RPC.
 	ChatServiceEditChatProcedure = "/chat.v1.ChatService/EditChat"
+	// ChatServiceDeleteChatProcedure is the fully-qualified name of the ChatService's DeleteChat RPC.
+	ChatServiceDeleteChatProcedure = "/chat.v1.ChatService/DeleteChat"
 	// ChatServiceChatMessagesProcedure is the fully-qualified name of the ChatService's ChatMessages
 	// RPC.
 	ChatServiceChatMessagesProcedure = "/chat.v1.ChatService/ChatMessages"
@@ -54,6 +56,7 @@ type ChatServiceClient interface {
 	ListChats(context.Context, *v1.ListChatsRequest) (*v1.ListChatsResponse, error)
 	NewChat(context.Context, *v1.NewChatRequest) (*v1.NewChatResponse, error)
 	EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error)
+	DeleteChat(context.Context, *v1.DeleteChatRequest) (*v1.DeleteChatResponse, error)
 	ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error)
 	ChatMessage(context.Context, *v1.ChatMessageRequest) (*connect.ServerStreamForClient[v1.ChatMessageResponse], error)
 	AutoChatTitleUpdate(context.Context, *v1.AutoChatTitleUpdateRequest) (*v1.AutoChatTitleUpdateResponse, error)
@@ -88,6 +91,12 @@ func NewChatServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(chatServiceMethods.ByName("EditChat")),
 			connect.WithClientOptions(opts...),
 		),
+		deleteChat: connect.NewClient[v1.DeleteChatRequest, v1.DeleteChatResponse](
+			httpClient,
+			baseURL+ChatServiceDeleteChatProcedure,
+			connect.WithSchema(chatServiceMethods.ByName("DeleteChat")),
+			connect.WithClientOptions(opts...),
+		),
 		chatMessages: connect.NewClient[v1.ChatMessagesRequest, v1.ChatMessagesResponse](
 			httpClient,
 			baseURL+ChatServiceChatMessagesProcedure,
@@ -114,6 +123,7 @@ type chatServiceClient struct {
 	listChats           *connect.Client[v1.ListChatsRequest, v1.ListChatsResponse]
 	newChat             *connect.Client[v1.NewChatRequest, v1.NewChatResponse]
 	editChat            *connect.Client[v1.EditChatRequest, v1.EditChatResponse]
+	deleteChat          *connect.Client[v1.DeleteChatRequest, v1.DeleteChatResponse]
 	chatMessages        *connect.Client[v1.ChatMessagesRequest, v1.ChatMessagesResponse]
 	chatMessage         *connect.Client[v1.ChatMessageRequest, v1.ChatMessageResponse]
 	autoChatTitleUpdate *connect.Client[v1.AutoChatTitleUpdateRequest, v1.AutoChatTitleUpdateResponse]
@@ -140,6 +150,15 @@ func (c *chatServiceClient) NewChat(ctx context.Context, req *v1.NewChatRequest)
 // EditChat calls chat.v1.ChatService.EditChat.
 func (c *chatServiceClient) EditChat(ctx context.Context, req *v1.EditChatRequest) (*v1.EditChatResponse, error) {
 	response, err := c.editChat.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
+}
+
+// DeleteChat calls chat.v1.ChatService.DeleteChat.
+func (c *chatServiceClient) DeleteChat(ctx context.Context, req *v1.DeleteChatRequest) (*v1.DeleteChatResponse, error) {
+	response, err := c.deleteChat.CallUnary(ctx, connect.NewRequest(req))
 	if response != nil {
 		return response.Msg, err
 	}
@@ -174,6 +193,7 @@ type ChatServiceHandler interface {
 	ListChats(context.Context, *v1.ListChatsRequest) (*v1.ListChatsResponse, error)
 	NewChat(context.Context, *v1.NewChatRequest) (*v1.NewChatResponse, error)
 	EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error)
+	DeleteChat(context.Context, *v1.DeleteChatRequest) (*v1.DeleteChatResponse, error)
 	ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error)
 	ChatMessage(context.Context, *v1.ChatMessageRequest, *connect.ServerStream[v1.ChatMessageResponse]) error
 	AutoChatTitleUpdate(context.Context, *v1.AutoChatTitleUpdateRequest) (*v1.AutoChatTitleUpdateResponse, error)
@@ -204,6 +224,12 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(chatServiceMethods.ByName("EditChat")),
 		connect.WithHandlerOptions(opts...),
 	)
+	chatServiceDeleteChatHandler := connect.NewUnaryHandlerSimple(
+		ChatServiceDeleteChatProcedure,
+		svc.DeleteChat,
+		connect.WithSchema(chatServiceMethods.ByName("DeleteChat")),
+		connect.WithHandlerOptions(opts...),
+	)
 	chatServiceChatMessagesHandler := connect.NewUnaryHandlerSimple(
 		ChatServiceChatMessagesProcedure,
 		svc.ChatMessages,
@@ -230,6 +256,8 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 			chatServiceNewChatHandler.ServeHTTP(w, r)
 		case ChatServiceEditChatProcedure:
 			chatServiceEditChatHandler.ServeHTTP(w, r)
+		case ChatServiceDeleteChatProcedure:
+			chatServiceDeleteChatHandler.ServeHTTP(w, r)
 		case ChatServiceChatMessagesProcedure:
 			chatServiceChatMessagesHandler.ServeHTTP(w, r)
 		case ChatServiceChatMessageProcedure:
@@ -255,6 +283,10 @@ func (UnimplementedChatServiceHandler) NewChat(context.Context, *v1.NewChatReque
 
 func (UnimplementedChatServiceHandler) EditChat(context.Context, *v1.EditChatRequest) (*v1.EditChatResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.EditChat is not implemented"))
+}
+
+func (UnimplementedChatServiceHandler) DeleteChat(context.Context, *v1.DeleteChatRequest) (*v1.DeleteChatResponse, error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("chat.v1.ChatService.DeleteChat is not implemented"))
 }
 
 func (UnimplementedChatServiceHandler) ChatMessages(context.Context, *v1.ChatMessagesRequest) (*v1.ChatMessagesResponse, error) {

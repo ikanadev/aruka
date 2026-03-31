@@ -83,3 +83,11 @@ func (c *ChatHandler) AutoChatTitleUpdate(
 ) (*chatv1.AutoChatTitleUpdateResponse, error) {
 	return c.service.AutoChatTitleUpdate(ctx, req)
 }
+
+// DeleteChat implements chatv1connect.ChatServiceHandler.
+func (c *ChatHandler) DeleteChat(
+	ctx context.Context,
+	req *chatv1.DeleteChatRequest,
+) (*chatv1.DeleteChatResponse, error) {
+	return c.service.DeleteChat(ctx, req)
+}

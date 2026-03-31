@@ -23,12 +23,13 @@ SELECT
 FROM chat c
 INNER JOIN model mdl ON c.model_id = mdl.id
 INNER JOIN provider p ON mdl.provider_id = p.id
+WHERE c.deleted_at IS NULL
 ORDER BY c.created_at DESC
 LIMIT sqlc.arg('limit')
 OFFSET sqlc.arg('offset');
 
 -- name: CountChats :one
-SELECT COUNT(*) FROM chat;
+SELECT COUNT(*) FROM chat WHERE deleted_at IS NULL;
 
 -- name: UpdateChat :exec
 UPDATE chat
@@ -38,3 +39,6 @@ SET
   pinned = COALESCE(sqlc.narg('pinned'), pinned),
   updated_at = CURRENT_TIMESTAMP
 WHERE id = sqlc.arg('chat_id');
+
+-- name: DeleteChat :exec
+UPDATE chat SET deleted_at = NOW() WHERE id = $1;

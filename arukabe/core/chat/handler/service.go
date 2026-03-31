@@ -13,4 +13,5 @@ type ChatService interface {
 	EditChat(ctx context.Context, req *chatv1.EditChatRequest) (*chatv1.EditChatResponse, error)
 	ListChats(ctx context.Context, req *chatv1.ListChatsRequest) (*chatv1.ListChatsResponse, error)
 	AutoChatTitleUpdate(ctx context.Context, req *chatv1.AutoChatTitleUpdateRequest) (*chatv1.AutoChatTitleUpdateResponse, error)
+	DeleteChat(context.Context, *chatv1.DeleteChatRequest) (*chatv1.DeleteChatResponse, error)
 }
