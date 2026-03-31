@@ -12,6 +12,7 @@ interface Props {
   text: string;
   onUpdateTitle: () => void;
   updatingTitle: boolean;
+  onDelete: () => void;
 }
 
 const providerIconMap: Record<string, JSX.Element> = {
@@ -21,7 +22,7 @@ const providerIconMap: Record<string, JSX.Element> = {
 };
 
 export function ChatNavbarLink(props: Props) {
-  const { chatId, providerName = "", text, onUpdateTitle, updatingTitle } = props;
+  const { chatId, providerName = "", text, onUpdateTitle, updatingTitle, onDelete } = props;
   const matchRoute = useMatchRoute();
   const match = matchRoute({ to: "/chat/$chatId", params: { chatId: chatId } });
 
@@ -68,6 +69,9 @@ export function ChatNavbarLink(props: Props) {
         <Menu.Dropdown>
           <Menu.Item onClick={onUpdateTitle} disabled={updatingTitle}>
             Update chat title
+          </Menu.Item>
+          <Menu.Item color="red" onClick={onDelete}>
+            Remove
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
