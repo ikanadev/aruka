@@ -1,17 +1,16 @@
 package handler
 
 import (
-	"arukabe/core/provider/service"
 	providerv1 "arukabe/gen/connect/aruka/provider/v1"
 	"context"
 )
 
-func NewProviderHandler(service *service.ProviderService) *ProviderHandler {
+func NewProviderHandler(service ProviderService) *ProviderHandler {
 	return &ProviderHandler{service}
 }
 
 type ProviderHandler struct {
-	service *service.ProviderService
+	service ProviderService
 }
 
 // ListProviders implements providerv1connect.ProviderServiceHandler.

@@ -16,7 +16,7 @@ func RegisterChatService(
 	antClient *anthropic.Client,
 ) {
 	service := service.NewChatService(db, antClient)
-	chatHandler := handler.NewChatHandler(*service)
+	chatHandler := handler.NewChatHandler(service)
 	path, handler := chatv1connect.NewChatServiceHandler(chatHandler)
 	mux.Handle(path, handler)
 }

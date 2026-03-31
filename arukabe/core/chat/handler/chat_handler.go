@@ -1,19 +1,18 @@
 package handler
 
 import (
-	"arukabe/core/chat/service"
 	chatv1 "arukabe/gen/connect/aruka/chat/v1"
 	"context"
 
 	"connectrpc.com/connect"
 )
 
-func NewChatHandler(service service.ChatService) *ChatHandler {
+func NewChatHandler(service ChatService) *ChatHandler {
 	return &ChatHandler{service}
 }
 
 type ChatHandler struct {
-	service service.ChatService
+	service ChatService
 }
 
 // ChatMessage implements chatv1connect.ChatServiceHandler.
