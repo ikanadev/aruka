@@ -10,7 +10,8 @@ export function useChatMessages(chatId: string) {
 
   const query = useQuery({
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Uncomment to simulate network delay
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
       return chatClient.chatMessages({ chatId });
     },
     queryKey: chatQueryKeys.chatMessages(chatId),
